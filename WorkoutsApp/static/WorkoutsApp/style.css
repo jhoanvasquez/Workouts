@@ -1,0 +1,22 @@
+
+
+@font-face {
+  font-family: "Gagalin"; 
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../static/WorkoutsApp/fonts/Gagalin-Regular.otf"); 
+   
+}
+
+#btn{
+  color: rgb(255, 255, 255);
+  background-color: rgba(126, 126, 126, 0.87);
+  border-color: rgba(126, 126, 126, 0.87);
+  border-right-color: rgba(126, 126, 126, 0.87);
+  border-bottom-color: rgba(126, 126, 126, 0.87);
+}
+
+#body {
+  background-color:  rgba(1, 124, 1, 0.733);
+  font-family:"Gagalin";
+}
