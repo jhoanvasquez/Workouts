@@ -32,7 +32,7 @@ def register(request):
         if formRegister.is_valid:
             formRegister.save()
             return redirect('register2')
-    return render(request, 'WorkoutsApp/register.html', context)
+    return render(request, 'Users/register.html', context)
     
 
 def registerSkills(request):
@@ -40,7 +40,7 @@ def registerSkills(request):
         'list' : ["resistencia", "fuerza", "velocidad", "aceleración", "Agilidad", "flexibilidad", "coordinación", "precisión"]
     }
     print(request.POST)
-    return render(request, 'WorkoutsApp/register2.html', context)
+    return render(request, 'Users/register2.html', context)
 
 
 def login(request):
@@ -48,6 +48,11 @@ def login(request):
         user = request.POST.get('user')
         password = request.POST.get('password')
         if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
-            return HttpResponse("<h2>¡Estas logeado!</h2>")
+            return redirect('perfil')
+            #return HttpResponse("<h2>¡Estas logeado!</h2>")
     #print(UserModel.objects.filter(genero="masculino"))
-    return render(request, 'WorkoutsApp/login.html')
+    return render(request, 'Users/login.html')
+
+def perfil(request):
+   
+    return render(request, 'Users/perfil.html')
