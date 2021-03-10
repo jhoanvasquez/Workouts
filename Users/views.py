@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
+#import django.contrib.auth.forms import User
+#from django.core.urlresolvers import reverse_lazy
+from .forms import RegistroForm
+from .models import UserModel
+from django.db.migrations.recorder import MigrationRecorder
 
+#from WorkoutsApp.models import Prueba
 
-def index(request):
-    return HttpResponse("<h2>Workouts</h2>")
-
-
-"""
 
 # Create your views here.
 
@@ -17,9 +20,9 @@ def register(request):
     #form.save()
 
     #print(request.POST)
-    last_migration = MigrationRecorder.Migration.objects.latest('id')
+    """last_migration = MigrationRecorder.Migration.objects.latest('id')
     print(last_migration.app)     
-    print(last_migration.name) 
+    print(last_migration.name) """
 
     formRegister = RegistroForm(request.POST or None)
     context = {
@@ -41,9 +44,10 @@ def registerSkills(request):
 
 
 def login(request):
-    user = request.POST.get('user')
-    password = request.POST.get('password')
-    if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
-        return HttpResponse("<h2>¡Estas logeado!</h2>")
+    if request.POST:
+        user = request.POST.get('user')
+        password = request.POST.get('password')
+        if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
+            return HttpResponse("<h2>¡Estas logeado!</h2>")
     #print(UserModel.objects.filter(genero="masculino"))
-    return render(request, 'WorkoutsApp/login.html')"""
+    return render(request, 'WorkoutsApp/login.html')
