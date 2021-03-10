@@ -1,4 +1,4 @@
-#from django.db import models
+from django.db import models
 
 # Create your models here.
 
@@ -6,7 +6,7 @@
     descripcion = models.CharField(max_length = 20)
 """
 
-"""class UserModel (models.Model):
+class UserModel (models.Model):
 
     nombre = models.CharField(max_length = 20)
     apellido = models.CharField(max_length=20)
@@ -37,4 +37,4 @@ class habilidadesUser (models.Model):
     flexibilidad = models.IntegerField()
     coordinación = models.IntegerField()
     precisión = models.IntegerField()
-    """
+    
