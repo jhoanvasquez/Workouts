@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 #import django.contrib.auth.forms import User
 #from django.core.urlresolvers import reverse_lazy
@@ -45,10 +47,18 @@ def registerSkills(request):
 
 def login(request):
     if request.POST:
+        global user
         user = request.POST.get('user')
         password = request.POST.get('password')
+        user_id = UserModel.objects.filter(email=user)
         if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
-            return redirect('perfil')
+            #token = Token.objects.get_or_create(user=user_instance)
+            #print(token.key)
+            context = {
+                 "user_active" : user
+             }
+             
+            return render(request, 'Users/perfil.html', context)
             #return HttpResponse("<h2>¡Estas logeado!</h2>")
     #print(UserModel.objects.filter(genero="masculino"))
     return render(request, 'Users/login.html')
@@ -56,3 +66,13 @@ def login(request):
 def perfil(request):
    
     return render(request, 'Users/perfil.html')
+
+def update(request):
+    
+    return render(request, 'Users/editarPerfil.html')
+
+def cambiarContra(request):
+    context = {
+                "user_active" : user
+            }
+    return render(request, 'Users/cambiarContra.html', context)

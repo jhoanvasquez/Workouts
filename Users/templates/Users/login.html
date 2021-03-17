@@ -1,45 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% load static %}
-    
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'WorkoutsApp/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'WorkoutsApp/loginStyle.css' %}">
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+{% extends "Users/base_login.html" %}
+{% load static %}
+{% block title %} Login {% endblock %}
 
+{% block content %}
+<h2>Login</h2>
 
-</head>
-<body id ="body" class="container mt-4">
-
-    <h2 id="work">Login</h2>
-    
-    <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label class="h6" for="user">Usuario</label>
-            <input id="name" type="text" class="form-control" name="user"  placeholder="Ingresa tu nombre">
-        </div>
-
-        <div class="form-group">
-            <label class="h6" for="password">Contraseña</label>
-            <input type="password" class="form-control" name="password"  placeholder="Ingresa tu apellido">
-        </div>
-
-        <a id="link" href="{% url 'register' %}"><u>¿Aún no estas registrado?</u></a>
-        <a id="link" class="ml-3" href="{% url 'register' %}"><u>Olvide mi contraseña</u></a>
-        <button id="btn" type="submit" class="btn btn-primary float-right mb-3">Ingresar</button>
-      </form>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="h6" for="user">Usuario</label>
+        <input id="name" type="text" class="form-control" name="user"  placeholder="Ingresa tu nombre">
     </div>
-</body>
+
+    <div class="form-group">
+        <label class="h6" for="password">Contraseña</label>
+        <input type="password" class="form-control" name="password"  placeholder="Ingresa tu apellido">
+    </div>
+    <br><br>
+    <button type="submit" class="btn btn-secondary w-100">Ingresar</button> <br><br>
+    <a id="link" href="{% url 'register' %}"><u>¿Aún no estas registrado?</u></a>
+    <a id="link" class="ml-3" href="{% url 'register' %}"><u>Olvide mi contraseña</u></a>
+    
+    </form>
+
+
+{% endblock %}
 <!--script
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="{% static 'WorkoutsApp/js/main.js' %}"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
-</html>
