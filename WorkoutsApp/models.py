@@ -47,6 +47,3 @@ class Planes(models.Model):
     """ fecha=models.DateField()
     entrenehoy=models.BooleanField() """
     
-
-
-    
