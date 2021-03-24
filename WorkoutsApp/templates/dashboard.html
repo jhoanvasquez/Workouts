@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <style>
+        .active {
+            color: #0000ff;
+        }
+    </style>
+
+
+    <title>
+        Title
+    </title>
+
+
+
+    <script language="JavaScript">
+      function Fecha(fecha)
+      {
+      meses = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+      data = fecha;
+
+      index = data.getMonth();
+      diasemana=new Array("Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo");
+
+      indexday =  data.getDay();
+      if (indexday == 0)
+      indexday = 7;
+
+      any = data.getYear();
+      if (any < 1900)
+        any = 1900 + any;
+
+      document.write(diasemana[indexday-1]+ "," + ' '+data.getDate()+ " de " + meses[index] + " de " + any);
+      }
+      </script>
+</head>
+
+<body>
+
+
+  <div>
+  <nav class="navbar navbar-expand-sm bg-success navbar-dark">
+
+    <a >Sesiones</a>
+    <div style="position:absolute; top:0; right:0;">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">
+          <ion-icon name="person"></ion-icon>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  </nav>
+</div>
+
+
+
+<div>
+    <p>
+      <font size="5">
+        HOLA {{nombre}} {{apellido}}
+      </font></p>
+
+    <span> {{apellido}} </span> -->
+    <a href="/admin">Panel de administracion</a>
+    <p> 
+      <font size="5">
+        Estos son los entrenos para esta semana:
+
+      </font> </p>
+    
+</div>
+
+<div  style=" width: 80%;" >
+ 
+  <br>
+  <a> #Dia, #mes 0, #diasem 1, año  -- 
+
+    <!-- /* Función que suma o resta días a una fecha, si el parámetro
+        días es negativo restará los días*/ -->
+    <script type="text/javascript">
+      function sumarDias(fecha, dias){
+        fecha.setDate(fecha.getDate() + dias);
+        return fecha;
+      }
+    /* document.write(d.getDate()); */
+    /* document.write(d.getMonth()); */
+    /* document.write(d.getDay()); */
+    /* document.write(d.getYear()+1900); */
+    </script>
+  </a>
+</div>
+
+  <br>
+
+<script language="javascript">
+  function todo()
+      {
+        var fecha = new Date();
+        var numdia = fecha.getDate();
+        var dia = fecha.getDay();
+        var mes = fecha.getMonth();
+        var añito = fecha.getYear()+1900;
+        var ddisponibles = 5;
+        var diasestasemana = 2;
+        var diasentrenados = 7;
+        var totalentrenos = 10;
+        var mostrar = false;
+
+        if(diasentrenados >= totalentrenos)
+        {
+          document.write("NO TIENES ENTRENOS, YA LOS HICISTE TODOS, PASAR AL SIGUIENTE NIVEL");
+          mostrar=false;
+          document.getElementById("entrenos").style.display="none";
+        }
+        if(diasentrenados < totalentrenos)
+        {
+          document.write("AUN TE FALTAN ENTRENOS ");
+          mostrar = true;
+          document.getElementById("entrenos").style.display="";
+          
+        }
+      }
+/*       documente.getElementById("most").value=true; */
+
+      /* document.getElementById("entrenos").innerHTML = mostrar; */
+
+</script>
+
+
+<!-- div con entrenos -->
+<div id="entrenos"  style=" width: 99%;">
+  <script language="javascript">
+    
+  </script>
+
+<!-- para controlar la cantidad de dias  -->
+<script>
+  var vamos=0;
+</script>
+
+{% for usuario in usuarios %}
+
+  {% if forloop.counter0 == 0 %}
+  <a>
+    <ion-icon name="calendar"></ion-icon>
+
+    <script language="javascript">
+      var fecha = new Date();
+      Fecha(fecha)
+      /* document.write(fecha); */
+      
+    </script>
+  </a>
+  
+  {% else %}
+  <a>
+    <ion-icon name="calendar"></ion-icon>
+    <!-- <p id="texto"> {{ forloop.counter0 }}</p> -->
+
+    <script language="javascript">
+      var fecha2 = new Date();
+      vamos+=1;
+
+      var fecha3 = sumarDias(fecha2, vamos);
+      Fecha(fecha3)
+
+      /* var demo = document.getElementById("texto");
+      var demoValue = parseInt(demo.innerHTML);
+      var puntos = demoValue +0 ;
+      demo.innerHTML = puntos; */
+/* 
+      var vamos = parseInt(document.getElementById("texto").textContent);
+      var parrafo = document.getElementById('texto');
+      var contenido = parseInt(parrafo.innerHTML); */
+      
+
+      /* var valor = document.getElementById("texto").value; */
+      /* var vamos = parseInt(document.getElementById("texto").textContent) */
+      
+      /* document.write(fecha3); */
+    
+    </script>
+  </a>
+
+  {% endif %}
+
+<div class="card w-75">
+  <div class="card-body">
+    <h5 class="card-title">Entreno para mejorar la:  
+      {{usuario.estatura}}
+      {{usuario.estatura}}
+    </h5>
+
+    <p class="card-text">
+      <font size="5">
+        Duración del entrenamiento:
+
+      </font>
+      <br>       {{usuario.nombre}}
+    </p>
+    <textarea class="form-control" rows="3" cols="4" disabled="True" style="resize:none;" ></textarea>
+    <a href="#" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Ver</a>
+  </div>
+</div>
+
+<br> <br>
+
+{% endfor %}
+
+</div>
+
+
+</div>    
+    <!-- para obtener informacion get -->
+    <form action="/buscar/" method="GET">
+        {{form.as_p}}
+
+        <input type="text" name="campo1">
+        <input type="button" value="Buscar">
+    </form>
+
+    <a>Aqui arriba GET</a>
+    <a>Aqui abajo Post</a>
+
+    <!-- para enviar info -->
+    <form action="/insertar/" method="post">
+        {{form.as_p}}
+
+        <input type="text" name="campo2">
+        <input type="button" value="Insertar">
+    </form>
+
+<!-- barra inferior -->
+<div class="position:absolute; fixed-bottom " >
+<nav class="navbar navbar-expand-sm bg-success navbar-dark">
+  
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">
+        <ion-icon name="barbell"></ion-icon>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">
+        <ion-icon name="barbell"></ion-icon>
+      </a>
+    </li>
+  </ul>
+
+</nav>
+</div>    
+
+
+
+
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>    
+</body>
+</html>

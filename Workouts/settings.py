@@ -10,7 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+
+
+
 from pathlib import Path
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'WorkoutsApp',
+    'crispy_forms',
+    'bootstrap4',
+    #'django.contrib.gis',
+    
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,14 +88,23 @@ WSGI_APPLICATION = 'Workouts.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        #""" 'ENGINE': 'django.db.backends.postgresql_pyscopg2', """
+        #'ENGINE': 'django.contrib.gis.db.backends.postgresql ',
+        #'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'workout',
-	'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+	    #'USER': 'root',
+        'USER': 'postgres',
+        #'PASSWORD': '',
+        'PASSWORD': '123456789',
+        #'HOST': 'localhost',
+        'HOST': '127.0.0.1',
+        #'PORT': '3306',
+        'PORT': '5432',
     }
 }
+
+
 
 
 # Password validation
