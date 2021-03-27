@@ -4,75 +4,95 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-
-#import django.contrib.auth.forms import User
-#from django.core.urlresolvers import reverse_lazy
-from .forms import RegistroForm
-from .models import UserModel
 from django.db.migrations.recorder import MigrationRecorder
+from django.contrib import messages
+from .forms import RegistroForm, SkillsForm
+from .models import UserModel
+
 
 #from WorkoutsApp.models import Prueba
 
 
 # Create your views here.
 
+#Registro de usuario
 def register(request): 
-    #preguntar si es post
-    #Instanciar el form
-    #form.save()
-
-    #print(request.POST)
-    """last_migration = MigrationRecorder.Migration.objects.latest('id')
-    print(last_migration.app)     
-    print(last_migration.name) """
-
+    
     formRegister = RegistroForm(request.POST or None)
     context = {
         'form' : formRegister
     }
     if request.POST:
-        if formRegister.is_valid:
+        if formRegister.is_valid() :
             formRegister.save()
             return redirect('register2')
     return render(request, 'Users/register.html', context)
     
-
+#Registro de habilidades
 def registerSkills(request):
+
+    formSkills = SkillsForm(request.POST or None)
+
     context = {
+        'user_id':UserModel.objects.latest('id').id,
         'list' : ["resistencia", "fuerza", "velocidad", "aceleración", "Agilidad", "flexibilidad", "coordinación", "precisión"]
     }
-    print(request.POST)
+    if request.POST:
+        print(request.POST)
+        if formSkills.is_valid():
+            formSkills.save()
+            return redirect('login')
     return render(request, 'Users/register2.html', context)
 
 
 def login(request):
     if request.POST:
-        global user
         user = request.POST.get('user')
         password = request.POST.get('password')
-        user_id = UserModel.objects.filter(email=user)
+        
         if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
-            #token = Token.objects.get_or_create(user=user_instance)
-            #print(token.key)
-            context = {
-                 "user_active" : user
-             }
-             
-            return render(request, 'Users/perfil.html', context)
-            #return HttpResponse("<h2>¡Estas logeado!</h2>")
-    #print(UserModel.objects.filter(genero="masculino"))
+            global currentUser
+            currentUser = user
+        
+            return redirect('perfil')
     return render(request, 'Users/login.html')
 
+def logout(request):
+    currentUser = None
+    return redirect('login')
+
+
+#Ver perfil de usuario
 def perfil(request):
    
     return render(request, 'Users/perfil.html')
 
+
+#modificar usuario
 def update(request):
+
+    updateUser =  UserModel.objects.get(pk=1)
     
-    return render(request, 'Users/editarPerfil.html')
+    if request.POST:
+        
+        formulario = RegistroForm(request.POST, instance=updateUser)
+        if formulario.is_valid:
+            formulario.save()
+    
+    context = {
+        "updateUser" : updateUser
+    }
+    messages.success(request, 'Tu perfil ha sido actualizado.')
+    return render(request, 'Users/editarPerfil.html', context)
 
 def cambiarContra(request):
-    context = {
-                "user_active" : user
-            }
-    return render(request, 'Users/cambiarContra.html', context)
+    if currentUser != None:
+        context = {
+        "user_active" : currentUser
+        }
+        return render(request, 'Users/cambiarContra.html', context)
+
+#Ver progreso del usuario
+def ranges(request):
+    
+    return render(request, 'Users/rangos.html')

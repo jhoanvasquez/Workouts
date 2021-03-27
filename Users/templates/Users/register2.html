@@ -33,9 +33,21 @@
             <label class="form-check-label" for="radioSkills">
               5
             </label>
-        </div>
+        </div><br>
         {% endfor %}
-          
+        <input  type="hidden" name="user_id" value="{{user_id}}">
+          <label class="form-check-label" for="radioSkills">
+            Dias disponibles para entrenar
+        </label> <br>
+        <label><input type="checkbox" name="lunes" id="cbox2" value={{True}}> Lunes</label><br>
+        <label><input type="checkbox" name="martes" id="cbox2" value={{True}}> Martes</label><br>
+        <label><input type="checkbox" name="miercoles" id="cbox2" value={{True}}> Miercoles</label><br>
+        <label><input type="checkbox" name="jueves" id="cbox2" value={{True}}> Jueves</label><br>
+        <label><input type="checkbox" name="viernes" id="cbox2" value={{True}}> Viernes</label><br>
+        <label><input type="checkbox" name="viernes" id="cbox2" value={{True}}> Sababdo</label><br>
+        <label><input type="checkbox" name="viernes" id="cbox2" value={{True}}> Domingo</label>
+        
+        
 
         <button id="btn" type="submit" class="btn btn-secondary float-right mt-1 mb-3 w-100">Guardar</button>
       </form>

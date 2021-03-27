@@ -6,52 +6,44 @@
 
 <h2 id="work">Editar perfil - datos personales</h2>
 
+
 <form method="POST">
     {% csrf_token %}
     <div class="form-group">
         <label class="h6" for="name">Nombre</label>
-        <input id="name" type="text" class="form-control" name="nombre"  placeholder="Ingresa tu nombre">
+        <input id="name" type="text" class="form-control" name="nombre" value="{{updateUser.nombre}}" placeholder="Ingresa tu nombre" >
     </div>
 
     <div class="form-group">
         <label class="h6" for="lastname">Apellido</label>
-        <input type="text" class="form-control" name="apellido"  placeholder="Ingresa tu apellido">
+        <input type="text" class="form-control" name="apellido"  value="{{updateUser.apellido}}" placeholder="Ingresa tu apellido" >
     </div>
 
     <div class="form-group">
         <label class="h6" for="edad">Edad</label>
-        <input type="number" class="form-control" name="edad"  placeholder="Ingresa tu edad">
+        <input type="number" class="form-control" name="edad" value="{{updateUser.edad}}" placeholder="Ingresa tu edad">
     </div>
 
     <div class="form-group">
         <label class="h6" for="genero">Genero</label>
-        <select class="form-control" name="genero">
+        <select class="form-control"  name="genero">
             <option selected>Genero</option>
             <option value="masculino">Masculino</option>
             <option value="femenino">Femenino</option>
             <option value="otro">Otro</option>
-            </select>
+        </select>
     </div>
 
     <div class="form-group">
-        <label class="h6" for="email">Direccion de correo</label>
-        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Ingresa tu email">
+        <label class="h6" for="email">Nueva direccion de correo</label>
+        <input type="email" class="form-control"  name="email" placeholder="Ingresa tu email">
     </div>
 
-    <div class="form-group">
-        <label class="h6" for="password">Contraseña</label>
-        <input type="password" class="form-control" name="password" placeholder="Ingresa tu contraseña">
-    </div>
-
-    <div class="form-group">
-        <label class="h6" for="password1">Confirmar contraseña</label>
-        <input type="password" class="form-control" name="password1" placeholder="Ingresa tu contraseña">
-    </div>
 
     <div class="form-group">
         <label class="h6" for="pais">Pais</label>
         <select class="form-control" name="pais">
-            <option selected>Pais</option>
+            <option >Pais</option>
             <option value="prueba">Prueba</option>
         </select>
     </div>
@@ -67,15 +59,23 @@
     <div class="form-group">
         <label class="h6" for="region">Ciudad</label>
         <select class="form-control" name="ciudad">
-            <option selected>Ciudad</option>
+            <option>Ciudad</option>
             <option value="prueba">Prueba</option>
         </select>
     </div>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>    
+    {% endif %}
+
     <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
-    </form>
+</form>
     
-    
+
 
 {% endblock %}
 <!--script
