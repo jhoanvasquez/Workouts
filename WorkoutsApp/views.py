@@ -1,15 +1,40 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+from .forms import DashboardForm
+from .models import Usuarios
+from .models import Planes
+from .models import Areas
+#from models import *  
 
 
 def index(request):
     return HttpResponse("<h2>Workouts</h2>")
 
 
-"""
-
 # Create your views here.
+
+
+def register(request):
+    return render(request, 'WorkoutsApp/register.html')
+
+    
+def dashboard(request):
+    
+
+    formulario=DashboardForm()
+    usuarios = Usuarios.objects.all()
+    areas = Areas.objects.all()
+    planentreno = Planes.objects.all()
+    context = {
+       "nombre": request.user,
+        "apellido": "Abreu",
+        'form': formulario,
+        "usuarios": usuarios,
+        "areas": areas,
+        "planentreno": planentreno
+    }
+
+    return render(request, 'dashboard.html', context )
 
 def register(request): 
     #preguntar si es post
@@ -46,4 +71,5 @@ def login(request):
     if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
         return HttpResponse("<h2>¡Estas logeado!</h2>")
     #print(UserModel.objects.filter(genero="masculino"))
-    return render(request, 'WorkoutsApp/login.html')"""
+    return render(request, 'WorkoutsApp/login.html')
+
