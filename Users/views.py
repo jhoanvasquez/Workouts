@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
+from django.core.cache import cache
+
 #import django.contrib.auth.forms import User
 #from django.core.urlresolvers import reverse_lazy
 from .forms import RegistroForm
@@ -46,6 +48,14 @@ def registerSkills(request):
 
 
 def login(request):
+    cod=1
+    request.codigo = cod
+    cache.set("codigo","marlon",30)
+
+
+    print (request.codigo)
+    
+
     if request.POST:
         global user
         user = request.POST.get('user')
@@ -64,7 +74,7 @@ def login(request):
     return render(request, 'Users/login.html')
 
 def perfil(request):
-   
+    print (cache.get("codigo"))
     return render(request, 'Users/perfil.html')
 
 def update(request):

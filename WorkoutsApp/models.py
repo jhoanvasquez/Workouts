@@ -2,21 +2,22 @@ from django.db import models
 
 
 class Rangos(models.Model):
-    id_habilidad=models.IntegerField()
-    nivel_habilidad=models.IntegerField()
+    id_rango=models.IntegerField()
+    descripcion=models.CharField(max_length=150)
 
 class Areas(models.Model):
     id_area=models.IntegerField()
     descripcion=models.CharField(max_length=150)
-    links=models.CharField(max_length=150)
-    sesiones=models.CharField(max_length=50)
+
 
 class Ejercicios(models.Model):
     id_ejercicios=models.IntegerField()
     descripcion=models.CharField(max_length=150)
-    id_habilidad=models.ForeignKey(Rangos, on_delete=models.CASCADE)
+    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
     duracion=models.IntegerField()
     explicacion=models.CharField(max_length=150)
+    id_area=models.ForeignKey(Areas, on_delete=models.CASCADE)
+    link_entreno=models.CharField(max_length=150)
 
 
 class Usuarios (models.Model):
@@ -29,8 +30,8 @@ class Usuarios (models.Model):
     correo=models.EmailField()
     contra=models.CharField(max_length=15)
     ciudad=models.CharField(max_length=50)
-    puntajehabilidad=models.IntegerField()
-    id_habilidad=models.ForeignKey(Rangos, on_delete=models.CASCADE )
+    puntaje_habilidades=models.IntegerField()
+    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
 
     #idhabilidad=models.ForeignKey(Rangos, blank=True, null=True)
 
@@ -39,11 +40,35 @@ class Planes(models.Model):
     id_plan=models.IntegerField()
     id_area=models.ForeignKey(Areas, on_delete=models.CASCADE )
     id_usuario=models.ForeignKey(Usuarios, on_delete=models.CASCADE )
-    id_ejercicios=models.ForeignKey(Ejercicios, on_delete=models.CASCADE )
-    id_habilidad=models.ForeignKey(Rangos, on_delete=models.CASCADE )
-    diasdisponibles=models.IntegerField()
-    diasentrenados=models.IntegerField()
+    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
+    dias_disponibles=models.IntegerField()
+    dias_entrenados=models.IntegerField()
     dias_esta_semana=models.IntegerField()
-    """ fecha=models.DateField()
-    entrenehoy=models.BooleanField() """
+    num_sesiones=models.IntegerField()
+    ultima_semana=models.DateField()
+
+    "entrenehoy=models.BooleanField() "
+
+class Sesiones(models.Model):
+    id_sesion=models.IntegerField()
+    id_plan=models.ForeignKey(Planes, on_delete=models.CASCADE )
+    fecha=models.DateField()
+
+class Sesion_Ejercicio(models.Model):
+    id_sesion=models.ForeignKey(Sesiones, on_delete=models.CASCADE )
+    id_ejercicios=models.ForeignKey(Ejercicios, on_delete=models.CASCADE )
+    
+
+class Habilidades(models.Model):
+    id_habilidades=models.IntegerField()
+    flexibilidad=models.IntegerField()
+    fuerza=models.IntegerField()
+    resistencia=models.IntegerField()
+    velocidad=models.IntegerField()
+    aceleracion=models.IntegerField()
+    agilidad=models.IntegerField()
+    coordinacion=models.IntegerField()
+    precision=models.IntegerField()
+    id_usuario=models.ForeignKey(Usuarios, on_delete=models.CASCADE )
+    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
     
