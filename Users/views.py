@@ -5,9 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.db.migrations.recorder import MigrationRecorder
+from django.core.cache import cache
 from django.contrib import messages
 from .forms import RegistroForm, SkillsForm
 from .models import UserModel
+
 
 
 #from WorkoutsApp.models import Prueba
@@ -50,9 +52,10 @@ def login(request):
         user = request.POST.get('user')
         password = request.POST.get('password')
         
-        if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
+        if UserModel.objects.filter(email=user, password=password).exists():
             global currentUser
             currentUser = user
+            cache.set("currentUser",user,30)
         
             return redirect('perfil')
     return render(request, 'Users/login.html')
