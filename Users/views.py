@@ -4,85 +4,119 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-
-from django.core.cache import cache
-
-#import django.contrib.auth.forms import User
-#from django.core.urlresolvers import reverse_lazy
-from .forms import RegistroForm
-from .models import UserModel
 from django.db.migrations.recorder import MigrationRecorder
+from django.core.cache import cache
+from django.contrib import messages
+from .forms import RegistroForm, SkillsForm
+from WorkoutsApp.models import Usuarios, Habilidades
+
+
+
 
 #from WorkoutsApp.models import Prueba
 
 
 # Create your views here.
 
+#Registro de usuario
 def register(request): 
-    #preguntar si es post
-    #Instanciar el form
-    #form.save()
-
-    #print(request.POST)
-    """last_migration = MigrationRecorder.Migration.objects.latest('id')
-    print(last_migration.app)     
-    print(last_migration.name) """
-
+    
     formRegister = RegistroForm(request.POST or None)
     context = {
         'form' : formRegister
     }
     if request.POST:
-        if formRegister.is_valid:
+        if formRegister.is_valid() :
             formRegister.save()
             return redirect('register2')
+        else:
+            print(formRegister.errors)
     return render(request, 'Users/register.html', context)
     
-
+#Registro de habilidades
 def registerSkills(request):
+
+    formSkills = SkillsForm(request.POST or None)
+
     context = {
-        'list' : ["resistencia", "fuerza", "velocidad", "aceleración", "Agilidad", "flexibilidad", "coordinación", "precisión"]
+        'user_id':Usuarios.objects.latest('id').id,
+        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
-    print(request.POST)
+    if request.POST:
+        print(request.POST)
+        if formSkills.is_valid():
+            formSkills.save()
+            return redirect('login')
+        else:
+            print(formSkills.errors)
     return render(request, 'Users/register2.html', context)
 
 
 def login(request):
-    cod=1
-    request.codigo = cod
-    cache.set("codigo","marlon",30)
-
-
-    print (request.codigo)
     
-
     if request.POST:
-        global user
         user = request.POST.get('user')
         password = request.POST.get('password')
-        user_id = UserModel.objects.filter(email=user)
-        if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
-            #token = Token.objects.get_or_create(user=user_instance)
-            #print(token.key)
-            context = {
-                 "user_active" : user
-             }
-             
-            return render(request, 'Users/perfil.html', context)
-            #return HttpResponse("<h2>¡Estas logeado!</h2>")
-    #print(UserModel.objects.filter(genero="masculino"))
+        
+        if Usuarios.objects.filter(correo=user, contra=password).exists():
+            cache.set("currentUser",user,None)
+        
+            return redirect('perfil')
     return render(request, 'Users/login.html')
 
+def logout(request):
+    cache.clear()
+    return redirect('login')
+
+
+#Ver perfil de usuario
 def perfil(request):
-    print (cache.get("codigo"))
+   
     return render(request, 'Users/perfil.html')
 
+
+#modificar usuario
 def update(request):
+    usuario = cache.get("currentUser")
+    updateUser =  Usuarios.objects.filter(correo=usuario)
     
-    return render(request, 'Users/editarPerfil.html')
+    
+    if request.POST:
+        for data in updateUser:
+            obj, created = Usuarios.objects.update_or_create(
+            
+            nombre = data.nombre, 
+            apellidos= data.apellidos,
+            edad= data.edad, 
+            peso= data.peso, 
+            estatura= data.estatura,
+            correo= data.correo, 
+            contra= data.contra, 
+            ciudad= data.ciudad, 
+        
+            defaults={
+            'nombre':updateUser.values('nombre'), 
+            'apellidos':updateUser.values('apellidos'),
+            'edad':request.POST.get('edad'),
+            'peso':request.POST.get('peso'),
+            'estatura':request.POST.get('estatura'),
+            'ciudad':request.POST.get('ciudad')},)
+
+        #redirect and try chatch
+       
+    context = {
+        "updateUser" : updateUser
+    }
+    return render(request, 'Users/editarPerfil.html', context)
 
 def cambiarContra(request):
-    context = {
-                "user_active" : user
-            }
-    return render(request, 'Users/cambiarContra.html', context)
+    if currentUser != None:
+        context = {
+        "user_active" : currentUser
+        }
+        return render(request, 'Users/cambiarContra.html', context)
+
+#Ver progreso del usuario
+def ranges(request):
+    
+    return render(request, 'Users/rangos.html')

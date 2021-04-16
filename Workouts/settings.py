@@ -97,19 +97,25 @@ WSGI_APPLICATION = 'Workouts.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'workout',
+	    'USER': 'postgres',
+        'PASSWORD': '#vasquez',
+        'HOST': 'localhost',
+        'DATABASE_PORT': '5432',
         #""" 'ENGINE': 'django.db.backends.postgresql_pyscopg2', """
         #'ENGINE': 'django.contrib.gis.db.backends.postgresql ',
         #'ENGINE': 'django.db.backends.postgresql',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'workout',
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'workout',
 	    #'USER': 'root',
-        'USER': 'postgres',
+        #'USER': 'postgres',
         #'PASSWORD': '',
-        'PASSWORD': '123456789',
+        #'PASSWORD': '123456789',
         #'HOST': 'localhost',
-        'HOST': '127.0.0.1',
+        #'HOST': '127.0.0.1',
         #'PORT': '3306',
-        'PORT': '5432',
+        #'PORT': '5432',
     }
 }
 

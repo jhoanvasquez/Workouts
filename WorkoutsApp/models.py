@@ -31,7 +31,13 @@ class Usuarios (models.Model):
     contra=models.CharField(max_length=15)
     ciudad=models.CharField(max_length=50)
     puntaje_habilidades=models.IntegerField()
-    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
+    id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
+
+    def __str__(self):
+        field_values = []
+        for field in self._meta.get_fields():
+            field_values.append(str(getattr(self, field.name, '')))
+        return ' '.join(field_values)
 
     #idhabilidad=models.ForeignKey(Rangos, blank=True, null=True)
 
