@@ -6,76 +6,47 @@
 
 <h2 id="work">Editar perfil - datos personales</h2>
 
+    <form method="POST">
+        {% csrf_token %}
+        {% for i in updateUser %}
+        <div class="form-group">
+            <label class="h6" for="name">Nombre</label>
+            <input id="name" type="text" class="form-control" name="nombre" value="{{i.nombre}}" disabled>
+        </div>
+        
+        <div class="form-group">
+            <label class="h6" for="lastname">Apellido</label>
+            <input type="text" class="form-control" name="apellidos"  value="{{i.apellidos}}" disabled>
+        </div>
 
-<form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        <label class="h6" for="name">Nombre</label>
-        <input id="name" type="text" class="form-control" name="nombre" value="{{updateUser.nombre}}" placeholder="Ingresa tu nombre" >
-    </div>
+        <div class="form-group">
+            <label class="h6" for="edad">Edad</label>
+            <input type="number" class="form-control" name="edad"  value="{{i.edad}}" placeholder="Ingresa tu edad">
+        </div>
 
-    <div class="form-group">
-        <label class="h6" for="lastname">Apellido</label>
-        <input type="text" class="form-control" name="apellido"  value="{{updateUser.apellido}}" placeholder="Ingresa tu apellido" >
-    </div>
+        <div class="form-group">
+            <label class="h6" for="peso">Peso</label>
+            <input  class="form-control" name="peso"  value="{{i.peso}}" placeholder="Ingresa tu peso">
+        </div>
 
-    <div class="form-group">
-        <label class="h6" for="edad">Edad</label>
-        <input type="number" class="form-control" name="edad" value="{{updateUser.edad}}" placeholder="Ingresa tu edad">
-    </div>
-
-    <div class="form-group">
-        <label class="h6" for="genero">Genero</label>
-        <select class="form-control"  name="genero">
-            <option selected>Genero</option>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-            <option value="otro">Otro</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label class="h6" for="email">Nueva direccion de correo</label>
-        <input type="email" class="form-control"  name="email" placeholder="Ingresa tu email">
-    </div>
-
-
-    <div class="form-group">
-        <label class="h6" for="pais">Pais</label>
-        <select class="form-control" name="pais">
-            <option >Pais</option>
-            <option value="prueba">Prueba</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label class="h6" for="region">Region</label>
-        <select class="form-control" name="region">
-            <option selected>Region</option>
-            <option value="prueba">Prueba</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label class="h6" for="region">Ciudad</label>
-        <select class="form-control" name="ciudad">
-            <option>Ciudad</option>
-            <option value="prueba">Prueba</option>
-        </select>
-    </div>
-
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>    
-    {% endif %}
-
-    <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
-</form>
-    
-
+        <div class="form-group">
+            <label class="h6" for="estatura">Estatura</label>
+            <input class="form-control" name="estatura" value="{{i.estatura}}" placeholder="Ingresa tu estatura">
+        </div>
+        
+        <div class="form-group">
+            <label class="h6" for="region">Ciudad</label>
+            <select class="form-control" name="ciudad">
+                <option selected>Ciudad</option>
+                <option value="prueba">Prueba</option>
+            </select>
+        </div>
+        <input  type="hidden" name="id_usuario" value="1">
+        <input  type="hidden" name="id_rango" value="1">
+        <input  type="hidden" name="puntaje_habilidades" value=2>
+        <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
+        {% endfor %}
+    </form>
 
 {% endblock %}
 <!--script

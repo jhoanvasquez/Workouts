@@ -8,7 +8,8 @@ from django.db.migrations.recorder import MigrationRecorder
 from django.core.cache import cache
 from django.contrib import messages
 from .forms import RegistroForm, SkillsForm
-from .models import UserModel
+from WorkoutsApp.models import Usuarios, Habilidades
+
 
 
 
@@ -28,6 +29,8 @@ def register(request):
         if formRegister.is_valid() :
             formRegister.save()
             return redirect('register2')
+        else:
+            print(formRegister.errors)
     return render(request, 'Users/register.html', context)
     
 #Registro de habilidades
@@ -36,32 +39,33 @@ def registerSkills(request):
     formSkills = SkillsForm(request.POST or None)
 
     context = {
-        'user_id':UserModel.objects.latest('id').id,
-        'list' : ["resistencia", "fuerza", "velocidad", "aceleración", "Agilidad", "flexibilidad", "coordinación", "precisión"]
+        'user_id':Usuarios.objects.latest('id').id,
+        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
     if request.POST:
         print(request.POST)
         if formSkills.is_valid():
             formSkills.save()
             return redirect('login')
+        else:
+            print(formSkills.errors)
     return render(request, 'Users/register2.html', context)
 
 
 def login(request):
+    
     if request.POST:
         user = request.POST.get('user')
         password = request.POST.get('password')
         
-        if UserModel.objects.filter(email=user, password=password).exists():
-            global currentUser
-            currentUser = user
-            cache.set("currentUser",user,30)
+        if Usuarios.objects.filter(correo=user, contra=password).exists():
+            cache.set("currentUser",user,None)
         
             return redirect('perfil')
     return render(request, 'Users/login.html')
 
 def logout(request):
-    currentUser = None
+    cache.clear()
     return redirect('login')
 
 
@@ -73,19 +77,36 @@ def perfil(request):
 
 #modificar usuario
 def update(request):
-
-    updateUser =  UserModel.objects.get(pk=1)
+    usuario = cache.get("currentUser")
+    updateUser =  Usuarios.objects.filter(correo=usuario)
+    
     
     if request.POST:
+        for data in updateUser:
+            obj, created = Usuarios.objects.update_or_create(
+            
+            nombre = data.nombre, 
+            apellidos= data.apellidos,
+            edad= data.edad, 
+            peso= data.peso, 
+            estatura= data.estatura,
+            correo= data.correo, 
+            contra= data.contra, 
+            ciudad= data.ciudad, 
         
-        formulario = RegistroForm(request.POST, instance=updateUser)
-        if formulario.is_valid:
-            formulario.save()
-    
+            defaults={
+            'nombre':updateUser.values('nombre'), 
+            'apellidos':updateUser.values('apellidos'),
+            'edad':request.POST.get('edad'),
+            'peso':request.POST.get('peso'),
+            'estatura':request.POST.get('estatura'),
+            'ciudad':request.POST.get('ciudad')},)
+
+        #redirect and try chatch
+       
     context = {
         "updateUser" : updateUser
     }
-    messages.success(request, 'Tu perfil ha sido actualizado.')
     return render(request, 'Users/editarPerfil.html', context)
 
 def cambiarContra(request):

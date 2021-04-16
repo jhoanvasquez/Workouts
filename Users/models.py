@@ -10,7 +10,7 @@ from django.dispatch import receiver
     descripcion = models.CharField(max_length = 20)
 """
 
-class UserModel (models.Model):
+"""class UserModel (models.Model):
     #user = models.OneToOneField(User, on_delete=models.CASCADE)
     nombre = models.CharField(max_length = 20)
     apellido = models.CharField(max_length=20)
@@ -48,4 +48,4 @@ class habilidadesUser (models.Model):
     viernes = models.BooleanField(default=False)
     sabado = models.BooleanField(default=False)
     domingo = models.BooleanField(default=False)
-
+"""

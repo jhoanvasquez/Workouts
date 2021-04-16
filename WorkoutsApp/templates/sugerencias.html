@@ -1,0 +1,63 @@
+{% extends "Users/base_login.html" %}
+{% load static %}
+{% block title %} Sugerencias {% endblock %}
+
+{% block content %}
+
+
+<h2 id="work">Sugerencias</h2>
+
+
+<a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
+<a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
+<a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a>
+
+
+<div>
+  <p>
+    <font size="5">
+      HOLA {{nombre}}
+      <br> 
+      tu apellido es {{apellido}}
+      <br>
+      tu codigo de usuario es : {{iduser}}
+    </font>
+  </p>
+  <p> 
+    <font size="5">
+      Estos son los entrenos adicionales recomendados para ti :
+
+    </font> </p>
+  
+</div>
+
+{% for ejercicio in ejercicios %}
+
+    <div class="card w-75">
+    <div class="card-body">
+      <h5 class="card-title">Entreno para mejorar la:  
+    
+        {{area}}
+      </h5>
+  
+      <p class="card-text">
+        <font size="5">
+          Duración del entrenamiento:
+  
+        </font>
+        <br>       {{ejercicio.duracion}}
+      </p>
+      <textarea class="form-control" rows="3" cols="4" disabled="True" style="resize:none;" >
+        {{ejercicio.explicacion}}
+    </textarea>
+      <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
+    </div>
+  </div>
+  
+  <br> <br>
+
+{% endfor %}
+{{userconect}}
+
+
+{% endblock %}

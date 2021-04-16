@@ -4,7 +4,13 @@ from .forms import DashboardForm
 from .models import Usuarios
 from .models import Planes
 from .models import Areas
-#from models import *  
+from .models import Ejercicios
+from .models import Rangos
+from .models import Sesiones
+from .models import Sesion_Ejercicio
+from .models import Habilidades
+
+from datetime import datetime
 
 
 def index(request):
@@ -17,21 +23,86 @@ def index(request):
 def register(request):
     return render(request, 'WorkoutsApp/register.html')
 
+def sesion(request):
+
+
     
-def dashboard(request):
+    formulario=DashboardForm()
     
 
-    formulario=DashboardForm()
+
+    return render(request, 'sesion.html')
+
+def sugerencias(request):
+    userconect = request.POST.get('user')
+
+#    authenticate(request, username=username, password=password)
+
+    print(userconect)
+    iduser=1
+       
     usuarios = Usuarios.objects.all()
-    areas = Areas.objects.all()
-    planentreno = Planes.objects.all()
+    planentreno = Planes.objects.get(id_plan=iduser)
+    idhabi = planentreno.id_rango_id
+    
+    idarea = planentreno.id_area_id
+    area = Areas.objects.get(id_area=idarea)
+    nombre_area = getattr(area, "descripcion")
+
+    #ejercicios filtrados por habilidad puede ser por varias mas adelante
+    #ejercicios = Ejercicios.objects.filter(id_habilidad=idhabi)
+    ejercicios = Ejercicios.objects.all()
+
     context = {
        "nombre": request.user,
         "apellido": "Abreu",
-        'form': formulario,
         "usuarios": usuarios,
-        "areas": areas,
-        "planentreno": planentreno
+        "iduser": iduser,
+        "area": nombre_area,
+        "ejercicios": ejercicios,
+
+        "userconect":userconect
+    }
+
+    return render(request, 'sugerencias.html', context)
+
+    
+def dashboard(request):
+
+    iduser=1
+    
+    hoy = datetime.today().isoweekday()
+    #diasrestantes=7-hoy
+    diasrestantes=4
+    totalentrenos=5
+    
+    usuarios = Usuarios.objects.all()
+    planentreno = Planes.objects.get(id_plan=iduser)
+    idhabi = planentreno.id_rango_id
+    
+    idarea = planentreno.id_area_id
+    area = Areas.objects.get(id_area=idarea)
+    nombre_area = getattr(area, "descripcion")
+
+    #ejercicios filtrados por habilidad, debe ser por sesion o como se escoja
+    ejercicios = Ejercicios.objects.filter(id_rango=idhabi) 
+
+    #ejercicios o sesiones
+    #si ya hizo todos los entrenos del plan no muestra nada
+    if planentreno.dias_entrenados >= totalentrenos:
+        ejercicios=ejercicios[:0]
+    #si aun no ha hecho todos mandar los dias faltantes de sesiones
+    if planentreno.dias_entrenados < totalentrenos:
+        ejercicios=ejercicios[:diasrestantes]
+    
+    context = {
+       "nombre": request.user,
+        "apellido": "Abreu",
+        "usuarios": usuarios,
+        "iduser": iduser,
+        "area": nombre_area,
+        "ejercicios": ejercicios,
+        "diasrestantes":diasrestantes
     }
 
     return render(request, 'dashboard.html', context )
@@ -66,9 +137,18 @@ def registerSkills(request):
 
 
 def login(request):
-    user = request.POST.get('user')
+    user = request.POST.get('user')   
     password = request.POST.get('password')
-    if UserModel.objects.filter(email=user).exists() and UserModel.objects.filter(password=password).exists():
+
+    cod=1
+    request.codigo = cod
+
+    print (request.codigo)
+    
+
+    if UserModel.objects.filter(email=user,password=password).exists() :
+        user= UserModel.objects.get(email=user,password=password)
+        login(request,user)
         return HttpResponse("<h2>¡Estas logeado!</h2>")
     #print(UserModel.objects.filter(genero="masculino"))
     return render(request, 'WorkoutsApp/login.html')

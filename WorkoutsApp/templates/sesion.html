@@ -1,0 +1,34 @@
+{% extends "Users/base_login.html" %}
+{% load static %}
+{% block title %} Sesion de hoy {% endblock %}
+
+{% block content %}
+
+<h2 id="work"> Sesion de hoy</h2>
+
+<a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
+<a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
+<a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a>
+
+
+ <!-- para obtener informacion get -->
+ <form action="/buscar/" method="GET">
+    {{form.as_p}}
+
+    <input type="text" name="campo1">
+    <input type="button" value="Buscar">
+</form>
+
+<a>Aqui arriba GET</a>
+<a>Aqui abajo Post</a>
+
+<!-- para enviar info -->
+<form action="/insertar/" method="post">
+    {{form.as_p}}
+
+    <input type="text" name="campo2">
+    <input type="button" value="Insertar">
+</form>
+
+
+{% endblock %}
