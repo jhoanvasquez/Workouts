@@ -1,57 +1,39 @@
 {% extends "Users/base_login.html" %}
 {% load static %}
-{% block title %} Registro 1/2 {% endblock %}
+{% block title %} Editar perfil {% endblock %}
 
 {% block content %}
 
-
-    <h2 >Registro de usuario 1/2</h2>
-    <h4 class="mb-3">Datos personales</h4>
+<h2 id="work">Editar perfil - datos personales</h2>
 
     <form method="POST">
         {% csrf_token %}
+        {% for i in updateUser %}
         <div class="form-group">
             <label class="h6" for="name">Nombre</label>
-            <input id="name" type="text" class="form-control" name="nombre"  placeholder="Ingresa tu nombre">
+            <input id="name" type="text" class="form-control" name="nombre" value="{{i.nombre}}" disabled>
         </div>
-
+        
         <div class="form-group">
             <label class="h6" for="lastname">Apellido</label>
-            <input type="text" class="form-control" name="apellidos"  placeholder="Ingresa tu apellido">
+            <input type="text" class="form-control" name="apellidos"  value="{{i.apellidos}}" disabled>
         </div>
 
         <div class="form-group">
             <label class="h6" for="edad">Edad</label>
-            <input type="number" class="form-control" name="edad"  placeholder="Ingresa tu edad">
+            <input type="number" class="form-control" name="edad"  value="{{i.edad}}" placeholder="Ingresa tu edad">
         </div>
 
         <div class="form-group">
             <label class="h6" for="peso">Peso</label>
-            <input  class="form-control" name="peso"  placeholder="Ingresa tu peso">
+            <input  class="form-control" name="peso"  value="{{i.peso}}" placeholder="Ingresa tu peso">
         </div>
 
         <div class="form-group">
             <label class="h6" for="estatura">Estatura</label>
-            <input class="form-control" name="estatura"  placeholder="Ingresa tu estatura">
+            <input class="form-control" name="estatura" value="{{i.estatura}}" placeholder="Ingresa tu estatura">
         </div>
-
-
-        <div class="form-group">
-          <label class="h6" for="correo">Direccion de correo</label>
-          <input type="email" class="form-control" name="correo" aria-describedby="emailHelp" placeholder="Ingresa tu email">
-        </div>
-
-        <div class="form-group">
-          <label class="h6" for="password">Contraseña</label>
-          <input type="password" class="form-control" name="contra" placeholder="Ingresa tu contraseña">
-        </div>
-
-        <div class="form-group">
-            <label class="h6" for="password1">Confirmar contraseña</label>
-            <input type="password" class="form-control" name="password1" placeholder="Ingresa tu contraseña">
-        </div>
-
-    
+        
         <div class="form-group">
             <label class="h6" for="region">Ciudad</label>
             <select class="form-control" name="ciudad">
@@ -63,7 +45,8 @@
         <input  type="hidden" name="id_rango" value="1">
         <input  type="hidden" name="puntaje_habilidades" value=2>
         <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
-      </form>
+        {% endfor %}
+    </form>
 
 {% endblock %}
 <!--script

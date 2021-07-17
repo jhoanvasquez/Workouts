@@ -1,15 +1,12 @@
-"""from django.forms import ModelForm
-#from .models import Prueba
-from django.contrib.auth.forms import UserCreationForm
-from .models import UserModel, habilidadesUser
+from django.forms import ModelForm
+from .models import Planes
 from django import forms
 
-class RegistroForm(ModelForm):
-    
-    
-    class Meta:
-        model = UserModel
-        fields = '__all__'
+from django.contrib.auth.forms import UserCreationForm
 
-class SkillsForm(ModelForm):
-    model = habilidadesUser"""
+
+class DashboardForm(ModelForm):
+    class Meta:
+        model = Planes
+        fields = ["id_plan","id_area"]
+

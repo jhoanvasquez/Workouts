@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+
+
+
 from pathlib import Path
 from django.urls import reverse_lazy
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,10 +44,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'WorkoutsApp',
+    'Users',
+    #'crispy_forms',
+    #'bootstrap4',
+    #'rest_framework',
+]
+
+CRISPY_TEMPLATE_PACK =[ 'bootstrap4',
     'Users',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -52,7 +71,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Users.urls'
+ROOT_URLCONF = 'Workouts.urls'
 
 TEMPLATES = [
     {
@@ -78,14 +97,29 @@ WSGI_APPLICATION = 'Workouts.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'workout',
-	'USER': 'root',
-        'PASSWORD': '',
+	    'USER': 'postgres',
+        'PASSWORD': '123456789',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'DATABASE_PORT': '5432',
+        #""" 'ENGINE': 'django.db.backends.postgresql_pyscopg2', """
+        #'ENGINE': 'django.contrib.gis.db.backends.postgresql ',
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'workout',
+	    #'USER': 'root',
+        #'USER': 'postgres',
+        #'PASSWORD': '',
+        #'PASSWORD': '123456789',
+        #'HOST': 'localhost',
+        #'HOST': '127.0.0.1',
+        #'PORT': '3306',
+        #'PORT': '5432',
     }
 }
+
+
 
 
 # Password validation

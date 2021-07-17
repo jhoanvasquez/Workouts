@@ -1,14 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {{user.username}} <br> <br>
-    Cerrar sesión: <a href="{% url 'logout' %}">logout</a>
-</body>
-</html>
+{% extends "Users/base.html" %}
+{% load static %}
+{% block title %} Perfil {% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div> Cerrar sesión: <a href="{% url 'logout' %}">logout</a></div>
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="float-right">
+                    <a id="link" href="{% url 'editarPerfil' %}">Editar perfil
+                    <i class="fas fa-chevron-right"></i>
+                    </a> 
+                </div>
+                <i class="far fa-user ml-3 float-left" style='font-size:36px'></i>
+                    <div class="float-left ml-3">usuario activo: {{user_active}}</div>
+            </div>
+            
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <a id="link" href="{% url 'rangos' %}"><div class="float-right">Ver progreso</div></a>
+                Nivel de progreso<br>Sub-master <i class="fas fa-futbol"></i>
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!--<a id="link" href="{% url 'cambiarContra' %}">
+            <div class="card mt-3">
+                <div class="card-body" >
+                        Cambiar contraseña
+                </div>
+            </div>
+        </a>-->
+</div>
+{% endblock %}
