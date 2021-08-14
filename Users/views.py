@@ -22,10 +22,10 @@ from WorkoutsApp.models import Usuarios, Habilidades
 def register(request): 
     
     formRegister = UserForm(request.POST or None)
-    formRegister2 = RegistroForm(request.POST or None)
+    #formRegister2 = RegistroForm(request.POST or None)
     context = {
         'form' : formRegister,
-        'form2' : formRegister2
+        #'form2' : formRegister2
     }
     
     if request.POST:
