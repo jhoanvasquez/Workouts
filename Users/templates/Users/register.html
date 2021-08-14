@@ -10,7 +10,9 @@
 
     <form method="POST">
         {% csrf_token %}
-        <div class="form-group">
+        {{ form.as_p }}
+        {{ form2.as_p }}
+        <!-- <div class="form-group">
             <label class="h6" for="name">Nombre</label>
             <input id="name" type="text" class="form-control" name="nombre"  placeholder="Ingresa tu nombre">
         </div>
@@ -61,7 +63,7 @@
         </div>
         <input  type="hidden" name="id_usuario" value="1">
         <input  type="hidden" name="id_rango" value="1">
-        <input  type="hidden" name="puntaje_habilidades" value=2>
+        <input  type="hidden" name="puntaje_habilidades" value=2> -->
         <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
       </form>
 

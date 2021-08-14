@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.db.migrations.recorder import MigrationRecorder
 from django.core.cache import cache
 from django.contrib import messages
-from .forms import RegistroForm, SkillsForm
+from .forms import RegistroForm, SkillsForm, UserForm
 from WorkoutsApp.models import Usuarios, Habilidades
 
 
@@ -21,16 +21,19 @@ from WorkoutsApp.models import Usuarios, Habilidades
 #Registro de usuario
 def register(request): 
     
-    formRegister = RegistroForm(request.POST or None)
+    formRegister = UserForm(request.POST or None)
+    formRegister2 = RegistroForm(request.POST or None)
     context = {
-        'form' : formRegister
+        'form' : formRegister,
+        'form2' : formRegister2
     }
+    
     if request.POST:
         if formRegister.is_valid() :
             formRegister.save()
-            return redirect('register2')
-        else:
-            print(formRegister.errors)
+    #         return redirect('register2')
+    #     else:
+    #         print(formRegister.errors)
     return render(request, 'Users/register.html', context)
     
 #Registro de habilidades
@@ -110,11 +113,11 @@ def update(request):
     return render(request, 'Users/editarPerfil.html', context)
 
 def cambiarContra(request):
-    if currentUser != None:
+    '''if currentUser != None:
         context = {
         "user_active" : currentUser
-        }
-        return render(request, 'Users/cambiarContra.html', context)
+        }'''
+    return render(request, 'Users/cambiarContra.html')
 
 #Ver progreso del usuario
 def ranges(request):

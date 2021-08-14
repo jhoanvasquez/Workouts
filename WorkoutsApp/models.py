@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -21,14 +22,15 @@ class Ejercicios(models.Model):
 
 
 class Usuarios (models.Model):
-    id_usuario=models.IntegerField()
-    nombre=models.CharField(max_length=30)
-    apellidos=models.CharField(max_length=50)
+    fk_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #id_usuario=models.IntegerField()
+    #nombre=models.CharField(max_length=30)
+    #apellidos=models.CharField(max_length=50)
     edad=models.IntegerField()
     peso=models.CharField(max_length=3)
     estatura=models.CharField(max_length=3)
-    correo=models.EmailField()
-    contra=models.CharField(max_length=15)
+    #correo=models.EmailField()
+    #contra=models.CharField(max_length=15)
     ciudad=models.CharField(max_length=50)
     puntaje_habilidades=models.IntegerField()
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
