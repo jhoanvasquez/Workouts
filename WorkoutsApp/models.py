@@ -3,16 +3,17 @@ from django.db import models
 
 
 class Rangos(models.Model):
-    id_rango=models.IntegerField()
+    id_rango=models.AutoField(primary_key=True)
     descripcion=models.CharField(max_length=150)
 
 class Areas(models.Model):
-    id_area=models.IntegerField()
+    
+    id_area=models.AutoField(primary_key=True)
     descripcion=models.CharField(max_length=150)
 
 
 class Ejercicios(models.Model):
-    id_ejercicios=models.IntegerField()
+    id_ejercicios=models.AutoField(primary_key=True)
     descripcion=models.CharField(max_length=150)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
     duracion=models.IntegerField()
@@ -22,7 +23,7 @@ class Ejercicios(models.Model):
 
 
 class Usuarios (models.Model):
-    fk_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     #id_usuario=models.IntegerField()
     #nombre=models.CharField(max_length=30)
     #apellidos=models.CharField(max_length=50)
@@ -45,7 +46,7 @@ class Usuarios (models.Model):
 
 
 class Planes(models.Model):
-    id_plan=models.IntegerField()
+    id_plan=models.AutoField(primary_key=True)
     id_area=models.ForeignKey(Areas, on_delete=models.CASCADE )
     id_usuario=models.ForeignKey(Usuarios, on_delete=models.CASCADE )
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
@@ -58,11 +59,12 @@ class Planes(models.Model):
     "entrenehoy=models.BooleanField() "
 
 class Sesiones(models.Model):
-    id_sesion=models.IntegerField()
+    id_sesion=models.AutoField(primary_key=True)
     id_plan=models.ForeignKey(Planes, on_delete=models.CASCADE )
     fecha=models.DateField()
 
 class Sesion_Ejercicio(models.Model):
+    id = models.AutoField(primary_key=True)
     id_sesion=models.ForeignKey(Sesiones, on_delete=models.CASCADE )
     id_ejercicios=models.ForeignKey(Ejercicios, on_delete=models.CASCADE )
     

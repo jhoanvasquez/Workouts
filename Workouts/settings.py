@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
     'WorkoutsApp',
     'Users',
     #'crispy_forms',
@@ -56,11 +56,11 @@ CRISPY_TEMPLATE_PACK =[ 'bootstrap4',
     'Users',
 ]
 
-REST_FRAMEWORK = {
+'''REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-}
+}'''
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,7 +99,7 @@ DATABASES = {
     'default': { 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'workout',
-	    'USER': 'postgres',
+	    'USER': 'jv0498',
         'PASSWORD': '#vasquez',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
