@@ -42,6 +42,8 @@ def register(request):
                 user_id = User.objects.last()
                 rango_id = Rangos.objects.last()
 
+                print(rango_id)
+                
                 usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
                 usuarios.save()
 
