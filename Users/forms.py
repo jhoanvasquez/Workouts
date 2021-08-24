@@ -11,16 +11,21 @@ class UserForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    
+    password = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'password'}))
+
     class Meta:
         model = User
         fields = ('username','first_name', 'last_name', 'email', 'password')
 
-class RegistroForm(ModelForm):
+class RegistroForm(forms.Form):
+    edad = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
+    peso = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
+    estatura = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
+    ciudad = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     
     class Meta:
         model = Usuarios
-        fields = '__all__'
+        fields = ('edad', 'peso', 'estatura', 'ciudad')
 
 class SkillsForm(ModelForm):
 

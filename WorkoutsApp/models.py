@@ -23,8 +23,9 @@ class Ejercicios(models.Model):
 
 
 class Usuarios (models.Model):
+    id_usuario=models.AutoField(primary_key=True)
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    #id_usuario=models.IntegerField()
+    
     #nombre=models.CharField(max_length=30)
     #apellidos=models.CharField(max_length=50)
     edad=models.IntegerField()
@@ -56,8 +57,6 @@ class Planes(models.Model):
     num_sesiones=models.IntegerField()
     ultima_semana=models.DateField()
 
-    "entrenehoy=models.BooleanField() "
-
 class Sesiones(models.Model):
     id_sesion=models.AutoField(primary_key=True)
     id_plan=models.ForeignKey(Planes, on_delete=models.CASCADE )
@@ -70,7 +69,7 @@ class Sesion_Ejercicio(models.Model):
     
 
 class Habilidades(models.Model):
-    id_habilidades=models.IntegerField()
+    id_habilidades=models.AutoField(primary_key=True)
     flexibilidad=models.IntegerField()
     fuerza=models.IntegerField()
     resistencia=models.IntegerField()

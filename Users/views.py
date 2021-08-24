@@ -8,7 +8,7 @@ from django.db.migrations.recorder import MigrationRecorder
 from django.core.cache import cache
 from django.contrib import messages
 from .forms import RegistroForm, SkillsForm, UserForm
-from WorkoutsApp.models import Usuarios, Habilidades
+from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 
 
 
@@ -22,15 +22,29 @@ from WorkoutsApp.models import Usuarios, Habilidades
 def register(request): 
     
     formRegister = UserForm(request.POST or None)
-    #formRegister2 = RegistroForm(request.POST or None)
+    formRegister2 = RegistroForm(request.POST or None)
+    # request.session['last_touch']
     context = {
         'form' : formRegister,
-        #'form2' : formRegister2
+        'form2' : formRegister2
     }
     
-    if request.POST:
+    if request.POST: 
         if formRegister.is_valid() :
             formRegister.save()
+
+            if formRegister2.is_valid() :
+                
+                edad = request.POST.get('edad')
+                peso = request.POST.get('peso')
+                estatura = request.POST.get('estatura')
+                
+                user_id = User.objects.last()
+                rango_id = Rangos.objects.last()
+
+                usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
+                usuarios.save()
+
     #         return redirect('register2')
     #     else:
     #         print(formRegister.errors)
