@@ -29,8 +29,8 @@ class Usuarios (models.Model):
     #nombre=models.CharField(max_length=30)
     #apellidos=models.CharField(max_length=50)
     edad=models.IntegerField()
-    peso=models.CharField(max_length=3)
-    estatura=models.CharField(max_length=3)
+    peso=models.CharField(max_length=4)
+    estatura=models.CharField(max_length=4)
     #correo=models.EmailField()
     #contra=models.CharField(max_length=15)
     ciudad=models.CharField(max_length=50)
@@ -78,6 +78,6 @@ class Habilidades(models.Model):
     agilidad=models.IntegerField()
     coordinacion=models.IntegerField()
     precision=models.IntegerField()
-    id_usuario=models.ForeignKey(Usuarios, on_delete=models.CASCADE )
+    fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
     

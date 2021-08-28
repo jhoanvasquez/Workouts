@@ -23,33 +23,26 @@ def register(request):
     
     formRegister = UserForm(request.POST or None)
     formRegister2 = RegistroForm(request.POST or None)
-    # request.session['last_touch']
     context = {
         'form' : formRegister,
         'form2' : formRegister2
     }
-    
     if request.POST: 
-        if formRegister.is_valid() :
+        if formRegister.is_valid() and formRegister2.is_valid():
             formRegister.save()
 
-            if formRegister2.is_valid() :
-                
-                edad = request.POST.get('edad')
-                peso = request.POST.get('peso')
-                estatura = request.POST.get('estatura')
-                
-                user_id = User.objects.last()
-                rango_id = Rangos.objects.last()
+            edad = request.POST.get('edad')
+            peso = request.POST.get('peso')
+            estatura = request.POST.get('estatura')
+            
+            user_id = User.objects.last()
+            rango_id = Rangos.objects.last()
+            
+            usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
+            usuarios.save()
 
-                print(rango_id)
-                
-                usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
-                usuarios.save()
-
-    #         return redirect('register2')
-    #     else:
-    #         print(formRegister.errors)
+            return redirect('register2')
+    
     return render(request, 'Users/register.html', context)
     
 #Registro de habilidades
@@ -58,13 +51,38 @@ def registerSkills(request):
     formSkills = SkillsForm(request.POST or None)
 
     context = {
-        'user_id':Usuarios.objects.latest('id').id,
+        'user_id': User.objects.last(),
         'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
     if request.POST:
-        print(request.POST)
+        resistencia = request.POST.get('resistencia')
+        fuerza = request.POST.get('fuerza')
+        velocidad = request.POST.get('velocidad')
+        aceleracion = request.POST.get('aceleracion')
+        agilidad = request.POST.get('agilidad')
+        flexibilidad = request.POST.get('flexibilidad')
+        coordinacion = request.POST.get('coordinacion')
+        precision = request.POST.get('precision')
+        print(resistencia)
         if formSkills.is_valid():
-            formSkills.save()
+
+            user_id = User.objects.last()
+            rango_id = Rangos.objects.last()
+            
+            habilidades = Habilidades(
+                resistencia=resistencia, 
+                fuerza=fuerza, 
+                velocidad=velocidad, 
+                aceleracion=aceleracion, 
+                agilidad=agilidad, 
+                flexibilidad=flexibilidad, 
+                coordinacion=coordinacion, 
+                precision=precision, 
+                fk_user=user_id, 
+                id_rango=rango_id
+                )
+
+            habilidades.save()
             return redirect('login')
         else:
             print(formSkills.errors)

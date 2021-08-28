@@ -19,8 +19,8 @@ class UserForm(forms.ModelForm):
 
 class RegistroForm(forms.Form):
     edad = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
-    peso = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
-    estatura = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control', 'type':'number'}))
+    peso = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'type':'number', 'step':'0.01'}))
+    estatura = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control', 'type':'number', 'step':'0.01'}))
     ciudad = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     
     class Meta:
@@ -31,4 +31,5 @@ class SkillsForm(ModelForm):
 
     class Meta:
         model = Habilidades
-        fields = '__all__'
+        fields = ("resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision")
+
