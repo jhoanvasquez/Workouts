@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class="container">
-    <div> Cerrar sesión: <a href="{% url 'logout' %}">logout</a></div>
+    <div> Cerrar sesión: <a href="/logout">logout</a></div>
         <div class="card mt-3">
             <div class="card-body">
                 <div class="float-right">
@@ -15,7 +15,7 @@
                     </a> 
                 </div>
                 <i class="far fa-user ml-3 float-left" style='font-size:36px'></i>
-                    <div class="float-left ml-3">usuario activo: {{user_active}}</div>
+                    <div class="float-left ml-3">usuario activo: {{user}}</div>
             </div>
             
         </div>

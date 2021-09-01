@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.db.migrations.recorder import MigrationRecorder
@@ -89,20 +90,23 @@ def registerSkills(request):
     return render(request, 'Users/register2.html', context)
 
 
-def login(request):
+def loginView(request):
     
     if request.POST:
-        user = request.POST.get('user')
-        password = request.POST.get('password')
-        
-        if Usuarios.objects.filter(correo=user, contra=password).exists():
-            cache.set("currentUser",user,None)
-        
-            return redirect('perfil')
-    return render(request, 'Users/login.html')
+        username = request.POST['user']
+        password = request.POST['password']
+        # return redirect('perfil')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(perfil)
+        else:
+            print('error')
+    return render(request, 'Users/login.html')  
 
-def logout(request):
-    cache.clear()
+def logoutView(request):
+    
+    logout(request)
     return redirect('login')
 
 

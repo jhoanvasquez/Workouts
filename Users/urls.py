@@ -1,4 +1,3 @@
-from django.contrib.auth.views import logout_then_login
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -9,8 +8,8 @@ from . import views
 urlpatterns = [
     path('register/', views.register, name="register"),
     path('registerskills/', views.registerSkills, name="register2"),
-    path('accounts/login/', views.login, name="login"),
-    path('logout/', views.logout, name="logout"),
+    path('login/', views.loginView, name="login"),
+    path('logout/', views.logoutView, name="logout"),
     path('perfil/', views.perfil, name="perfil"),
     path('update/', views.update, name="editarPerfil"),
     path('ranges/', views.ranges, name="rangos"),

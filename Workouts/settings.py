@@ -99,8 +99,8 @@ DATABASES = {
     'default': { 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'workout',
-	    'USER': 'postgres',
-        'PASSWORD': '123456789',
+	    'USER': 'jv0498',
+        'PASSWORD': '#vasquez',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
@@ -141,7 +141,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGOUT_REDIRECT_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = 'perfil'
+
+LOGOUT_REDIRECT_URL = reverse_lazy('perfil')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
