@@ -125,7 +125,7 @@ def update(request):
     formRegister = UserFormUpdate(request.POST or None)
     formRegister2 = RegistroForm(request.POST or None)
     context = {
-        'form' : formRegister,
+        'form' : formRegister, 
         'form2' : formRegister2
     }
     print(request.POST)
