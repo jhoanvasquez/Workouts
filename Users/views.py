@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
@@ -8,7 +9,7 @@ from rest_framework.authtoken.models import Token
 from django.db.migrations.recorder import MigrationRecorder
 from django.core.cache import cache
 from django.contrib import messages
-from .forms import RegistroForm, SkillsForm, UserForm
+from .forms import RegistroForm, SkillsForm, UserForm, UserFormUpdate, RegistroFormUpdate
 from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 
 
@@ -35,6 +36,7 @@ def register(request):
             edad = request.POST.get('edad')
             peso = request.POST.get('peso')
             estatura = request.POST.get('estatura')
+            ciudad = request.POST.get('ciudad')
             
             user_id = User.objects.last()
             rango_id = Rangos.objects.last()
@@ -95,7 +97,6 @@ def loginView(request):
     if request.POST:
         username = request.POST['user']
         password = request.POST['password']
-        # return redirect('perfil')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -111,43 +112,45 @@ def logoutView(request):
 
 
 #Ver perfil de usuario
+@login_required()
 def perfil(request):
-   
+
     return render(request, 'Users/perfil.html')
 
 
 #modificar usuario
+@login_required()
 def update(request):
-    usuario = cache.get("currentUser")
-    updateUser =  Usuarios.objects.filter(correo=usuario)
     
-    
-    if request.POST:
-        for data in updateUser:
-            obj, created = Usuarios.objects.update_or_create(
-            
-            nombre = data.nombre, 
-            apellidos= data.apellidos,
-            edad= data.edad, 
-            peso= data.peso, 
-            estatura= data.estatura,
-            correo= data.correo, 
-            contra= data.contra, 
-            ciudad= data.ciudad, 
-        
-            defaults={
-            'nombre':updateUser.values('nombre'), 
-            'apellidos':updateUser.values('apellidos'),
-            'edad':request.POST.get('edad'),
-            'peso':request.POST.get('peso'),
-            'estatura':request.POST.get('estatura'),
-            'ciudad':request.POST.get('ciudad')},)
-
-        #redirect and try chatch
-       
+    formRegister = UserFormUpdate(request.POST or None)
+    formRegister2 = RegistroForm(request.POST or None)
     context = {
-        "updateUser" : updateUser
+        'form' : formRegister, 
+        'form2' : formRegister2
     }
+    print(request.POST)
+    if request.POST:
+        form = UserFormUpdate(data=request.POST, instance=request.user)
+    
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+
+            edad = request.POST.get('edad')
+            peso = request.POST.get('peso')
+            estatura = request.POST.get('estatura')
+            ciudad = request.POST.get('ciudad')
+
+            usuarios, created = Usuarios.objects.update_or_create(
+                fk_user=request.user,
+                defaults={'edad': edad, 'peso': peso, 'estatura': estatura, 'ciudad':ciudad},
+            
+            )
+            
+            return redirect('perfil')
+        else:
+            print(form.errors) 
+        
     return render(request, 'Users/editarPerfil.html', context)
 
 def cambiarContra(request):

@@ -8,6 +8,13 @@
 
     <form method="POST">
         {% csrf_token %}
+        <div class="form-group">
+            <label class="h6" for="name">Nombre de usuario</label>
+            <input id="username" type="text" class="form-control" name="username" value="{{user}}" disabled>
+        </div>
+        {{ form.as_p }}
+        {{ form2.as_p }}
+        <button id="btn" type="submit" class="btn btn-secondary float-right mb-3 w-100">Guardar</button>
         {% for i in updateUser %}
         <div class="form-group">
             <label class="h6" for="name">Nombre</label>
