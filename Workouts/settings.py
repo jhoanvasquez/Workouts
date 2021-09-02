@@ -141,9 +141,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = 'perfil'
+LOGIN_REDIRECT_URL = reverse_lazy('perfil')
 
-LOGOUT_REDIRECT_URL = reverse_lazy('perfil')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+LOGIN_URL = reverse_lazy('login')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
