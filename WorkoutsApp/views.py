@@ -66,6 +66,44 @@ def sugerencias(request):
 
     return render(request, 'sugerencias.html', context)
 
+
+
+def planes(request):
+
+    #se obtiene toda la info de las tablas de la BD
+    
+    usuarios = Usuarios.objects.all()
+
+    #usuario= Usuarios.objects.get(id_usuario=iduser)
+    iduser=2
+    
+    
+    #planentreno = Planes.objects.get(id_plan=iduser)
+    planesentreno = Planes.objects.filter(id_usuario=iduser)
+
+    #idhabi = planentreno.id_rango_id
+    
+    #idareas = planesentreno.objects
+
+    #nombre_area = getattr(area, "descripcion")
+
+    #ejercicios filtrados por habilidad, debe ser por sesion o como se escoja
+    #ejercicios = Ejercicios.objects.filter(id_rango=idhabi) 
+
+
+
+    context = {
+       "nombre": request.user,
+        "apellido": "Abreu",
+        "usuarios": usuarios,
+        "iduser": iduser,
+        #"ejercicios": ejercicios,
+        "planes": planesentreno
+    }
+
+    return render(request, 'planes.html', context )
+
+
     
 def dashboard(request):
 
@@ -76,7 +114,9 @@ def dashboard(request):
     diasrestantes=4
     totalentrenos=5
     
+    #se obtiene toda la info de las tablas de la BD
     usuarios = Usuarios.objects.all()
+
     planentreno = Planes.objects.get(id_plan=iduser)
     idhabi = planentreno.id_rango_id
     
@@ -95,6 +135,8 @@ def dashboard(request):
     if planentreno.dias_entrenados < totalentrenos:
         ejercicios=ejercicios[:diasrestantes]
     
+
+
     context = {
        "nombre": request.user,
         "apellido": "Abreu",
