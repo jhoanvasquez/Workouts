@@ -55,7 +55,8 @@ def registerSkills(request):
 
     context = {
         'user_id': User.objects.last(),
-        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
+        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"],
+        'list2' : ["Resistencia", "Fuerza", "Velocidad", "Aceleración", "Agilidad", "Flexibilidad", "Coordinación", "precisión"]
     }
     if request.POST:
         resistencia = request.POST.get('resistencia')
@@ -100,9 +101,10 @@ def loginView(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect(perfil)
+            return redirect('perfil')
         else:
             print('error')
+    # print(request.user)
     return render(request, 'Users/login.html')  
 
 def logoutView(request):
