@@ -5,8 +5,9 @@
 {% block content %}
 
 
-    <h2 id="work">Registro de usuario 2/2</h2>
-    <h4 class="mb-3">Habilidades</h4>
+    <h4 id="work" class="font-weight-bold">Registro de usuario 2/2</h4>
+    <hr>
+    <h4 class="mb-3 font-weight-bold">Habilidades</h4>
     <label>Para las siguientes áreas especificas escoge una calificación de 1 a 5 de acuerdo a tus cualidades:</label>
     <form method="POST">
         {% csrf_token %}
@@ -38,7 +39,9 @@
         <input  type="hidden" name="id_habilidades" value="1">
         <input  type="hidden" name="id_usuario" value="1">
         <input  type="hidden" name="id_rango" value="1">
-        <button id="btn" type="submit" class="btn btn-secondary float-right mt-1 mb-3 w-100">Guardar</button>
+        <button type="submit" class="btn btn-primary btn-block">
+          <h5>Enviar</h5>
+      </button>
       </form>
     </div>
 

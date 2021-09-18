@@ -2,24 +2,27 @@
 {% load static %}
 {% block title %} Perfil {% endblock %}
 
-
 {% block content %}
+
+<div class="container-fluid">
+   
+    <!-- Approach -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+        </div>
+        <div class="card-body">
+            <div class="float-right">
+                <a id="link" href="{% url 'editarPerfil' %}">Editar perfil
+                <i class="fas fa-chevron-right"></i>
+                </a> 
+            </div>
+        <i class="far fa-user ml-3 float-left" style='font-size:36px'></i>
+        <div class="float-left ml-3">usuario activo: {{user}}</div></div>
+    </div>
 
 <div class="container">
     <div> Cerrar sesión: <a href="/logout">logout</a></div>
-        <div class="card mt-3">
-            <div class="card-body">
-                <div class="float-right">
-                    <a id="link" href="{% url 'editarPerfil' %}">Editar perfil
-                    <i class="fas fa-chevron-right"></i>
-                    </a> 
-                </div>
-                <i class="far fa-user ml-3 float-left" style='font-size:36px'></i>
-                    <div class="float-left ml-3">usuario activo: {{user}}</div>
-            </div>
-            
-        </div>
-        
         <div class="card mt-3">
             <div class="card-body">
                 <a id="link" href="{% url 'rangos' %}"><div class="float-right">Ver progreso</div></a>
