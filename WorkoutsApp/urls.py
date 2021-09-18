@@ -12,6 +12,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name="dashboard"),
     path('planes/', views.planes, name="planes"),
     path('sesion/', views.sesion, name="sesion"),
+    path('sesion2/', views.sesion2, name="sesion2"),
     path('sugerencias/', views.sugerencias, name="sugerencias"),
     path('', views.index, name="index"),
 ]

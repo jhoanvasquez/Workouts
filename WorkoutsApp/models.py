@@ -61,12 +61,13 @@ class Sesiones(models.Model):
     id_sesion=models.AutoField(primary_key=True)
     id_plan=models.ForeignKey(Planes, on_delete=models.CASCADE )
     fecha=models.DateField()
+    num_sesiones=models.IntegerField()
 
 class Sesion_Ejercicio(models.Model):
     id = models.AutoField(primary_key=True)
     id_sesion=models.ForeignKey(Sesiones, on_delete=models.CASCADE )
     id_ejercicios=models.ForeignKey(Ejercicios, on_delete=models.CASCADE )
-    
+
 
 class Habilidades(models.Model):
     id_habilidades=models.AutoField(primary_key=True)
@@ -80,4 +81,4 @@ class Habilidades(models.Model):
     precision=models.IntegerField()
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
-    
+

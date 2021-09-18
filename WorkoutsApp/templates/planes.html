@@ -7,6 +7,7 @@
 
 
 <h2 id="planes">Planes</h2>
+<h2>{{request.user}}</h2>
 
 <a href="/workoutsapp/planes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Planes </a>
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
@@ -15,85 +16,97 @@
 
 <div>
     <p>
-      <font size="8"> HOLA: </font>
-      <font size="5"> {{nombre}} </font>
+      <font size="4"> HOLA: </font>
+      <font size="6"> {{nombre}} </font>
       <br>
-      <font sise="10">
-        tu codigo de usuario es: {{iduser}}
-      </font>
+      <font size="4"> Tu codigo de usuario es CODIGO: </font>
+      <font size="6"> {{iduser}} </font>
     </p>
 
     <p> 
-      <font size="5">
-        Estos son los planes que tienes pendientes:
-      </font>
+      <center>
+        <font size="5">
+          Estos son los planes que tienes pendientes:
+        </font>
+      </center>
+      <br><br>
     </p>
 </div>
 
 
 
-<!-- div con entrenos -->
-<div id="planes"  style=" width: 99%;">
-  
 
+<!--Planes del usuario-->
+  <div id="planes"  style=" width: 99%;">
+
+
+    <!-- for por cada plan-->
     {% for plan in planes %}
-       
+
       {% if forloop.counter0 == 0 %}
       <div>
-          Codigo del plan:
-        <a id="plan0">
-            {{plan.id_plan}}
+        <font size="4"> Codigo del plan: </font>
+        <a id="plan0" value="{{plan.id_plan}}">
+            <font size="6"> {{plan.id_plan}}</font>
           </a>
       </div>
-      
+
       {% else %} 
       <div>
-        Codigo del plan:
-        <a id="plan{{forloop.counter0}}">
-            {{plan.id_plan}}
-          </a>
+        <font size="4"> Codigo del plan: </font>
+        <a id="plan{{forloop.counter0}}" value="{{plan.id_plan}}">
+          <font size="6"> {{plan.id_plan}}</font>
+        </a>
       </div>
-      
-    
+
+
       {% endif %}
-          
+
       <div class="card w-75">
         <div class="card-body">
-          <h5 class="card-title">Plan de:    
-            
-            {{plan.id_area.descripcion}}
-            
+
+          <h5 class="card-title">
+            <font size="4"> Plan de:    </font>
+            <font size="6"> {{plan.id_area.descripcion}} </font>
           </h5>
-      
-          <!-- for por cada una de las tablas-->
-      
+
           <p class="card-text">
-            <font size="5">
-              Duración del plan: {{plan.num_sesiones}}
-              Sesiones Realizadas: {{plan.dias_entrenados}}s
-            </font>              
+            <font size="4"> Duracion del plan:  </font>
+            <font size="6"> {{plan.num_sesiones}} </font>
+            <br>
+            <font size="4"> Sesiones Realizadas:  </font>
+            <font size="6"> {{plan.dias_entrenados}} </font>
           </p>
-          
+
           <!--<textarea class="form-control" rows="3" cols="4" disabled="True" style="resize:none;" ></textarea>-->
-          <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Continuar con el plan</a>
+          <!-- <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Continuar con el plan</a> -->
+          <!-- <a onclick="una();" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Continuar con el plan</a> -->
+
+
         </div>
       </div>
-      
-      <br> <br>
-    
-    
+
+      <br><br><br>
+
     {% endfor %}
-    
-    </div>
-    
-    
+
+  </div>
 
 
-
-
-
-
-
+  <!--Seleccionar Plan a continuar-->
+<form action="/workoutsapp/dashboard/" method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+    <label class="h6" for="codigoplan">SELECCIONA EL CODIGO DEL PLAN QUE QUIERAS CONTINUAR</label>
+    <select name="codigoplan" id="codigoplan">
+      {% for plan in planes %}
+        <option value="{{plan.id_plan}}">{{plan.id_plan}}</option>
+      {% endfor %}s
+    </select>
+  </div>
+  <br>
+  <button id="continuar" type="submit" class="btn btn-secondary w-100">Continuar con el plan</button>
+</form>
 
 
 {% endblock %}
@@ -102,5 +115,5 @@
 {% block js %}
 
 <script src="{% static 'WorkoutsApp/js/planes.js' %}"></script>
-<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>  
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 {% endblock %}

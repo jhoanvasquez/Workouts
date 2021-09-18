@@ -1,35 +1,117 @@
 {% extends "Users/base_login.html" %}
 {% load static %}
-{% block title %} Sesion de hoy {% endblock %}
+
+{% block title %} Sugerencias {% endblock %}
 
 {% block content %}
 
-<h2 id="work"> Sesion de hoy</h2>
+
+<h2 id="sesion">Sesion - Entreno</h2>
 
 <a href="/workoutsapp/planes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Planes </a>
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
 <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
 <a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a>
 
+<div>
+  <p>
+    <font size="4"> HOLA: </font>
+    <font size="6"> {{nombre}} </font>
+  </p>
 
- <!-- para obtener informacion get -->
- <form action="/buscar/" method="GET">
-    {{form.as_p}}
+  <p>
+    <font size="4"> Esta es tu sesion # </font>
 
-    <input type="text" name="campo1">
-    <input type="button" value="Buscar">
-</form>
+    <div id="idsesion">
+      <font size="6">        {{idsesion}}      </font>
+    </div>
+  </p>
 
-<a>Aqui arriba GET</a>
-<a>Aqui abajo Post</a>
+  <p> 
+    <font size="4">  De tu plan con codigo: </font>
+    <font size="6">        {{codigoplan}}      </font>
+  </p>
 
-<!-- para enviar info -->
-<form action="/insertar/" method="post">
-    {{form.as_p}}
+  <p>
+    <font size="4"> Para mejorar la:   </font>
+    <font size="6">       {{area}}      </font>
+  </p>
+</div>
 
-    <input type="text" name="campo2">
-    <input type="button" value="Insertar">
-</form>
+<a display="none" id="aejercicios" value="{{duraciones}}">
+{{ejercicios}}
+</a>
+<!--
+<a display="none" id="asesiones" name="asesiones" value="{{sesiones}}">
+{{sesiones}}
+</a> -->
 
+<center>
+  <div class="marco"S>
+    <div class="tiempo" id="tiempo">00:00:00.000</div>
+  </div>
+</center>
+
+{% for ejercicio in ejercicios %}
+
+<div id="ejercicio{{forloop.counter0}}" class="card w-75">
+
+  
+  <div class="card-body">
+
+    <div  id="infoEjercicio{{forloop.counter0}}"  class="card-header">
+
+      <h5 class="card-title">
+        <font size="4">  Nombre:  </font>
+        <font size="6"> {{ejercicio.descripcion}} </font>
+      </h5>
+  
+      <p class="card-text">
+        <font size="4">   Duracion del entrenamiento: </font>
+        <font size="6"> {{ejercicio.duracion}} </font>
+        <br>
+      </p>
+
+      <textarea class="form-control" rows="3" cols="4" disabled="True" style="resize:none;" >
+        {{ejercicio.explicacion}}
+      </textarea>
+    
+    </div>
+
+    
+    <div id="botones{{forloop.counter0}}" >
+      <center>
+        <button id="comienza{{forloop.counter0}}" class="btn btn-dark btn-block"> Comienza </button>
+        <div id="tiempos{{forloop.counter0}}">
+          <button id="play{{forloop.counter0}}" onclick="iniciar()" class="btn btn-primary btn-sm" > Play </button>
+          <button id="pause{{forloop.counter0}}" onclick="pausar()" class="btn btn-secondary btn-sm" > Pause </button>
+          <button id="reset{{forloop.counter0}}" onclick="reiniciar()" class="btn btn-danger btn-sm" > Reset </button>
+        </div>
+        <button id="fin{{forloop.counter0}}" class="btn btn-danger btn-block" > Fin </button>
+      </center>
+    </div>
+
+
+
+  </div>
+  
+</div>
+  
+  <br> <br>
+
+{% endfor %}
+
+
+
+{{userconect}}
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script src="{% static 'WorkoutsApp/js/sesion.js' %}"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>  
 
 {% endblock %}

@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<h2 id="work">Dashboard - Sesiones</h2>
+<h2 id="dashboard">Dashboard - Sesiones </h2>
 
 <a href="/workoutsapp/planes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Planes </a>
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
@@ -27,148 +27,109 @@
 
 
 
-
-
-<!--   barra superior
-  <div>
-  <nav class="navbar navbar-expand-sm bg-success navbar-dark">
-
-    <a >Sesiones </a>
-    <div style="position:absolute; top:0; right:0;">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
-          <ion-icon name="person"></ion-icon>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          <ion-icon name="ellipsis-vertical"></ion-icon>
-        </a>
-      </li>
-    </ul>
-</div> 
-
-  </nav>
-</div>-->
-
 <div>
     <p>
-      <font size="8"> HOLA: </font>
-      <font size="5"> {{nombre}} </font>
-      <font sise="10">
-        <br> 
-        tu apellido es:  {{apellido}}
-        <br>
-        tu codigo de usuario es: {{iduser}}
-      </font>
+      <font size="4"> HOLA: </font>
+      <font size="6"> {{nombre}} </font>
     </p>
 
-    <p> 
-      <font size="5">
-        Estos son los entrenos para esta semana:
-      </font>
+    <p>
+      <font size="4"> Estos son los entrenos de tu plan con codigo: </font>
+
+      <div id="idplan">
+        <font size="6">        {{codigoplan}}      </font>
+      </div>
+
     </p>
+
+    <p>
+      <font size="4"> Para mejorar la:   </font>
+      <font size="6">        {{area}}      </font>
+    </p>
+    <br><br>
 </div>
 
+<a display="none" id="aduracion" name="duracion" value="{{duraciones}}">
+  {{duraciones}}
+</a>
+<a display="none" id="asesiones" name="asesiones" value="{{sesiones}}">
+  {{sesiones}}
+</a>
 
-<div  style=" width: 90%;" >
- 
-  <br>
 
-  <a> 
+<!-- sesiones del usuario -->
+<div id="sesiones"  style=" width: 99%;">
 
-  </a>
+  <!-- for por cada sesion-->
+  {% for sesion in sesiones %}
 
-</div>
 
-  
-
-<!-- div con entrenos -->
-<div id="entrenos"  style=" width: 99%;">
-  
-
-{% for ejercicio in ejercicios %}
-
-  <script language="javascript">
-    var duracionacum = 0;
-  </script>
-
-  {% if forloop.counter0 == 0 %}
-  <a id="fecha0">
-    <ion-icon name="calendar"></ion-icon>
-  </a>
-  
-  {% else %} 
-  <!-- <input id="a" type="hidden" value="{{ejercicios}}" /> -->
-  
-  <a id="fecha{{forloop.counter0}}">
-    <ion-icon name="calendar"></ion-icon>
-  </a>
-
-  {% endif %}
-
-  
-  <div class="card w-75">
-    <div class="card-body">
-      <h5 class="card-title">Entreno para mejorar la:  
-        {{area}}
-      </h5>
-  
-      <!-- for por cada una de las tablas-->
-  
-      <p class="card-text">
-        <font size="5">
-          Duración del entrenamiento:
-        </font>
-        <br>
-        <center><font size="10">
-          <a id="duracion">
-            {{ejercicio.duracion}}  
-          </a>
-          
-           
-          </font></center>
-          
-      </p>
-      
-      <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
+    {% if forloop.counter0 == 0 %}
+    <a id="fecha0">
+      <ion-icon name="calendar"></ion-icon>
+    </a>
+    <div>
+      <font size="4"> Codigo de la sesion: </font>
+      <a id="sesion0"  value="{{sesion.id_sesion}}">
+      <font size="6"> {{sesion.id_sesion}}</font>
+      </a>
     </div>
-  </div>
-  
-  <br> <br>
+
+    {% else %}
 
 
-{% endfor %}
+    <a id="fecha{{forloop.counter0}}">
+      <ion-icon name="calendar"></ion-icon>
+    </a>
+    <div>
+      <font size="4"> Codigo de la sesion: </font>
+      <a id="sesion{{forloop.counter0}}"  value="{{sesion.id_sesion}}">
+          <font size="6"> {{sesion.id_sesion}}</font>
+        </a>
+    </div>
+
+    {% endif %}
+
+    <div class="card w-75">
+      <div class="card-body">
+        <p class="card-text">
+          <font size="5">Duracion de la sesion:</font>
+          <br>
+          <center>
+            <font size="10"><a id="duracion{{forloop.counter0}}"></a></font>
+          </center>
+        </p>
+      </div>
+    </div>
+    <br>
+
+    {% if forloop.counter0 == 0%}
+    <form action="/workoutsapp/sesion/" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+
+        <label class="h6" >Continua con tu sesion: </label>
+        <select name="idsesion" id="idsesion">
+          <option id="idsesion1" value="{{codigosesion}}">{{codigosesion}}</option>
+        </select>
+
+        <br>
+        <label class="h6" >Del plan: {{codigoplan}} </label>
+        <br>
+      </div>
+      <br>
+      <button id="iniciar" type="submit" class="btn btn-secondary w-100">Empezar con la sesion numero {{codigosesion}} </button>
+    </form>
+    {% endif%}
+
+    <br> <br>
+
+
+  {% endfor %}
 
 </div>
 
 
-
-
-   
-
-<!-- barra inferior 
-<div class="position:absolute; fixed-bottom " >
-<nav class="navbar navbar-expand-sm bg-success navbar-dark">
-  
-  <ul class="navbar-nav">
-    <li class="nav-item active">
-      <a class="nav-link" href="#">
-        <ion-icon name="barbell"></ion-icon>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <ion-icon name="barbell"></ion-icon>
-      </a>
-    </li>
-  </ul>
-
-</nav>
-</div> 
-
---> 
 
 {% endblock %}
 
@@ -176,7 +137,7 @@
 {% block js %}
 
 <script src="{% static 'WorkoutsApp/js/dashboard.js' %}"></script>
-<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>  
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 {% endblock %}
 
 
