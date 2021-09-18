@@ -21,6 +21,12 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 # Create your views here.
 
 #Registro de usuario
+def index(request): 
+    
+    return render(request, 'Users/index.html')
+
+
+#Registro de usuario
 def register(request): 
     
     formRegister = UserForm(request.POST or None)
@@ -86,25 +92,28 @@ def registerSkills(request):
                 id_rango=rango_id
                 )
 
-            habilidades.save()
-            return redirect('login')
+            #habilidades.save()
+            #return redirect('login')
         else:
             print(formSkills.errors)
     return render(request, 'Users/register2.html', context)
 
 
 def loginView(request):
-    
+
+    if(request.user.is_authenticated):
+        return render(request, 'Users/index.html')
+
     if request.POST:
         username = request.POST['user']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('perfil')
+            return redirect('/index')
         else:
             print('error')
-    # print(request.user)
+
     return render(request, 'Users/login.html')  
 
 def logoutView(request):
@@ -116,7 +125,6 @@ def logoutView(request):
 #Ver perfil de usuario
 @login_required()
 def perfil(request):
-
     return render(request, 'Users/perfil.html')
 
 
@@ -166,3 +174,7 @@ def cambiarContra(request):
 def ranges(request):
     
     return render(request, 'Users/rangos.html')
+
+
+def calculoRango(skills):
+    pass
