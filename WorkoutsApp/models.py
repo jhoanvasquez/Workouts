@@ -17,6 +17,8 @@ class Ejercicios(models.Model):
     descripcion=models.CharField(max_length=150)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
     duracion=models.IntegerField()
+    repeticiones=models.IntegerField()
+    calificacion=models.IntegerField()
     explicacion=models.CharField(max_length=150)
     id_area=models.ForeignKey(Areas, on_delete=models.CASCADE)
     link_entreno=models.CharField(max_length=150)
@@ -25,14 +27,9 @@ class Ejercicios(models.Model):
 class Usuarios (models.Model):
     id_usuario=models.AutoField(primary_key=True)
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
-    
-    #nombre=models.CharField(max_length=30)
-    #apellidos=models.CharField(max_length=50)
     edad=models.IntegerField()
     peso=models.CharField(max_length=4)
     estatura=models.CharField(max_length=4)
-    #correo=models.EmailField()
-    #contra=models.CharField(max_length=15)
     ciudad=models.CharField(max_length=50)
     puntaje_habilidades=models.IntegerField()
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
@@ -43,7 +40,6 @@ class Usuarios (models.Model):
             field_values.append(str(getattr(self, field.name, '')))
         return ' '.join(field_values)
 
-    #idhabilidad=models.ForeignKey(Rangos, blank=True, null=True)
 
 
 class Planes(models.Model):
