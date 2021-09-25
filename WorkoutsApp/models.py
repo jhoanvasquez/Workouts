@@ -17,6 +17,8 @@ class Ejercicios(models.Model):
     descripcion=models.CharField(max_length=150)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
     duracion=models.IntegerField()
+    repeticiones=models.IntegerField()
+    calificacion=models.IntegerField()
     explicacion=models.CharField(max_length=150)
     id_area=models.ForeignKey(Areas, on_delete=models.CASCADE)
     link_entreno=models.CharField(max_length=150)
