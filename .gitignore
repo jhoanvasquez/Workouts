@@ -1,7 +1,7 @@
-Workouts/settings.py
+/Workouts/settings.py
 settings.py
 __pycache__/
 migrations/
-Users/__pycache__/*
+/Users/__pycache__/*
 Workouts/__pycache__/*
 WorkoutsApp/__pycache__/*

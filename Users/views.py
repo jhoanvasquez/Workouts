@@ -5,15 +5,12 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
 from django.db.migrations.recorder import MigrationRecorder
 from django.core.cache import cache
 from django.contrib import messages
 from .forms import RegistroForm, SkillsForm, UserForm, UserFormUpdate, RegistroFormUpdate
+from WorkoutsApp.recomendador import *
 from WorkoutsApp.models import Usuarios, Habilidades, Rangos
-
-
-
 
 #from WorkoutsApp.models import Prueba
 
@@ -22,7 +19,8 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 
 #Registro de usuario
 def index(request): 
-    
+    clase = recomendador()
+    print(clase)
     return render(request, 'Users/index.html')
 
 
@@ -47,7 +45,7 @@ def register(request):
             user_id = User.objects.last()
             rango_id = Rangos.objects.last()
             
-            usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
+            usuarios = Usuarios(edad=edad, peso=peso, estatura=estatura, ciudad = ciudad, fk_user=user_id, puntaje_habilidades=0, id_rango=rango_id)
             usuarios.save()
 
             return redirect('register2')
@@ -73,7 +71,7 @@ def registerSkills(request):
         flexibilidad = request.POST.get('flexibilidad')
         coordinacion = request.POST.get('coordinacion')
         precision = request.POST.get('precision')
-        print(resistencia)
+
         if formSkills.is_valid():
 
             user_id = User.objects.last()
@@ -92,8 +90,15 @@ def registerSkills(request):
                 id_rango=rango_id
                 )
 
-            #habilidades.save()
-            #return redirect('login')
+            
+            rango = calculoRango([resistencia, fuerza, velocidad, aceleracion, agilidad, flexibilidad, coordinacion, precision])
+            rango_instance = Rangos.objects.filter(id_rango = rango[0])
+            usuario, created = Usuarios.objects.update_or_create(
+                fk_user=user_id,
+                defaults={'puntaje_habilidades': rango[1], 'id_rango': Rangos.objects.get(id_rango = rango[0])},
+            )
+            habilidades.save()
+            return redirect('login')
         else:
             print(formSkills.errors)
     return render(request, 'Users/register2.html', context)
@@ -177,4 +182,20 @@ def ranges(request):
 
 
 def calculoRango(skills):
-    pass
+
+    numero_rangos = len(Rangos.objects.all())
+    rango_id = 0
+    acumulador = 0
+    for skill in skills:
+        acumulador += int(skill)
+    
+    acumulador = (acumulador / 8)
+
+    if(acumulador < 5/numero_rangos):
+        rango_id = 1
+    if(acumulador > (5/numero_rangos) and acumulador < (5/numero_rangos)*2):
+        rango_id = 2
+    if(acumulador > (5/numero_rangos)*2):
+        rango_id = 3
+    
+    return (rango_id, acumulador)
