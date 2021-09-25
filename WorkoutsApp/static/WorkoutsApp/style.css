@@ -8,19 +8,18 @@
    
 }
 
-#btn{
-  color: rgb(255, 255, 255);
-  background-color: rgba(126, 126, 126, 0.87);
-  border-color: rgba(126, 126, 126, 0.87);
-  border-right-color: rgba(126, 126, 126, 0.87);
-  border-bottom-color: rgba(126, 126, 126, 0.87);
+.container{
+  background-color: white;
 }
 
-
-
 #body {
-  background-color:  rgba(1, 124, 1, 0.733);
+  /*background-color:  rgb(158, 7, 7);*/
+  height: 100vh;
   font-family:"Gagalin";
+  background: linear-gradient(to top, rgb(238, 238, 238) 80%, rgba(1, 124, 1, 0.733) 20%);
   
 }
 
+
+#link { color: #000000; } /* CSS link color */
+#link:hover { color: #5c5b5b; } 

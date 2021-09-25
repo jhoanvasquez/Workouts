@@ -1,40 +1,131 @@
 //alert("todo se ejecuta mi papusito")
-window.onload = function() {
-  //hola();
+
+
+//globals
+var local = localStorage;
+var id_plan="";
+var id_sesion="";
+var estadoPlan = false;
+var estadoSesion = false;
+
+
+window.onload = function()
+{
+
   validarFechas();
-  //document.getElementById('card0').innerHTML += "28-08-2021"
+  duraciones();
+  mostrar();
+
 };
 
-function hola()
+
+//valida si hay una sesion corriendo para cargar redirigir a la sesion en curso
+function valida_sesion_iniciada()
 {
-  //alert("todas las sesiones aqui social12")
-  console.log('hola')
-  //array.forEach(element => {   });
+
+  //validar si esta en alguna sesion
+  id_plan = buscarlocal('id_plan');
+  id_sesion = buscarlocal('id_sesion');
+
+
+  if(id_plan === null && id_sesion === null)
+  {
+    console.log("no existe ninguno en local");
+    estadoPlan = false;
+    estadoSesion = false;
+
+  }else if(id_plan =! null && id_sesion === null)
+  {
+    console.log("solo existe el plan, mas no la sesion");
+    console.log(id_plan);
+    estadoPlan = true;
+    estadoSesion = false;
+
+  }else
+  {
+    console.log("existen las dos en el local");
+    console.log(id_plan);
+    console.log(id_sesion);
+    estadoPlan = true;
+    estadoSesion = true;
+  }
+}
+
+function mostrar()
+{
+  valida_sesion_iniciada();
+
+  if(estadoPlan != false && estadoSesion != false)
+  {
+    console.log("plan y sesion estan iniciado, cargar sesion del plan actual");
+    id_plan = buscarlocal('id_plan');
+    id_sesion = buscarlocal('id_sesion');
+  }else if(estadoPlan =! false && estadoSesion === false)
+  {
+    console.log("plan iniciado, pero sesion no esta seleccionada, cargar sesiones ");
+    id_plan = buscarlocal('id_plan');
+  }
+  else
+  {
+    console.log("ningun plan seleccionado, seleccione un plan, cargar planes");
+  }
+}
+
+//almacena datos en localstorage para no perder al recargar pagina
+function almacenarlocal(clave, valor)
+{
+  local.setItem(clave, valor);
+  console.log("guardo");
+
+  //borrar
+  //localStorage.removeItem('nombre');
+  //limpiar
+  //localStorage.clear();
 
 }
+
+function buscarlocal(clave)
+{
+  var info = local.getItem(clave);
+  return info;
+}
+
 
 function validarFechas()
 {
 
-  for (let step = 0; step < 5; step++) 
+  var sesiones = document.getElementById('asesiones').innerText;
+  if( sesiones != null)
   {
-    if(step==0)
-    {
-      var fecha = new Date();
-      document.getElementById('fecha0').innerHTML += Fecha(fecha);
-    }
-    else
-    {
-      var numerofecha="fecha"
-      numerofecha+=step;
-      var fecha2 = new Date();
-      var fecha3 = sumarDias(fecha2, step);
+    // console.log("si existe")
+    // console.log(sesiones)
 
-      document.getElementById(numerofecha).innerHTML += Fecha(fecha3)
+
+    array_sesiones = sesiones.split(',')
+
+
+    for (let step = 0; step < array_sesiones.length; step++)
+    {
+      if(step==0)
+      {
+        var fecha = new Date();
+        document.getElementById('fecha0').innerHTML += Fecha(fecha);
+      }
+      else
+      {
+        var numerofecha="fecha"
+        numerofecha+=step;
+        var fecha2 = new Date();
+        var fecha3 = sumarDias(fecha2, step);
+
+        document.getElementById(numerofecha).innerHTML += Fecha(fecha3)
+      }
+
     }
-    
+
+    document.getElementById("asesiones").style.display = "none";
   }
-  
+
 
 }
 
@@ -72,19 +163,13 @@ function todo()
 
 
 
- /* Función que suma o resta días a una fecha, si el parámetro
+/* Función que suma o resta días a una fecha, si el parámetro
     días es negativo restará los días*/
 function sumarDias(fecha, dias)
   {
     fecha.setDate(fecha.getDate() + dias);
     return fecha;
   }
-/* document.write(d.getDate()); */
-/* document.write(d.getMonth()); */
-/* document.write(d.getDay()); */
-/* document.write(d.getYear()+1900); */
-
-
 
 function Fecha(fecha)
 {
@@ -111,3 +196,111 @@ return fechafinal;
 
 //ejercutar funcion al cargar pagiina
 //document.addEventListener('DOMContentLoaded',hola, false);
+
+
+function duraciones()
+{
+  console.log("duraciones");
+  var valores = document.getElementById('aduracion').innerText;
+  if( valores != null)
+  {
+    // console.log("si existe")
+    // console.log(valores)
+
+
+    array_valores = valores.split(',');
+
+    for (var i=0; i<array_valores.length; i++)
+    {
+      var durac = "duracion"
+      if(i == 0)
+      {
+        durac+=i;
+        document.getElementById(durac).innerHTML = array_valores[i].substr(1);
+        //console.log(array_valores[i].substr(1));
+      }
+      else if(i == (array_valores.length - 1))
+      {
+        durac+=i;
+        document.getElementById(durac).innerHTML = array_valores[i].slice(0,-1);
+        //console.log(array_valores[i].slice(0,-1));
+      }
+      else
+      {
+        durac+=i;
+        document.getElementById(durac).innerHTML = array_valores[i];
+        //console.log(array_valores[i]);
+      }
+    }
+
+    document.getElementById("aduracion").style.display = "none";
+
+
+  }else
+  {
+    console.log("no existe")
+  }
+
+}
+
+
+
+
+//saber que evento sucede y capturarlo
+function conocerEvento(e) {
+
+	var evento = e || window.event;
+
+		//document.getElementById("evento").value = e.type;
+
+    // console.log("evento");
+    // console.log(e);
+
+    if(evento.type == "click")
+    {
+      console.log("nombre del click");
+      console.log(evento.path[0].id);
+
+      var nombreclick=evento.path[0].id;
+
+
+      //iniciar
+      if(nombreclick.substr(0,7) == "iniciar")
+      {
+        //alert("click");
+        //var id=nombreclick.substr(7);
+        //console.log("comienza valor");
+        //console.log(nombreclick.substr(8));
+        //alert("empezo entreno");
+
+        id_sesion = document.getElementById("idsesion").innerText;
+        //console.log(id_sesion);
+        almacenarlocal('id_plan', id_plan);
+        almacenarlocal('id_sesion', id_sesion);
+
+      }
+
+
+
+
+    }
+
+
+    // switch(evento.type) {
+    //   case 'mouseover':
+    //     this.style.borderColor = 'black';
+    //     break;
+    //   case 'mouseout':
+    //     this.style.borderColor = 'silver';
+    //     break;
+    // }
+
+}
+
+
+document.onclick = conocerEvento;
+document.onmousedown = conocerEvento;
+document.onmouseup = conocerEvento;
+document.ondblclick = conocerEvento;
+document.onkeydown = conocerEvento;
+document.onmouseover = conocerEvento;
