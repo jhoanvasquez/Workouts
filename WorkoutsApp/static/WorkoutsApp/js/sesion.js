@@ -378,7 +378,8 @@ function fin(id)
       pausar();
       //console.log(formatearMS(acumulado));
       totalDuracionEntreno+=acumulado;
-      //console.log(formatearMS(totalDuracionEntreno));
+      console.log(formatearMS(totalDuracionEntreno));
+      document.getElementById("tiempoacumulado").innerHTML = formatearMS(totalDuracionEntreno);
 
       reiniciar();
       

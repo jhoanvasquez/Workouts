@@ -75,38 +75,20 @@ def planes(request):
 
     #se obtiene toda la info de las tablas de la BD
 
-    usuarios = Usuarios.objects.all()
-
-    #usuario= Usuarios.objects.get(id_usuario=iduser)
-
-    #!falta capturar el id del usuario con el name de usuario, este es de prueba
-    iduser=1
-
-    #iduser2=request.POST.get('id_usuario')
-    #idusuario= Usuarios.objects.get(id_usuario=iduser)
-
-    #planentreno = Planes.objects.get(id_plan=iduser)
+    nameusuario = request.user
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
+    codusuario = usuario.id_usuario
 
 
+    planesentreno = Planes.objects.filter(id_usuario=codusuario)
 
-    planesentreno = Planes.objects.filter(id_usuario=iduser)
-
-
-    #idhabi = planentreno.id_rango_id
-
-    #idareas = planesentreno.objects
-
-    #nombre_area = getattr(area, "descripcion")
-
-    #ejercicios filtrados por habilidad, debe ser por sesion o como se escoja
-    #ejercicios = Ejercicios.objects.filter(id_rango=idhabi)
-
+#! falta filtrar planes que tengan numeros de sesiones acabadas para no mostrar
 
     context = {
-       "nombre": request.user,
+        "nombre": request.user,
         "apellido": "Abreu",
-        "usuarios": usuarios,
-        "iduser": iduser,
+        #"usuarios": usuarios,
+        "iduser": codusuario,
         "planes": planesentreno
     }
 
@@ -118,13 +100,11 @@ def dashboard(request):
 
     if request.POST:
 
-        iduser=1
-
-        #if request.POST:
-        #   print(request.POST['codigoplan'])
+        nameusuario = request.user
+        usuario = Usuarios.objects.get(fk_user=nameusuario)
+        codusuario = usuario.id_usuario
 
         codigo_plan=request.POST['codigoplan']
-
 
         planentreno = Planes.objects.get(id_plan=codigo_plan)
         idhabi = planentreno.id_rango_id
@@ -133,43 +113,55 @@ def dashboard(request):
         area = Areas.objects.get(id_area=idarea)
         nombre_area = getattr(area, "descripcion")
 
+        #sirve para validar desde que sesion se muestra
         diasEntrenados=getattr(planentreno, "dias_entrenados")
-        #!con base en este se muestra la siguiente sesion
+        
+        #!con base en este se muestra la siguiente sesion, validar
+        #! validar que se sion va y mostrar desde esa, con numero de entrenos hechos
+        #! si va5 se muestra desde 6
 
-        sesiones = Sesiones.objects.filter(id_plan=codigo_plan)
-        #print(Sesiones.objects.order_by('num_sesion'))
-        #sesionesasc = sesiones.order_by('num_sesion')
-        #sesionesdesc = sesiones.order_by('-num_sesion')
-        #print(sesionesasc)
-        #print(sesionesdesc)
-
+        sesiones = Sesiones.objects.filter(id_plan=codigo_plan).order_by('num_sesiones')
+        sesiones2=sesiones[diasEntrenados:]
         #print(sesiones)
+
+
         #captura los ids de las sesiones del plan seleccionado
         ids_sesiones = []
 
+        sesionmostrar = 0
         for i in sesiones.values():
+            ids_sesiones.append(i['id_sesion'])
+
+            # if(sesionmostrar >= diasEntrenados):
+            #     {
+            #         ids_sesiones.append(i['id_sesion'])
+            #     }
+            # sesionmostrar += 1
+
             #print(i)
             #print(sesiones['id_sesion'])
             #print(i['id_sesion'])
-            ids_sesiones.append(i['id_sesion'])
+            
             # for m in i.values():
             #     print(i['id_sesion'])
-        #print(ids_sesiones)
+        # print(ids_sesiones)
+        
+        ids_sesiones=ids_sesiones[diasEntrenados:]
+        print(ids_sesiones)
 
 
 
-        #! falta capturar codigo de la sesion que va a realizar, o sea la primera
-        codigo_sesion=1
+        #sesion a mostar entrenos +1
+        
+        codigo_sesion=ids_sesiones[0]
 
         ejercicios = Ejercicios.objects.all()
-
         sesiones_ejercicio= Sesion_Ejercicio.objects.all()
 
         duracion_sesiones = []
         #calcular duracion total de las sesiones
         for n in ids_sesiones:
             sesion_ejer = Sesion_Ejercicio.objects.filter(id_sesion=n)
-
 
             if(sesion_ejer.exists()):
                 #print(sesion_ejer)
@@ -182,7 +174,6 @@ def dashboard(request):
                     #print(info_ejercicio.duracion)
                     dura+=info_ejercicio.duracion
 
-
                 duracion_sesiones.append(dura)
 
             else:
@@ -190,50 +181,28 @@ def dashboard(request):
                 dura=0
                 duracion_sesiones.append(dura)
 
-        print(duracion_sesiones)
+        #print(duracion_sesiones)
 
 
 
-        #obtener info sesion ejercicios
-        #ejercicios filtrados por habilidad, debe ser por sesion o como se escoja
-        #ejercicios = Ejercicios.objects.filter(id_rango=idhabi)
-
-
-
-
-        #dias que entreno, para ver cuantas sesiones mostrar
-
-        hoy = datetime.today().isoweekday()
-        #diasrestantes=7-hoy
-        diasrestantes=4
-        totalentrenos=5
-
-
-        #se obtiene toda la info de las tablas de la BD
-        #usuarios = Usuarios.objects.all()
-
-
-
-        #ejercicios o sesiones
-        #si ya hizo todos los entrenos del plan no muestra nada
-        if planentreno.dias_entrenados >= totalentrenos:
-            ejercicios=ejercicios[:0]
-        #si aun no ha hecho todos mandar los dias faltantes de sesiones
-        if planentreno.dias_entrenados < totalentrenos:
-            ejercicios=ejercicios[:diasrestantes]
+        # #ejercicios o sesiones
+        # #si ya hizo todos los entrenos del plan no muestra nada
+        # if planentreno.dias_entrenados >= totalentrenos:
+        #     ejercicios=ejercicios[:0]
+        # #si aun no ha hecho todos mandar los dias faltantes de sesiones
+        # if planentreno.dias_entrenados < totalentrenos:
+        #     ejercicios=ejercicios[:diasrestantes]
 
 
 
         context = {
         "nombre": request.user,
-            "apellido": "Abreu",
-            #"usuarios": usuarios,
-            "iduser": iduser,
+            "iduser": codusuario,
             "area": nombre_area,
             "ejercicios": ejercicios,
-            "diasrestantes":diasrestantes,
+            "sesioneshechas":diasEntrenados,
             "codigoplan":codigo_plan,
-            "sesiones": sesiones,
+            "sesiones": sesiones2,
             "idssesiones": ids_sesiones,
             "duraciones": duracion_sesiones,
             "codigosesion": codigo_sesion
@@ -247,83 +216,86 @@ def dashboard(request):
 
 def sesion(request):
 
-    #print(request)
-
-    #!falta capturar el id de usuario, para obtener el codigo de sesion y codigo del plan
-    iduser=1
-    codigo_plan=1
-    codigo_sesion=1
-    nombre_area="area aqui"
+    if request.POST:
+        codigo_plan=request.POST['idplan']
+        codigo_sesion=request.POST['idsesion']
 
 
-    # if request.POST:
+        #print(request)
 
-    #     #print(request.POST['codigoplan'])
-    #     print(request.POST['idsesion'])
+        #!falta capturar el id de usuario, para obtener el codigo de sesion y codigo del plan
+        nameusuario = request.user
+        usuario = Usuarios.objects.get(fk_user=nameusuario)
+        codusuario = usuario.id_usuario
 
 
-    #codigoplan=request.POST['codigoplan']
-    idsesion=request.POST['idsesion']
+        planentreno = Planes.objects.get(id_plan=codigo_plan)
 
+        idarea = planentreno.id_area_id
+        area = Areas.objects.get(id_area=idarea)
+        nombre_area = getattr(area, "descripcion")
+        
+        #captura los ids de los ejercicios de la sesion y el plan seleccionado
+        
+        sesion_ejer = Sesion_Ejercicio.objects.filter(id_sesion=codigo_sesion)
+        ids_ejercicios = []
+        ejerci_sesion=[]
+
+        #captura de ejercicios de la sesion
+        ejercicios = Ejercicios.objects.all()
+
+        #calcular duracion de cada ejercicio de la sesion
+        duracion_ejercicio = []
+        
     
-    #captura los ids de los ejercicios de la sesion y el plan seleccionado
-    
-    sesion_ejer = Sesion_Ejercicio.objects.filter(id_sesion=codigo_sesion)
-    ids_ejercicios = []
-    ejerci_sesion=[]
-
-    #captura de ejercicios de la sesion 
-    ejercicios = Ejercicios.objects.all()
-
-    #calcular duracion de cada ejercicio de la sesion
-    duracion_ejercicio = []
-    
-   
-    if(sesion_ejer.exists()):
-        #print(sesion_ejer)
-        dura=0
-        for e in sesion_ejer.values():
-            #print("id_ejercicio:  ")
-            #print(e['id_ejercicios_id'])
-            codigo_ejericio=e['id_ejercicios_id']
-            ids_ejercicios.append(e['id_ejercicios_id'])
+        if(sesion_ejer.exists()):
+            #print(sesion_ejer)
+            dura=0
+            for e in sesion_ejer.values():
+                #print("id_ejercicio:  ")
+                #print(e['id_ejercicios_id'])
+                codigo_ejericio=e['id_ejercicios_id']
+                ids_ejercicios.append(e['id_ejercicios_id'])
 
 
-            info_ejercicio = Ejercicios.objects.get(id_ejercicios=codigo_ejericio)
-            #print(info_ejercicio.duracion)
-            ejerci_sesion.append(info_ejercicio)
-            dura=info_ejercicio.duracion
+                info_ejercicio = Ejercicios.objects.get(id_ejercicios=codigo_ejericio)
+                #print(info_ejercicio.duracion)
+                ejerci_sesion.append(info_ejercicio)
+                dura=info_ejercicio.duracion
+                duracion_ejercicio.append(dura)
+
+
+        else:
+            #print("vacio")
+            dura=0
             duracion_ejercicio.append(dura)
+        
+        #print(duracion_ejercicio)
+        #print(ids_ejercicios)
+        #print(ejerci_sesion)
 
 
+        context = {
+        "nombre": request.user,
+            "apellido": "Abreu",
+            #"usuarios": usuarios,
+            "iduser": codusuario,
+            "area": nombre_area,
+            "ejercicios": ejerci_sesion,
+            "ids_ejercicios":ids_ejercicios,
+            "codigoplan":codigo_plan,
+            #"sesiones": sesiones,
+            "idsesion": codigo_sesion,
+            "duracion": duracion_ejercicio,
+            "codigosesion": codigo_sesion
+        }
+    
+        #formulario=DashboardForm()
+        
+        return render(request, 'sesion.html', context)
+    
     else:
-        #print("vacio")
-        dura=0
-        duracion_ejercicio.append(dura)
-    
-    #print(duracion_ejercicio)
-    #print(ids_ejercicios)
-    #print(ejerci_sesion)
-
-
-    context = {
-       "nombre": request.user,
-        "apellido": "Abreu",
-        #"usuarios": usuarios,
-        "iduser": iduser,
-        "area": nombre_area,
-        "ejercicios": ejerci_sesion,
-        "ids_ejercicios":ids_ejercicios,
-        "codigoplan":codigo_plan,
-        #"sesiones": sesiones,
-        "idsesion": idsesion,
-        "duracion": duracion_ejercicio,
-        "codigosesion": codigo_sesion
-    }
- 
-    #formulario=DashboardForm()
-    
-    return render(request, 'sesion.html', context)
+        return render(request, 'planes.html')
 
 
 

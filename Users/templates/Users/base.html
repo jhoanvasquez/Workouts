@@ -55,7 +55,33 @@
                 Interface
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+            <!-- Nav Item - Entrenos Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEntrenos"
+                    aria-expanded="true" aria-controls="collapseEntrenos">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Entrenos</span>
+                </a>
+                <div id="collapseEntrenos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Area de entrenamientos</h6>
+                        <a class="collapse-item" href="/workoutsapp/planes/">Planes</a>
+                        <a class="collapse-item" href="/workoutsapp/dashboard/">Dashboard</a>
+                        <a class="collapse-item" href="/workoutsapp/sesion/">Iniciar Entreno</a>
+                        <a class="collapse-item" href="/workoutsapp/sugerencias/">Sugerencias</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+            <!-- Nav Item - Components Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -384,6 +410,11 @@
         </div>
     </div>
 
+
+
+    {% block js %}
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'Users/vendor/jquery/jquery.min.js' %} "></script>
     <script src="{% static 'Users/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
@@ -401,6 +432,8 @@
     <script src="{% static 'Users/js/demo/chart-area-demo.js' %} "></script>
     <script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
 
+
+    {% endblock %}
 </body>
 
 </html>

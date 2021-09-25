@@ -1,4 +1,4 @@
-{% extends "Users/base_login.html" %}
+{% extends "Users/base.html" %}
 {% load static %}
 
 {% block title %} Sugerencias {% endblock %}
@@ -47,10 +47,18 @@
 </a> -->
 
 <center>
-  <div class="marco"S>
-    <div class="tiempo" id="tiempo">00:00:00.000</div>
+  <div>
+    <p>TOTAL DURACION DEL ENTRENO</p>
+    <div id="tiempoacumulado">00:00:00.000</div>
   </div>
 </center>
+<center>
+  <div >
+    <p>TIEMPO EJERCICIO</p>
+    <div id="tiempo">00:00:00.000</div>
+  </div>
+</center>
+
 
 {% for ejercicio in ejercicios %}
 

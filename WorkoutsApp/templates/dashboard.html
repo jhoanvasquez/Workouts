@@ -1,4 +1,4 @@
-{% extends "Users/base_login.html" %}
+{% extends "Users/base.html" %}
 {% load static %}
 {% block title %} Sesiones {% endblock %}
 
@@ -45,6 +45,11 @@
     <p>
       <font size="4"> Para mejorar la:   </font>
       <font size="6">        {{area}}      </font>
+    </p>
+    
+    <p>
+      <font size="4"> Has hecho :   </font>
+      <font size="6">        {{sesioneshechas}}      </font>
     </p>
     <br><br>
 </div>
@@ -114,7 +119,10 @@
         </select>
 
         <br>
-        <label class="h6" >Del plan: {{codigoplan}} </label>
+        <label class="h6" >Del plan: </label>
+        <select name="idplan" id="idplan">
+          <option id="idplan" value="{{codigoplan}}">{{codigoplan}}</option>
+        </select>
         <br>
       </div>
       <br>
