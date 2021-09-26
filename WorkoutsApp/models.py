@@ -5,11 +5,21 @@ from django.db import models
 class Rangos(models.Model):
     id_rango=models.AutoField(primary_key=True)
     descripcion=models.CharField(max_length=150)
-
+    def __str__(self):
+        field_values = []
+        for field in self._meta.get_fields():
+            field_values.append(str(getattr(self, field.name, '')))
+        return ' '.join(field_values)
+        
 class Areas(models.Model):
     
     id_area=models.AutoField(primary_key=True)
     descripcion=models.CharField(max_length=150)
+    def __str__(self):
+        field_values = []
+        for field in self._meta.get_fields():
+            field_values.append(str(getattr(self, field.name, '')))
+        return ' '.join(field_values)
 
 
 class Ejercicios(models.Model):
@@ -52,6 +62,9 @@ class Planes(models.Model):
     dias_esta_semana=models.IntegerField()
     num_sesiones=models.IntegerField()
     ultima_semana=models.DateField()
+
+
+
 
 class Sesiones(models.Model):
     id_sesion=models.AutoField(primary_key=True)

@@ -32,7 +32,7 @@ def recomendador():
 
 
 def get_recommendations (EjerciciosDF, title, level, area_a, cosine_sim, indices):
-    
+
     "obtener indice del ejercicio seleccionado, ej 0,1,2,3.."
     idx = indices[title]
     #print("tipo de cosa para volver lista enumerada" + str(type(cosine_sim[idx])))
@@ -65,9 +65,9 @@ def get_recommendations (EjerciciosDF, title, level, area_a, cosine_sim, indices
             movie_indices2.append(movie_indices[d])
     
     #print(movie_indices2)
-    movie_indices2 = movie_indices2[1:3]
+    movie_indices2 = movie_indices2[1:4]
             
-    return EjerciciosDF['descripcion'].iloc[movie_indices2]
+    return EjerciciosDF['id_ejercicios'].iloc[movie_indices2]
 
 
 
@@ -88,17 +88,17 @@ def alg_Cal(val_alg, EjerciciosDF):
     return val_alg_cal
 
 #Variables de prueba
-EjerciciosDF, cosine_sim, indices = recomendador()
+# EjerciciosDF, cosine_sim, indices = recomendador()
 # print(EjerciciosDF['id_rango_id'])
-ind=1
-titulo = str(EjerciciosDF.iloc[ind]['descripcion'])
-nivel = EjerciciosDF.iloc[ind]['id_rango_id']
-a_area = EjerciciosDF.iloc[ind]['id_area_id']
+# ind=1
+# titulo = str(EjerciciosDF.iloc[ind]['descripcion'])
+# nivel = EjerciciosDF.iloc[ind]['id_rango_id']
+# a_area = EjerciciosDF.iloc[ind]['id_area_id']
 
-#titulo2 = str(Entrenos.iloc[1]['area']['intensidad'])
-print("seleccionaste: "+ titulo+ " y tu recomendaciones son: ")
-print("nivel: "+ str(nivel)+ " area: "+ str(a_area))
-print(get_recommendations(EjerciciosDF, titulo, nivel, a_area, cosine_sim, indices))
+# titulo2 = str(Entrenos.iloc[1]['area']['intensidad'])
+# print("seleccionaste: "+ titulo+ " y tu recomendaciones son: ")
+# print("nivel: "+ str(nivel)+ " area: "+ str(a_area))
+# print(get_recommendations(EjerciciosDF, titulo, nivel, a_area, cosine_sim, indices))
 
 
 

@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth.models import User
+from random import randrange
 from .forms import DashboardForm
 from .models import Usuarios
 from .models import Planes
@@ -9,7 +11,7 @@ from .models import Rangos
 from .models import Sesiones
 from .models import Sesion_Ejercicio
 from .models import Habilidades
-
+from WorkoutsApp.recomendador import *
 from datetime import datetime
 
 
@@ -299,50 +301,59 @@ def sesion(request):
 
 
 
-
-def register(request): 
-    #preguntar si es post
-    #Instanciar el form
-    #form.save()
-
-    #print(request.POST)
-    last_migration = MigrationRecorder.Migration.objects.latest('id')
-    print(last_migration.app)     
-    print(last_migration.name) 
-
-    formRegister = RegistroForm(request.POST or None)
+def sesion0(request):
+    nameusuario = request.user
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
+    ejercicios = seleccionarEjercicios(Ejercicios.objects.all().filter(id_rango = usuario.id_rango).values())
+    #obtener el id del plan y num_sesion
+    id_plan = 1
+    num_sesiones = 1
     context = {
-        'form' : formRegister
+        'ejercicios': ejercicios
     }
-    if request.POST:
-        if formRegister.is_valid:
-            formRegister.save()
-            return redirect('register2')
-    return render(request, 'WorkoutsApp/register.html', context)
-    
+    if request.POST and request.POST.get('radio') != None:
+        ejercicioInicio = Ejercicios.objects.get(id_ejercicios = request.POST.get('radio'))
+        descripcionEjercicio = ejercicioInicio.descripcion
+        areaEjercicio = ejercicioInicio.id_area
+        recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango).tolist()
+        #se debe obtener plan
+        plan = Planes.objects.get(id_plan = id_plan)
+        sesion = Sesiones.objects.get(id_plan=plan, num_sesiones=num_sesiones)
+        crearSesion(plan)
+        crearSesionesEjercicios(recomendaciones, sesion)
+        print(recomendaciones)
+    return render(request, 'sesion0.html', context)
 
-def registerSkills(request):
-    context = {
-        'list' : ["resistencia", "fuerza", "velocidad", "aceleración", "Agilidad", "flexibilidad", "coordinación", "precisión"]
-    }
-    print(request.POST)
-    return render(request, 'WorkoutsApp/register2.html', context)
+
+def recomendadorEjercicios(descripcion, area, id_rango):
+
+    EjerciciosDF, cosine_sim, indices = recomendador()
+    # print(EjerciciosDF['id_rango_id'])
+    ind=2
+    #titulo2 = str(Entrenos.iloc[1]['area']['intensidad'])
+    print("seleccionaste: "+ descripcion+ " y tu recomendaciones son: ")
+    print("nivel: "+ str(id_rango)+ " area: "+ str(area))
+    conjuntoEjercicios = get_recommendations(EjerciciosDF, descripcion, id_rango, area, cosine_sim, indices)
+    return conjuntoEjercicios
 
 
-def login(request):
-    user = request.POST.get('user')   
-    password = request.POST.get('password')
+def crearSesion(id_plan):
+    sesion = Sesiones(id_plan=id_plan, fecha=datetime.today(), num_sesiones=1)
+    sesion.save()
 
-    cod=1
-    request.codigo = cod
+def crearSesionesEjercicios(ejercicios, sesion):
+    for ejercicio in ejercicios:
+        ejercicioInstancia = Ejercicios.objects.get(id_ejercicios = ejercicio) 
+        sesionEjercicio = Sesion_Ejercicio(id_sesion=sesion, id_ejercicios=ejercicioInstancia)
+        sesionEjercicio.save()
 
-    print (request.codigo)
-    
-
-    if UserModel.objects.filter(email=user,password=password).exists() :
-        user= UserModel.objects.get(email=user,password=password)
-        login(request,user)
-        return HttpResponse("<h2>¡Estas logeado!</h2>")
-    #print(UserModel.objects.filter(genero="masculino"))
-    return render(request, 'WorkoutsApp/login.html')
-
+def seleccionarEjercicios(array):
+    ejercicios = []
+    while(len(ejercicios) <= 2):
+        posicion = randrange(array.count())
+        try:
+            if ejercicios.index(array[posicion]):
+                pass
+        except ValueError:
+            ejercicios.append(array[posicion])
+    return ejercicios

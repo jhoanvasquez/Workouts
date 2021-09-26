@@ -9,6 +9,7 @@ urlpatterns = [
 
     #path('admin/', admin.site.urls), 
     path('register/', views.register, name="register"),
+    path('sesion0/', views.sesion0, name="sesion0"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('planes/', views.planes, name="planes"),
     path('sesion/', views.sesion, name="sesion"),
