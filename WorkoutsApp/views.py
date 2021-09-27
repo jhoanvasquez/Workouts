@@ -72,6 +72,8 @@ def sugerencias(request):
 
 
 def planes(request):
+    print("request planes")
+    print(request)
 
     #se obtiene toda la info de las tablas de la BD
 
@@ -82,6 +84,31 @@ def planes(request):
 
     planesentreno = Planes.objects.filter(id_usuario=codusuario)
 
+    planesentreno2=[]
+    #ids_planes=[]
+    #validar si algun plan tiene todas las sesiones hechas y quitarlo
+    if(planesentreno.exists()):
+            for e in planesentreno.values():
+                #print("id_ejercicio:  ")
+                #print(e['id_ejercicios_id'])
+                totalsesiones=e['num_sesiones']
+                sesioneshechas=e['dias_entrenados']
+
+                if(sesioneshechas >= totalsesiones):
+                    print("ya acabo el plan")
+                else:
+                    print("aun le fatla acabar el plan")
+                    idplan=e['id_plan']
+                    info_plan = Planes.objects.get(id_plan=idplan)
+                    planesentreno2.append(info_plan)
+
+    else:
+
+        print("no hay planes del usuario")
+        return render(request, 'index.html' )
+
+
+
 #! falta filtrar planes que tengan numeros de sesiones acabadas para no mostrar
 
     context = {
@@ -89,7 +116,7 @@ def planes(request):
         "apellido": "Abreu",
         #"usuarios": usuarios,
         "iduser": codusuario,
-        "planes": planesentreno
+        "planes": planesentreno2
     }
 
     return render(request, 'planes.html', context )
@@ -211,7 +238,7 @@ def dashboard(request):
         return render(request, 'dashboard.html', context )
 
     else:
-        return render(request, 'planes.html')
+        return redirect('/index')
 
 
 def sesion(request):
@@ -295,7 +322,7 @@ def sesion(request):
         return render(request, 'sesion.html', context)
     
     else:
-        return render(request, 'planes.html')
+        return redirect('/index')
 
 
 
