@@ -20,6 +20,7 @@
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
 <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
 <a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a>
+<a href="/workoutsapp/crearplanes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Crear Planes </a>
 
 <div>
     <p>
@@ -87,7 +88,7 @@
 
 
   <!--Seleccionar Plan a continuar-->
-<form action="/workoutsapp/dashboard/" method="POST">
+<form action="/workoutsapp/validaplanes/" method="POST">
   {% csrf_token %}
   <div class="form-group">
     <label class="h6" for="codigoplan">SELECCIONA EL CODIGO DEL PLAN QUE QUIERAS CONTINUAR</label>
@@ -100,7 +101,6 @@
   <br>
   <button id="continuar" type="submit" class="btn btn-secondary w-100">Continuar con el plan</button>
 </form>
-
 
 {% endblock %}
 
@@ -125,5 +125,9 @@
 <script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
 <script src="{% static 'WorkoutsApp/js/planes.js' %}"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
 
 {% endblock %}

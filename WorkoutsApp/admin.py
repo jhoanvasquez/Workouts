@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Planes
 from .models import Usuarios
-from .models import Areas, Rangos, Habilidades, Ejercicios, Sesiones, Sesion_Ejercicio
+from .models import Areas, Rangos, Habilidades, Ejercicios, Sesion_Ejercicio, Sesiones
 
 # Register your models here.
 class AreaAdmin(admin.ModelAdmin):
@@ -17,10 +17,10 @@ class UsuariosAdmin(admin.ModelAdmin):
     list_display = ('id_usuario', 'fk_user', 'edad', 'peso', 'estatura', 'ciudad', 'puntaje_habilidades', 'id_rango')
 
 class RangosAdmin(admin.ModelAdmin):
-    list_display = ('id_habilidades','flexibilidad','fuerza','resistencia','velocidad','aceleracion','agilidad','coordinacion','precision','fk_user','id_rango')
+    list_display = ('id_rango','descripcion')
 
 class HabilidadesAdmin(admin.ModelAdmin):
-    list_display = ('descripcion', 'duracion', 'explicacion', 'id_area')
+    list_display = ('id_habilidades','flexibilidad','fuerza','resistencia','velocidad','aceleracion','agilidad','coordinacion','precision','fk_user','id_rango')
 
 class SesionesAdmin(admin.ModelAdmin):
     list_display = ('id_sesion','id_plan','fecha','num_sesiones')
@@ -32,8 +32,8 @@ class Sesion_EjercicioAdmin(admin.ModelAdmin):
 admin.site.register(Planes, PlanesAdmin)
 admin.site.register(Usuarios, UsuariosAdmin)
 admin.site.register(Areas, AreaAdmin)
-#admin.site.register(Rangos, RangosAdmin)
-#admin.site.register(Habilidades, HabilidadesAdmin)
+admin.site.register(Rangos, RangosAdmin)
+admin.site.register(Habilidades, HabilidadesAdmin)
 admin.site.register(Ejercicios, EjerciciosAdmin)
 admin.site.register(Sesion_Ejercicio, Sesion_EjercicioAdmin)
 admin.site.register(Sesiones, SesionesAdmin)

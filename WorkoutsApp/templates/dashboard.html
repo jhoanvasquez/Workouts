@@ -85,23 +85,8 @@
       </a>
       <!-- Card Content - Collapse -->
       <div class="collapse show" id="collapseCardExample{{forloop.counter0}}">
-        {% if forloop.counter0 == 0 %}
-
-          {% with "card mb-4 py-3 border-bottom-primary" as color %}
-          {% endwith %}
-          el color asignado es
-          {{color}}
-
-        {% else %}
-
-          {% with "card mb-4 py-3 border-bottom-primary" as color %}
-          {% endwith %}
-
-        {% endif %}
-        
-
-
-        <div >
+    
+        <div class="card mb-4 py-3 border-bottom-success">
           <div class="card-body">
             <p class="card-text">
               <font size="5">Duracion de la sesion:</font>
