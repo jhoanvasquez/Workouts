@@ -4,11 +4,6 @@ Django==3.2.6
 djangorestframework==3.12.4
 djangorestframework-jsonapi==4.2.1
 djangorestframework-simplejwt==4.8.0
-
-
-
-ubuntu-drivers-common==0.0.0
-
 Unidecode==1.1.1
 
 virtualenv==20.0.17
