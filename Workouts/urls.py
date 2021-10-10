@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Users.urls')),
     path('workoutsapp/', include('WorkoutsApp.urls'))
-]+static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
+]
  
