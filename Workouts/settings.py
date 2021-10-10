@@ -29,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '(5ddty8==evtg$6q3(dv@#a8%ns+@odm=u7in2*(ws*10sr4_v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['http://pure-brook-77256.herokuapp.com/', 'localhost:8000', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
