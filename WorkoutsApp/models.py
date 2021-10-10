@@ -91,3 +91,4 @@ class Habilidades(models.Model):
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
 
+    

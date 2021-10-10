@@ -2,12 +2,82 @@
 {% load static %}
 {% block title %} Dashboard {% endblock %}
 
-{% block h1 %} Dashboard{% endblock %}
+{% block h1 %} Index{% endblock %}
 {% block active %} active{% endblock %}
-{% block content %}
 
 
-<div class="container">
-    Index
+{% block content %} 
+<!-- Basic Card Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Hola {{user.first_name}}, este es tu progreso</h6>
+    </div>
+    <div class="card-body">
+        <b>Nivel:</b> {{rango.id_rango}}
+        <div class="progress">
+            <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{puntaje}}%</div>
+        </div>
+    </div>
 </div>
+
+
+<!-- Basic Card Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tus habilidades son:</h6>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Flexibilidad
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{skills.flexibilidad}}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Fuerza
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.fuerza }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Resistencia
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.resistencia }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Velocidad
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.velocidad }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Agilidad
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.agilidad }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Aceleracion
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.aceleracion }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Coordinacion
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.coordinacion }}%</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <b>Habilidad:</b> Precision
+        <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ skills.Precision }}%</div>
+        </div>
+    </div>
+    
+</div>
+
+
 {% endblock %}
+
+

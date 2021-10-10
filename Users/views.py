@@ -18,10 +18,19 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 # Create your views here.
 
 #Registro de usuario
+@login_required()
 def index(request): 
-    clase = recomendador()
-    print(clase)
-    return render(request, 'Users/index.html')
+    usuario = Usuarios.objects.get(fk_user = request.user)
+    skills = Habilidades.objects.get(fk_user = request.user)
+    print(skills)
+    puntaje = int(usuario.puntaje_habilidades) * 20
+    context = {
+        'rango' : usuario,
+        'skills': skills,
+        'puntaje':puntaje,
+        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
+    }
+    return render(request, 'Users/index.html', context)
 
 
 #Registro de usuario
