@@ -359,7 +359,11 @@ function fin(id)
           borrarlocal("id_plan");
           borrarlocal("id_sesion");
           //window.stop();
-          window.location.href = "/workoutsapp/planes/";
+          console.log("codplan")
+          
+          var codplan = document.getElementById('pcodigoplan').innerText;
+          console.log(codplan)
+          window.location.href = "/workoutsapp/aumentasesion/"+codplan;
 
       }else
       {

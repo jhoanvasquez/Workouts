@@ -68,45 +68,39 @@
   <!-- for por cada sesion-->
   {% for sesion in sesiones %}
 
+    <!-- Collapsable Card Example -->
+    <div class="card shadow mb-4">
+      <!-- Card Header - Accordion -->
+      <a id="plan{{forloop.counter0}}" href="#collapseCardExample{{forloop.counter0}}" class="d-block card-header py-3" data-toggle="collapse"
+          role="button" aria-expanded="true" aria-controls="collapseCardExample{{forloop.counter0}}">
+          <h6 class="m-0 font-weight-bold text-primary">
 
-    {% if forloop.counter0 == 0 %}
-    <a id="fecha0">
-      <ion-icon name="calendar"></ion-icon>
-    </a>
-    <div>
-      <font size="4"> Codigo de la sesion: </font>
-      <a id="sesion0"  value="{{sesion.id_sesion}}">
-      <font size="6"> {{sesion.id_sesion}}</font>
+            <p id="fecha{{forloop.counter0}}">
+              <ion-icon name="calendar"></ion-icon>
+            </p>
+            <font size="4"> Codigo de la sesion: </font>
+            <font size="6"> {{sesion.id_sesion}}</font>
+
+          </h6>
       </a>
-    </div>
-
-    {% else %}
-
-
-    <a id="fecha{{forloop.counter0}}">
-      <ion-icon name="calendar"></ion-icon>
-    </a>
-    <div>
-      <font size="4"> Codigo de la sesion: </font>
-      <a id="sesion{{forloop.counter0}}"  value="{{sesion.id_sesion}}">
-          <font size="6"> {{sesion.id_sesion}}</font>
-        </a>
-    </div>
-
-    {% endif %}
-
-    <div class="card w-75">
-      <div class="card-body">
-        <p class="card-text">
-          <font size="5">Duracion de la sesion:</font>
-          <br>
-          <center>
-            <font size="10"><a id="duracion{{forloop.counter0}}"></a></font>
-          </center>
-        </p>
+      <!-- Card Content - Collapse -->
+      <div class="collapse show" id="collapseCardExample{{forloop.counter0}}">
+    
+        <div class="card mb-4 py-3 border-bottom-success">
+          <div class="card-body">
+            <p class="card-text">
+              <font size="5">Duracion de la sesion:</font>
+              <br>
+              <center>
+                <font size="10"><strong><a id="duracion{{forloop.counter0}}"></strong></a></font>
+              </center>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-    <br>
+
+
 
     {% if forloop.counter0 == 0%}
     <form action="/workoutsapp/sesion/" method="POST">
@@ -121,16 +115,19 @@
         <br>
         <label class="h6" >Del plan: </label>
         <select name="idplan" id="idplan">
-          <option id="idplan" value="{{codigoplan}}">{{codigoplan}}</option>
+          <option id="idplan" value="{{codigoplan}}">{{codigoplan}} - {{area}}</option>
         </select>
         <br>
       </div>
       <br>
-      <button id="iniciar" type="submit" class="btn btn-secondary w-100">Empezar con la sesion numero {{codigosesion}} </button>
+      <button id="iniciar" type="submit" class="btn btn-secondary w-100">Empezar con la sesion numero {{codigosesion}} de tu plan de {{area}}</button>
     </form>
     {% endif%}
 
     <br> <br>
+
+
+ 
 
 
   {% endfor %}
@@ -143,7 +140,22 @@
 
 
 {% block js %}
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'Users/vendor/jquery/jquery.min.js' %} "></script>
+<script src="{% static 'Users/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
 
+<!-- Core plugin JavaScript-->
+<script src="{% static 'Users/vendor/jquery-easing/jquery.easing.min.js' %} "></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'Users/js/sb-admin-2.min.js' %} "></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'Users/vendor/chart.js/Chart.min.js' %} "></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'Users/js/demo/chart-area-demo.js' %} "></script>
+<script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
 <script src="{% static 'WorkoutsApp/js/dashboard.js' %}"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 {% endblock %}

@@ -9,7 +9,7 @@ var estadoSesion = false;
 
 window.onload = function()
 {
-    mostrar();
+    //mostrar();
 
 };
 
@@ -90,7 +90,44 @@ function buscarlocal(clave)
 
 function una()
 {
-    location.href = "/workoutsapp/dashboard/";
+    //location.href = "/workoutsapp/dashboard/";
+    var myRedirect = function(redirectUrl, arg, value) {
+        var form = $('<form action="' + redirectUrl + '" method="post">' +
+        '<input type="hidden" name="'+ arg +'" value="' + value + '"></input>' + '</form>');
+        $('body').append(form);
+        $(form).submit();
+      };
+
+      myRedirect("/workoutsapp/dashboard/", "codigoplan", "1");
+}
+
+function dos()
+{
+    var var_1 = '1';
+    //location.href = "/workoutsapp/dashboard/";
+    $(function() {
+
+        $('#btn_save').on('click', function() {
+  
+            $.post('/workoutsapp/dashboard/', {
+                "codigoplan": var_1//, "var_2": var_2, "var_3": var_3, "var_4": var_4
+              },function(data) {
+                console.log('procesamiento finalizado', data);
+            });
+        })
+  
+  })
+}
+
+function redirecciona()
+{
+    var select = document.getElementById('codigoplan');
+    select.addEventListener('change',
+    function()
+    {
+        var selectedOption = this.options[select.selectedIndex];
+        console.log(selectedOption.value + ': ' + selectedOption.text);
+    });
 }
 
 
@@ -109,8 +146,8 @@ function conocerEvento(e)
     if(evento.type == "click")
     {
 
-        console.log("nombre del click");
-        console.log(evento.path[0].id);
+        //console.log("nombre del click");
+        //console.log(evento.path[0].id);
 
         var nombreclick=evento.path[0].id;
 
@@ -124,9 +161,10 @@ function conocerEvento(e)
             //console.log(nombreclick.substr(8));
             //alert("empezo entreno");
 
-            id_plan = document.getElementById("codigoplan").value;
+            //id_plan = document.getElementById("codigoplan").value;
             //console.log(id_sesion);
-            almacenarlocal('id_plan', id_plan);
+            //almacenarlocal('id_plan', id_plan);
+            //una();
 
         }
 

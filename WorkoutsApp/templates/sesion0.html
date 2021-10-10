@@ -8,8 +8,8 @@
     <h4 class="font-weight-bold">Sesion inicial</h4>
     <hr>
     <h4 class="mb-3 font-weight-bold">Selecciona un ejercicio de tu preferencia entre los siguientes ejercicios:</h4>
-    <form method="POST">
-        {% csrf_token %} 
+    <form action="/workoutsapp/sesion0/{{idplan}}" method="POST">
+        {% csrf_token %}
         {% for i in ejercicios %}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -23,6 +23,9 @@
               </div>
         </div>
         {% endfor %}
+       
+        <input type="text"  id="idplan" name="idplan" value="{{idplan}}" class="field left" readonly>
+
         <button type="submit" class="btn btn-primary btn-block mt-2">
             <h5>Seleccionar</h5>
         </button>

@@ -193,7 +193,6 @@ fechafinal+=(diasemana[indexday-1]+ "," + ' '+data.getDate()+ " de " + meses[ind
 return fechafinal;
 }
 
-
 //ejercutar funcion al cargar pagiina
 //document.addEventListener('DOMContentLoaded',hola, false);
 
@@ -202,36 +201,53 @@ function duraciones()
 {
   console.log("duraciones");
   var valores = document.getElementById('aduracion').innerText;
+  console.log("valores duraciones")
+  console.log(valores)
+  //alert(typeof(valores));
+  
   if( valores != null)
   {
     // console.log("si existe")
     // console.log(valores)
-
-
-    array_valores = valores.split(',');
-
-    for (var i=0; i<array_valores.length; i++)
+    var durac = "duracion0"
+    var valor="";
+    //ingreso un solo numero
+    if(valores.length == 3)
     {
-      var durac = "duracion"
-      if(i == 0)
-      {
-        durac+=i;
-        document.getElementById(durac).innerHTML = array_valores[i].substr(1);
-        //console.log(array_valores[i].substr(1));
-      }
-      else if(i == (array_valores.length - 1))
-      {
-        durac+=i;
-        document.getElementById(durac).innerHTML = array_valores[i].slice(0,-1);
-        //console.log(array_valores[i].slice(0,-1));
-      }
-      else
-      {
-        durac+=i;
-        document.getElementById(durac).innerHTML = array_valores[i];
-        //console.log(array_valores[i]);
-      }
+      valor=valores.slice(1,2);
+    }else if(valores.length > 3)
+    {
+      valor=valores.slice(1,valores.length-1);
+    }else{
+      valor="";
     }
+    document.getElementById(durac).innerHTML = valor;
+    
+
+    // array_valores = valores.split(',');
+
+    // for (var i=0; i<array_valores.length; i++)
+    // {
+    //   var durac = "duracion"
+    //   if(i == 0)
+    //   {
+    //     durac+=i;
+    //     document.getElementById(durac).innerHTML = array_valores[i].substr(1);
+    //     //console.log(array_valores[i].substr(1));
+    //   }
+    //   else if(i == (array_valores.length - 1))
+    //   {
+    //     durac+=i;
+    //     document.getElementById(durac).innerHTML = array_valores[i].slice(0,-1);
+    //     //console.log(array_valores[i].slice(0,-1));
+    //   }
+    //   else
+    //   {
+    //     durac+=i;
+    //     document.getElementById(durac).innerHTML = array_valores[i];
+    //     //console.log(array_valores[i]);
+    //   }
+    // }
 
     document.getElementById("aduracion").style.display = "none";
 
@@ -242,8 +258,6 @@ function duraciones()
   }
 
 }
-
-
 
 
 //saber que evento sucede y capturarlo

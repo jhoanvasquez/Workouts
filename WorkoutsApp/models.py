@@ -76,6 +76,9 @@ class Sesion_Ejercicio(models.Model):
     id = models.AutoField(primary_key=True)
     id_sesion=models.ForeignKey(Sesiones, on_delete=models.CASCADE )
     id_ejercicios=models.ForeignKey(Ejercicios, on_delete=models.CASCADE )
+    calificacion=models.IntegerField(null=True, blank=True)
+    mejor_sesion=models.IntegerField(null=True, blank=True)
+    fecha=models.DateField()
 
 
 class Habilidades(models.Model):
