@@ -20,7 +20,6 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 #Registro de usuario
 @login_required()
 def index(request): 
-<<<<<<< HEAD
     usuario = Usuarios.objects.get(fk_user = request.user)
     skills = Habilidades.objects.get(fk_user = request.user)
     print(skills)
@@ -32,13 +31,6 @@ def index(request):
         'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
     return render(request, 'Users/index.html', context)
-=======
-
-
-    clase = recomendador()
-    print(clase)
-    return render(request, 'Users/index.html')
->>>>>>> eada267081b0bb1556bb29e4ed87d04dfff2566f
 
 
 #Registro de usuario
