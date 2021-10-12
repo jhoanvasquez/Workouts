@@ -9,5 +9,6 @@ psycopg2
 nltk
 sklearn
 pandas
+gunicorn
 virtualenv==20.0.17
 
