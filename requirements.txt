@@ -11,5 +11,6 @@ sklearn
 pandas
 gunicorn
 django_project
+whitenoise
 virtualenv==20.0.17
 
