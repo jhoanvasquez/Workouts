@@ -10,5 +10,6 @@ nltk
 sklearn
 pandas
 gunicorn
+django_project
 virtualenv==20.0.17
 
