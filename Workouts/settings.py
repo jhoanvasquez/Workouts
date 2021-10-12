@@ -97,15 +97,13 @@ WSGI_APPLICATION = 'Workouts.wsgi.application'
 DATABASES = {  
     'default': { 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'workout',
-	    'USER': 'jv0498',
-        'PASSWORD': '#vasquez',
-        'HOST': 'localhost',
+        'NAME': 'd8s30mu65cefau',
+	    'USER': 'ztlqphuiniixcx',
+        'PASSWORD': 'cdaa1de7696b8528c3ea172ad31107e043378409d2ed883baff141e63014f427',
+        'HOST': 'ec2-18-211-194-36.compute-1.amazonaws.com',
         'DATABASE_PORT': '5432',
     }
 }
- 
-
 
 
 # Password validation
