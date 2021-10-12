@@ -7,5 +7,6 @@ Unidecode==1.1.1
 pymysql
 psycopg2
 nltk
+sklearn
 virtualenv==20.0.17
 
