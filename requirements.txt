@@ -8,5 +8,6 @@ pymysql
 psycopg2
 nltk
 sklearn
+pandas
 virtualenv==20.0.17
 
