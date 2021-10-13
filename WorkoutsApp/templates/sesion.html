@@ -1,17 +1,22 @@
 {% extends "Users/base.html" %}
 {% load static %}
 
-{% block title %} Sugerencias {% endblock %}
+{% block title %} Sesion - Entreno {% endblock %}
+
+{% block h1 %} Sesion - Entreno{% endblock %}
 
 {% block content %}
 
 
-<h2 id="sesion">Sesion - Entreno</h2>
-
+<!-- <h2 id="sesion">Sesion - Entreno</h2> -->
+<!-- 
 <a href="/workoutsapp/planes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Planes </a>
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
 <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
-<a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a>
+<a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a> -->
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
 <div>
   <p>
@@ -45,24 +50,27 @@
 <a display="none" id="asesiones" name="asesiones" value="{{sesiones}}">
 {{sesiones}}
 </a> -->
-
-<center>
-  <div>
-    <p>TOTAL DURACION DEL ENTRENO</p>
-    <div id="tiempoacumulado">00:00:00.000</div>
-  </div>
-</center>
-<center>
-  <div >
-    <p>TIEMPO EJERCICIO</p>
-    <div id="tiempo">00:00:00.000</div>
-  </div>
-</center>
-
+<div id="valorestiempos">
+  <center>
+    <div>
+      <strong><p>TOTAL DURACION DEL ENTRENO</p></strong>
+      <h1><div id="tiempoacumulado">00:00:00.000</div></h1>
+    </div>
+  
+  <br><br>
+  <div><h1><i class="fas fa-stopwatch"></i></h1></div>
+  <br><br>
+  
+    <div >
+      <strong><p>TIEMPO EJERCICIO</p></strong>
+      <h1><div id="tiempo">00:00:00.000</div></h1>
+    </div>
+  </center>
+</div>
 
 {% for ejercicio in ejercicios %}
 
-<div id="ejercicio{{forloop.counter0}}" class="card w-75">
+<div id="ejercicio{{forloop.counter0}}" class="card w-100">
 
   
   <div class="card-body">
@@ -111,6 +119,105 @@
 
 
 
+<div id="calificaEjercicios">
+  <center>
+    <h1 class="h3 mb-0 text-gray-800">Califica los ejercicios</h1>
+    <br><br>
+  </center>
+
+ 
+
+  <!-- Basic Card Example -->
+
+  <div  class="card shadow mb-4">
+    <div class="card-body">
+      <!-- DataTales Example -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Que tal esta sesion.!</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Id</th>
+                            <th>Ejercicio</th>
+                            <th>Calificacion</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Numero</th>
+                        <th>Id</th>
+                        <th>Ejercicio</th>
+                        <th>Calificacion</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for ejercicio in ejercicios %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ejercicio.id_ejercicios}}</td>
+                            <td>{{ejercicio.descripcion}}</td>
+                            <td>
+                              <center>
+                                
+                                <span class="fa fa-star" style="cursor: pointer"  id="1star{{forloop.counter0}}"></span>
+                                <span class="fa fa-star" style="cursor: pointer"  id="2star{{forloop.counter0}}"></span>
+                                <span class="fa fa-star" style="cursor: pointer"  id="3star{{forloop.counter0}}"></span>
+                                <span class="fa fa-star" style="cursor: pointer"  id="4star{{forloop.counter0}}"></span>
+                                <span class="fa fa-star" style="cursor: pointer"  id="5star{{forloop.counter0}}"></span>
+                              
+                            </center>
+                            </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+            
+            <!-- <form action="/workoutsapp/sesion/" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <select name="idsesion" id="idsesion">
+                  <option id="idsesion1" value="{{codigosesion}}">{{codigosesion}}</option>
+                </select>
+        
+                <br>
+                <label class="h6" >Del plan: </label>
+                <select name="idplan" id="idplan">
+                  <option id="idplan" value="{{codigoplan}}">{{codigoplan}} - {{area}}</option>
+                </select>
+                <br>
+              </div> -->
+              <br>
+              <button id="terminar" onclick="enviarCalificaciones()" class="btn btn-success w-100">Terminar</button>
+            
+            <div class="form-group">
+              <center>
+                <label id="msj1" style="display:none" class="h6" >Exelente entreno, gracias por calificar tus ejercicios.!! <br>
+                  <strong>Nos vemos la proxima.</strong> 
+                </label>
+                <label id="msj2" style="display:none" class="h6" >Por favor califica todos los ejercicios.!! </label>
+              </center>
+            </div>
+            
+
+        </div>
+    </div>
+        
+  </div>
+</div>
+
+
+</div>
+
+
+
 {{userconect}}
 
 
@@ -136,5 +243,7 @@
 <script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
 <script src="{% static 'WorkoutsApp/js/sesion.js' %}"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
 
 {% endblock %}

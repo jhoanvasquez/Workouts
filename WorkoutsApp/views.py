@@ -7,38 +7,35 @@ from .forms import DashboardForm, PlanesForm
 from .models import Usuarios
 from .models import Planes
 from .models import Areas
-from .models import Ejercicios
+from .models import Ejercicios, EjerciciosUsuarios
 from .models import Rangos
 from .models import Sesiones
 from .models import Sesion_Ejercicio
 from .models import Habilidades
 from WorkoutsApp.recomendador import *
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.urls import reverse
 
 
 def index(request):
     return HttpResponse("<h2>Workouts</h2>")
 
-
 # Create your views here.
 
 def register(request):
     return render(request, 'WorkoutsApp/register.html')
 
-
 def sesion2(request):
 
-    #print(request)
+    print("sesion2 para cuando todo esta listo")
+    print(request)
 
-    if request.POST:
+    # if request.POST:
 
-        print(request.POST['codigoplan'])
+    #     print(request.POST['codigoplan'])
 
-    formulario=DashboardForm()
-
+    # formulario=DashboardForm()
     return render(request, 'sesion2.html')
-
 
 def sugerencias(request):
     userconect = request.POST.get('user')
@@ -73,9 +70,32 @@ def sugerencias(request):
 
     return render(request, 'sugerencias.html', context)
 
-def aumentasesion(request, id):
+def calificaejercicios(request, id):
+    print("id que esta llegando a califica ejercicios"+id)
     #print("entro a aumenta sesion plan#=  "+str(id))
 
+    # nameusuario = request.user
+    # usuario = Usuarios.objects.get(fk_user=nameusuario)
+    
+    # infoplan = Planes.objects.get(id_plan=id)
+
+    # nuevodiasentrenados= infoplan.dias_entrenados
+    # infoplan.dias_entrenados = nuevodiasentrenados+1
+    # infoplan.save()
+
+    return redirect('/index')
+
+def aumentasesion(request, valores):
+    #recibir array y enviarlo a calificar ejercicio .
+    print("entro a aumenta sesion plan#=  "+valores)#+str(valores))
+
+     #captura los ids de los ejercicios de la sesion y el plan seleccionado
+    calificaciones = valores.split(",")
+    #print(calificaciones)
+    #print(calificaciones[2:])
+    puntajeCalificaciones=calificaciones[2:]
+
+    id=calificaciones[0]
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
     
@@ -83,7 +103,35 @@ def aumentasesion(request, id):
 
     nuevodiasentrenados= infoplan.dias_entrenados
     infoplan.dias_entrenados = nuevodiasentrenados+1
+    infoplan.ultima_semana = datetime.today()
     infoplan.save()
+
+     #codigo sesion
+    codigo_sesion=calificaciones[1]
+    sesion_ejer = Sesion_Ejercicio.objects.filter(id_sesion=codigo_sesion)
+    ids_ejercicios = []
+
+    if(sesion_ejer.exists()):
+        for e in sesion_ejer.values():
+            ids_ejercicios.append(e['id_ejercicios_id'])
+        print("ids ejerciciosejercicios")
+        print(ids_ejercicios)
+    else:
+        print("vacio")
+        print(ids_ejercicios)
+    
+
+    print("ids y calificaciones listas")
+    posicion=0
+    for ejercicio in ids_ejercicios:
+        
+        print("ejercicio con id: "+str(ids_ejercicios[posicion])+" total puntaje: "+str(puntajeCalificaciones[posicion]))
+        ejerci=Ejercicios.objects.get(id_ejercicios=ids_ejercicios[posicion])
+        infoEjercicio = EjerciciosUsuarios.objects.get(id_ejercicios=ejerci, id_usuario=usuario.id_usuario)
+        infoEjercicio.calificacion = puntajeCalificaciones[posicion]
+        infoEjercicio.save()
+        posicion+=1
+
 
     return redirect('/index')
 
@@ -101,29 +149,19 @@ def validaplanes(request):
         print(request.POST['codigoplan'])
         codigoplan=request.POST['codigoplan']
         
-
-        
         info_plan = Planes.objects.get(id_plan=codigoplan)
         diasEntrenados=getattr(info_plan, "dias_entrenados")
         id_raangoplan=getattr(info_plan, "id_rango")
         id_areaplan=getattr(info_plan, "id_area")
         totalsesiones=getattr(info_plan, "num_sesiones")
 
-
         if(diasEntrenados > 0):
 
             idplan = codigoplan
             
-            ejercicioInicio2 = Ejercicios.objects.filter(id_rango =id_raangoplan, id_area=id_areaplan)
-            print(ejercicioInicio2)
-            print("ejercicios que llegan del area y rango iguales")
+            ejercicioInicio2 = EjerciciosUsuarios.objects.filter(id_rango =id_raangoplan, id_area=id_areaplan, id_usuario=usuario.id_usuario)
             alguno= ejercicioInicio2.order_by('?').first()
-            print(alguno)
-            
-            print("mostro alguno al azar")
 
-            #Ejercicio=Ejercicios.objects.order_by('?').first()
-            #ejercicioInicio = Ejercicios.objects.get(id_ejercicios = request.POST.get('radio'))
             descripcionEjercicio = alguno.descripcion
             areaEjercicio = alguno.id_area
             recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango).tolist()
@@ -131,18 +169,11 @@ def validaplanes(request):
             plan = Planes.objects.get(id_plan = idplan)
             diasentrenados=plan.dias_entrenados
             next_sesion=diasentrenados+1
-            print("id plan ")
-            print(plan)
-            print(idplan)
-            print("y id sesion")
-            print(next_sesion)
             crearSesion(plan,next_sesion)
 
             sesion = Sesiones.objects.get(id_plan=idplan, num_sesiones=next_sesion)
             
-            
-            crearSesionesEjercicios(recomendaciones, sesion)
-            print(recomendaciones)
+            crearSesionesEjercicios(recomendaciones, sesion, usuario)
             print("sale de crear la sesion "+str(next_sesion)+" enviar a dashboard "+str(next_sesion)+" para empezarla")
 
 
@@ -184,7 +215,6 @@ def validaplanes(request):
     return redirect('/index')
     #return render(request, 'validaplanes.html')
 
-
 def crearplanes(request):
     print("vista crear planes")
     formPlanes = PlanesForm(request.POST or None)
@@ -207,8 +237,6 @@ def crearplanes(request):
             else:
                 print("no existe crear primer valor")
                 id_plan=1
-
-
             
             id_area = Areas.objects.get(id_area=request.POST.get('id_area'))
             id_usuario = usuario #
@@ -218,7 +246,7 @@ def crearplanes(request):
             # dias_esta_semana = request.POST.get('dias_esta_semana')
             # num_sesiones = request.POST.get('num_sesiones')
             # ultima_semana = request.POST.get('ultima_semana')
-            
+
             print("abre datos crear planes")
             print(id_plan)
             print(id_area)
@@ -239,29 +267,45 @@ def crearplanes(request):
             dias_entrenados=0,
             dias_esta_semana=0,
             num_sesiones=3,
-            ultima_semana=date.today())
+            ultima_semana=date.today()+timedelta(days=-1))
             planes.save()
-
-
-            #print(datetime.today().strftime('%Y-%m-%d'))
-
-            #return render(request, 'planes.html')
-    
 
             return redirect('/workoutsapp/planes/')
 
     return render(request, 'crearplanes.html', context)
 
+def entrenoslistos(request):
+    print("ingreso a entrenos listos")
+    nameusuario = request.user
+    
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
+    print(usuario)
+    codusuario = usuario.id_usuario
+    print(codusuario)
+    
+    context = {
+        "nombre": request.user,
+        "apellido": "Abreu",
+        #"usuarios": usuarios,
+        "iduser": codusuario,
+        #"planes": planesentreno2
+        "planes": 1,
+        "next":date.today()+timedelta(days=-1)
+    }
+    return render(request, 'entrenoslistos.html', context)
 
 def planes(request):
     print("request planes")
-    print(request)
+    #print(request)
 
     #se obtiene toda la info de las tablas de la BD
 
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
     codusuario = usuario.id_usuario
+
+    actualizarEjercicios(usuario.id_usuario)
+    #print("ya paso por actualizar ejercicios")
 
 
     planesentreno = Planes.objects.filter(id_usuario=codusuario)
@@ -271,24 +315,46 @@ def planes(request):
     #validar si algun plan tiene todas las sesiones hechas y quitarlo
     if(planesentreno.exists()):
         totalPlanes=0
+        totalPlanesHabilitados=0
         for e in planesentreno.values():
             #print("id_ejercicio:  ")
             #print(e['id_ejercicios_id'])
             totalsesiones=e['num_sesiones']
             sesioneshechas=e['dias_entrenados']
+            ultimoentreno=e['ultima_semana']
+            diaactual=datetime.today()
+            diaactual2=diaactual.now().date()
+            habilitado=False
+
+            if(ultimoentreno < diaactual2):
+                print("habilitado")
+                habilitado=True
+            else:
+                print("deshabilitado")
+                habilitado=False
 
             if(sesioneshechas >= totalsesiones):
                 print("ya acabo el plan")
             else:
-                totalPlanes+=1
                 print("aun le fatla acabar el plan")
-                idplan=e['id_plan']
-                info_plan = Planes.objects.get(id_plan=idplan)
-                planesentreno2.append(info_plan)
+                totalPlanes+=1
+                if(habilitado==True):
+                    print("esta habilitado este plan para hoy, agregarlo")
+                    totalPlanesHabilitados+=1
+                    idplan=e['id_plan']
+                    info_plan = Planes.objects.get(id_plan=idplan)
+                    planesentreno2.append(info_plan)
 
         if(totalPlanes == 0):
             print("no hay planes del usuario, sale a crear un plan")
             return redirect("/workoutsapp/crearplanes/")
+        else:
+            print("si hay planes")
+            if(totalPlanesHabilitados == 0):
+                print("no hay planes del usuario, sale a crear un plan o a descansar")
+                #HttpResponseRedirect(request, entrenoslistos)
+                return redirect("/workoutsapp/crearplanes/")
+                #!crear vista de que ya entreno hoy
 
     else:
 
@@ -343,7 +409,7 @@ def dashboard(request,id):
             #     return render(request, 'sesion0.html')
             # else:
             #     print("capturar la sesion anterior y escoger un ejercicio para crear la sgt sesion")
-            #     #!llamar al metodo de crear sesion con una sesion anterior
+
 
 
             # validar que se sion va y mostrar desde esa, con numero de entrenos hechos
@@ -572,7 +638,6 @@ def dashboard(request,id):
     # else:
     #     return redirect('/index')
 
-
 def sesion(request):
 
     if request.POST:
@@ -656,7 +721,6 @@ def sesion(request):
     else:
         return redirect('/index')
 
-
 def sesion0(request, id):
     if(request.POST):
         print("POST SESION0")
@@ -667,16 +731,24 @@ def sesion0(request, id):
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
     
+    #print(Ejercicios.objects.all().filter(id_rango = usuario.id_rango).values())
+    print(request)
+    print("ejercicios filtrados")
+    ejercicios1=EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario).values()
+    print(list(ejercicios1))
+    ejercicios = seleccionarEjercicios(EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario))
+    #ejercicios = seleccionarEjercicios(Ejercicios.objects.all().filter(id_rango = usuario.id_rango).values())
     
-    ejercicios = seleccionarEjercicios(Ejercicios.objects.all().filter(id_rango = usuario.id_rango).values())
+    if(ejercicios):
+        print("si existe usuario")
+    else:
+        print("no existe usuario")
+    
     #obtener el id del plan y num_sesion
     print("codigo del plan que llega en sesion 0")
 
     #print(idplan)
     idplan = id
-    
-    
-    
     num_sesiones = 1
     context = {
         'ejercicios': ejercicios,
@@ -687,28 +759,26 @@ def sesion0(request, id):
     
 
     if request.POST and request.POST.get('radio') != None:
-        print("codigo plan del que llega")
+        print("codigo plan del que llega post")
         print(request.POST['idplan'])
         idplan = request.POST['idplan']
+
+        ejercicio=request.POST.get('radio')
+        print(ejercicio)
+
         
-        ejercicioInicio = Ejercicios.objects.get(id_ejercicios = request.POST.get('radio'))
+        ejercicioInicio = EjerciciosUsuarios.objects.get(id_ejercicios_usuarios = ejercicio, id_usuario=usuario.id_usuario)
         descripcionEjercicio = ejercicioInicio.descripcion
         areaEjercicio = ejercicioInicio.id_area
         recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango).tolist()
         #se debe obtener plan
         plan = Planes.objects.get(id_plan = idplan)
-        print("id plan ")
-        print(plan)
-        print(idplan)
-        print("y id sesion")
-        
-        print(num_sesiones)
         crearSesion(plan,num_sesiones)
 
         sesion = Sesiones.objects.get(id_plan=idplan, num_sesiones=num_sesiones)
         
         
-        crearSesionesEjercicios(recomendaciones, sesion)
+        crearSesionesEjercicios(recomendaciones, sesion, usuario)
         print(recomendaciones)
         print("sale de crear la sesion 1 enviar a dashboard para empezarla")
 
@@ -716,26 +786,8 @@ def sesion0(request, id):
         return redirect('/workoutsapp/dashboard/'+str(idplan))
 
     print("sale a mostrar vista ejercicios sesion0")
-    #return render ('/workoutsapp/sesion0/', kwargs={"id":idplan})
-    #return redirect ('sesion0/'+str(id_plan), context)
-    return render(request, 'sesion0.html', context)
-    #return render(request,'/workoutsapp/sesion0/'+str(id_plan), id_plan, context)
-    #funciona
-    return render(request, 'sesion0.html', context)
-    #return render(request, '/workoutsapp/sesion0/'+str(idplan), context )
-    #/workoutsapp/sesion0/{{idplan}}
-    #return render(request, 'sesion0.html/', context )
-
     
-    #return redirect(request, 'sesion0/'+str(idplan))
-    ##return reverse("sesion0", kwargs={"id":idplan}, context=context)
-    #return redirect (request, sesion0, context )
-
-    #return redirect('/workoutsapp/sesion0/'+str(id))
-    #return redirect('/workoutsapp/sesion0/'+str(idplan), context)
-    
-    #return render(request, '/workoutsapp/sesion0/'+str(id), context)
-    #return render(request, 'sesion0.html/'+str(id), context)
+    return render(request, 'sesion0.html', context)
 
 def recomendadorEjercicios(descripcion, area, id_rango):
 
@@ -752,10 +804,15 @@ def crearSesion(id_plan, numsesion):
     sesion = Sesiones(id_plan=id_plan, fecha=datetime.today(), num_sesiones=numsesion)
     sesion.save()
 
-def crearSesionesEjercicios(ejercicios, sesion):
+def crearSesionesEjercicios(ejercicios, sesion, id_user):
     for ejercicio in ejercicios:
-        ejercicioInstancia = Ejercicios.objects.get(id_ejercicios = ejercicio) 
-        sesionEjercicio = Sesion_Ejercicio(id_sesion=sesion, id_ejercicios=ejercicioInstancia)
+        ejercicioInstancia = EjerciciosUsuarios.objects.get(id_ejercicios = ejercicio, id_usuario=id_user)
+        print(ejercicioInstancia)
+        print(sesion)
+        calificacicion1=ejercicioInstancia.calificacion
+        bestSesion=0
+        fecha1=datetime.today()
+        sesionEjercicio = Sesion_Ejercicio(id_sesion=sesion, id_ejercicios=ejercicioInstancia.id_ejercicios,calificacion=calificacicion1, mejor_sesion=bestSesion, fecha=fecha1 )
         sesionEjercicio.save()
 
 def seleccionarEjercicios(array):
@@ -768,3 +825,88 @@ def seleccionarEjercicios(array):
         except ValueError:
             ejercicios.append(array[posicion])
     return ejercicios
+
+def actualizarEjercicios(id_user):
+    #!usuario, ver si el ejercicio no esta y agregarlo, o si esta dejarlo.
+    #nameusuario = request.user
+    usuario = Usuarios.objects.get(id_usuario=id_user)
+    codusuario = usuario.id_usuario
+
+    ejerciciosOriginales=Ejercicios.objects.all()
+    ejerciciosUsers=EjerciciosUsuarios.objects.filter(id_usuario=codusuario)
+
+    if(ejerciciosOriginales.exists()):
+        if(ejerciciosUsers.exists()):
+            print("existen ambos ejercicios. validar si hay alguno nuevo y actualizar")
+            for o in ejerciciosOriginales.values():
+                #recorrer for original con cada valor, luego con cada valor recorrer for users
+                #  viendo si existe o no, y si no existe agregarlo
+                contador=0
+                ejercicioOr=o['id_ejercicios']
+                for c in ejerciciosUsers.values():
+
+                    ejercicioUs=c['id_ejercicios_id']
+
+                    if(ejercicioOr == ejercicioUs):
+                        contador+=1
+
+                if(contador == 0):
+                    #no existe agregarlo con el id usuario
+                    print("no existe agregarlo con id usuario")
+                    idnuevo=EjerciciosUsuarios.objects.last().id_ejercicios_usuarios
+                    idnuevo=int(idnuevo)+1
+
+                    ejercicioAdd=EjerciciosUsuarios(
+
+                        id_ejercicios_usuarios=idnuevo,
+                        id_ejercicios= Ejercicios.objects.get(id_ejercicios=o['id_ejercicios']),
+                        descripcion= o['descripcion'],
+                        id_rango= Rangos.objects.get(id_rango=o['id_rango_id']),
+                        duracion= o['duracion'],
+                        repeticiones= o['repeticiones'],
+                        calificacion= o['calificacion'],
+                        explicacion= o['explicacion'],
+                        id_area= Areas.objects.get(id_area=o['id_area_id']),
+                        link_entreno= o['link_entreno'],
+                        id_usuario= usuario)
+                    ejercicioAdd.save()
+
+                    print("actualizo ejercicios, creo ejercicios en bd que no existia")
+                    
+        else:
+            print("no existen ejercicios del usuario agregarlos todos para el id user")
+            ejercopia= EjerciciosUsuarios.objects.last()
+            hayejercicios=0
+            
+            if(ejercopia is None):
+                print("es none no hay nada")
+                hayejercicios=0
+                idnuevo=0
+            else:
+                print("no es none ya hay algo")
+                hayejercicios=1
+                idnuevo=EjerciciosUsuarios.objects.last().id_ejercicios_usuarios
+                
+            for o in ejerciciosOriginales.values():
+                #print(o['id_rango_id'])
+
+                idnuevo=int(idnuevo)+1
+
+                ejercicioAdd=EjerciciosUsuarios(
+                    id_ejercicios_usuarios=idnuevo,
+                    id_ejercicios= Ejercicios.objects.get(id_ejercicios=o['id_ejercicios']),
+                    descripcion= o['descripcion'],
+                    id_rango= Rangos.objects.get(id_rango=o['id_rango_id']),
+                    duracion= o['duracion'],
+                    repeticiones= o['repeticiones'],
+                    calificacion= o['calificacion'],
+                    explicacion= o['explicacion'],
+                    id_area= Areas.objects.get(id_area=o['id_area_id']),
+                    link_entreno= o['link_entreno'],
+                    id_usuario= usuario)
+
+                ejercicioAdd.save()
+
+                print("creo ejercicios en bd por primera vez")
+    else:
+        print("no existen ejercicios originales porfavor cree ejercicios ")

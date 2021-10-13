@@ -65,7 +65,7 @@ def get_recommendations (EjerciciosDF, title, level, area_a, cosine_sim, indices
             movie_indices2.append(movie_indices[d])
     
     #print(movie_indices2)
-    movie_indices2 = movie_indices2[1:4]
+    movie_indices2 = movie_indices2[1:6]
             
     return EjerciciosDF['id_ejercicios'].iloc[movie_indices2]
 

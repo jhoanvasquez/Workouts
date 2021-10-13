@@ -26,6 +26,20 @@ var btnPause = "pause";
 var btnReset = "reset";
 
 
+//calificaciones
+var arrayCalificaciones=[];
+document.getElementById("aejercicios").style.display = "none";
+document.getElementById("calificaEjercicios").style.display = "none";
+
+
+var valores = document.getElementById('aejercicios').innerText;
+array_valores = valores.split(',');
+arrayCalificaciones= [array_valores.length];
+for(var c=0;c<array_valores.length;c++)
+{
+  arrayCalificaciones[c]=0;
+}
+
 
 
 window.onload = function()
@@ -272,9 +286,6 @@ function comienza(id)
       var pauseSiguiente = btnPause+(parseInt(id)+1);
       var divTiempoSiguiente = divTiempos+(parseInt(id)+1);
 
-
-
-
       //activar cronometro
 
       //activar fin
@@ -359,11 +370,13 @@ function fin(id)
           borrarlocal("id_plan");
           borrarlocal("id_sesion");
           //window.stop();
-          console.log("codplan")
+          console.log("codplan");
           
           var codplan = document.getElementById('pcodigoplan').innerText;
-          console.log(codplan)
-          window.location.href = "/workoutsapp/aumentasesion/"+codplan;
+          console.log(codplan);
+          //window.location.href = "/workoutsapp/aumentasesion/"+codplan;
+          document.getElementById("calificaEjercicios").style.display = "block";
+          document.getElementById("valorestiempos").style.display = "none";
 
       }else
       {
@@ -393,6 +406,92 @@ function fin(id)
   {
     console.log("no existen ejercicios")
   }
+}
+
+function pintarEstrellas(estrella, posicion)
+{
+  var valores = document.getElementById('aejercicios').innerText;
+  array_valores = valores.split(',');
+  if( valores != null)
+  {
+    //console.log("tamañp de valores"+array_valores.length);
+    for(var f=0; f<array_valores.length; f++)
+    {
+      for(var c=0;c<5;c++)
+      {
+        if(c<estrella)
+        {
+          cnew=c+1
+          document.getElementById(cnew+"star"+posicion).style.color="green";
+          //console.log("pintar strella: " + cnew+"star"+posicion );
+          arrayCalificaciones[posicion]=cnew;
+        }else{
+          cnew=c+1
+          document.getElementById(cnew+"star"+posicion).style.color="black";
+          //console.log("pintar strella: " + cnew+"star"+posicion );
+        }
+      }
+      
+
+    }
+    //console.log("pintar strella: " + c+"star"+posicion );
+    console.log(arrayCalificaciones);
+
+  }else
+  {
+    console.log("no existe")
+  }
+}
+
+function enviarCalificaciones()
+{
+  var listoTodo=0;
+  for(var i =0; i< arrayCalificaciones.length; i++)
+  {
+    if(arrayCalificaciones[i] == 0)
+    {
+      listoTodo++;
+    }
+  }
+  if(listoTodo>0)
+  {
+    alert("Por favor califique todos sus ejercicios.");
+    console.log("Aun no ha respondido todo");
+    document.getElementById("msj1").style.display = "none";
+    document.getElementById("msj2").style.display = "block";
+    
+  }else{
+    document.getElementById("msj1").style.display = "block";
+    document.getElementById("msj2").style.display = "none";
+    console.log("Gracias por responder");
+    var idsesion=document.getElementById('idsesion').innerText;
+    //redireccionar a actualizar en tabla ejercicios usuario
+
+    //   ejercicios_usuario
+    var codplan = document.getElementById('pcodigoplan').innerText;
+    console.log(codplan);
+    // id   idejercico   idusuario   calificacion -x
+    
+    var datos=""+codplan+","+idsesion+",";
+    for (let index = 0; index < arrayCalificaciones.length; index++)
+    {
+      if(index<arrayCalificaciones.length-1)
+      {
+        datos += arrayCalificaciones[index]+",";
+      }else{
+        datos += arrayCalificaciones[index];
+      }
+    }   
+
+
+
+    // si existe dejarlo
+    // si no existe agregarlo
+    
+    window.location.href = "/workoutsapp/aumentasesion/"+datos;
+    //  //
+  }
+
 }
 
 
@@ -446,6 +545,31 @@ function conocerEvento(e) {
         reiniciar();
       }
 
+      //pintar estrellas
+      //#estrella(1)_star(4)_posicionejV0(1 = 6 ->
+      if(nombreclick.substr(1,4) == "star")
+      {
+
+        var id=nombreclick.substr(4);
+        //console.log("fin valor");
+        //console.log(nombreclick.substr(3));
+        var estrella=nombreclick.substr(0,1);
+        var posicion=nombreclick.substr(5);
+        //console.log(estrella);
+        //console.log(posicion);
+        pintarEstrellas(estrella,posicion);
+        //alert("estrella: "+estrella+ " del ejercicio: "+posicion);
+
+      }
+
+      //terminar
+      //#estrella(1)_star(4)_posicionejV0(1 = 6 ->
+      if(nombreclick == "terminar")
+      {  
+        console.log("termine");
+        enviarCalificaciones();
+      }
+      
 
       
 
