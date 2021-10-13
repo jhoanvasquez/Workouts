@@ -23,11 +23,11 @@ def index(request):
     usuario = Usuarios.objects.get(fk_user = request.user)
     skills = Habilidades.objects.get(fk_user = request.user)
     print(skills)
-    puntaje = int(usuario.puntaje_habilidades) * 20
+    puntaje = int(usuario.puntaje_habilidades) 
     context = {
         'rango' : usuario,
         'skills': skills,
-        'puntaje':puntaje,
+        'puntaje':puntaje*20,
         'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
     return render(request, 'Users/index.html', context)
@@ -147,7 +147,7 @@ def perfil(request):
 
 
 #Ver vista 404
-def error404(request):
+def error404(request, exception):
     return render(request, 'Users/404.html')
 
 #modificar usuario

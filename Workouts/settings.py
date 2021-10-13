@@ -15,7 +15,8 @@ import os
 from pathlib import Path
 from django.urls import reverse_lazy
 
-
+from django.test.utils import ignore_warnings
+ignore_warnings(message="No directory at", module="whitenoise.base").enable()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
