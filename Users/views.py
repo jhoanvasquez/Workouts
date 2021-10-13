@@ -126,7 +126,11 @@ def loginView(request):
             login(request, user)
             return redirect('/index')
         else:
-            print('error')
+            context={
+                'msj': True,
+                'mensaje': 'Usuario o contraseña erroneos, valide por favor'
+            }
+            return render(request, 'Users/login.html', context)
 
     return render(request, 'Users/login.html')  
 
@@ -141,6 +145,10 @@ def logoutView(request):
 def perfil(request):
     return render(request, 'Users/perfil.html')
 
+
+#Ver vista 404
+def error404(request):
+    return render(request, 'Users/404.html')
 
 #modificar usuario
 @login_required()

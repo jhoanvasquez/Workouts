@@ -22,4 +22,6 @@ urlpatterns = [
     path('', include('Users.urls')),
     path('workoutsapp/', include('WorkoutsApp.urls'))
 ]
+
+handler404 = 'Users.views.error404'
  
