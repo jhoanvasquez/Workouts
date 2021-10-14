@@ -22,12 +22,19 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 def index(request): 
     usuario = Usuarios.objects.get(fk_user = request.user)
     skills = Habilidades.objects.get(fk_user = request.user)
-    print(skills)
-    puntaje = int(usuario.puntaje_habilidades) 
+    puntaje = int(usuario.puntaje_habilidades)*20
+    skills.flexibilidad = skills.flexibilidad*20
+    skills.fuerza = skills.fuerza*20
+    skills.resistencia = skills.resistencia*20
+    skills.velocidad = skills.velocidad*20
+    skills.agilidad = skills.agilidad*20
+    skills.aceleracion = skills.aceleracion*20
+    skills.coordinacion = skills.coordinacion*20
+    skills.precision = skills.precision*20
     context = {
         'rango' : usuario,
         'skills': skills,
-        'puntaje':puntaje*20,
+        'puntaje':puntaje,
         'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
     }
     return render(request, 'Users/index.html', context)
