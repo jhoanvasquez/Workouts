@@ -1,0 +1,48 @@
+{% extends "Users/base.html" %}
+{% load static %}
+{% block title %} Crear nuevo plan {% endblock %}
+
+{% block h1 %} Crear nuevo plan {% endblock %}
+
+{% block content %}
+<h4 class="font-weight-bold">Datos del nuevo plan</h4>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="h6" for="name">Nombre de usuario</label>
+        <input id="username" type="text" class="form-control" style="width: 35%" name="username" value="{{user}}" disabled>
+    </div>
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary btn-block">
+        <h5>Enviar</h5>
+    </button>
+</form>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'Users/vendor/jquery/jquery.min.js' %} "></script>
+<script src="{% static 'Users/vendor/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'Users/vendor/jquery-easing/jquery.easing.min.js' %} "></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'Users/js/sb-admin-2.min.js' %} "></script>
+
+<!-- Page level plugins -->
+<script src="{% static 'Users/vendor/chart.js/Chart.min.js' %} "></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'Users/js/demo/chart-area-demo.js' %} "></script>
+<script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
+<script src="{% static 'WorkoutsApp/js/crearplanes.js' %}"></script>
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
+{% endblock %}
+
