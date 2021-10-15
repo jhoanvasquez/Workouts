@@ -21,7 +21,7 @@ class DashboardForm(ModelForm):
 class PlanesForm(ModelForm):
 
     #id_plan=forms.ModelChoiceField(label="Id Plan" , queryset=)
-    id_area = forms.ModelChoiceField(label="Id Area" , queryset=Areas.objects.all())
+    id_area = forms.ModelChoiceField(label="Id Area" , queryset=Areas.objects.all(), widget=forms.Select(attrs={'class': 'form-control w-50'}))
     #id_usuario= forms.ModelChoiceField(label="Id Usuario" , queryset=Usuarios.objects.get(fk_user=nameusuario))
     #id_rango = forms.ModelChoiceField(label="Id Rango" , queryset=Rangos.objects.all())
     

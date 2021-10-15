@@ -566,8 +566,8 @@ function conocerEvento(e) {
       //#estrella(1)_star(4)_posicionejV0(1 = 6 ->
       if(nombreclick == "terminar")
       {  
-        console.log("termine");
-        enviarCalificaciones();
+        //console.log("termine");
+        //enviarCalificaciones();
       }
       
 

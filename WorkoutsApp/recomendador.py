@@ -5,11 +5,11 @@ import pandas as pd
 import numpy  as np
 import time
 import string
-from WorkoutsApp.models import Usuarios, Habilidades, Rangos, Ejercicios
+from WorkoutsApp.models import Usuarios, Habilidades, Rangos, Ejercicios, EjerciciosUsuarios
 
-
-def recomendador():
-    EjerciciosDF = pd.DataFrame(list(Ejercicios.objects.all().values()))
+def recomendador(id_user):
+    EjerciciosDF = pd.DataFrame(list(EjerciciosUsuarios.objects.all().filter(id_usuario=id_user).values()))
+       
 
     #Resetear index
     EjerciciosDF=EjerciciosDF.reset_index(drop=True)
@@ -67,7 +67,7 @@ def get_recommendations (EjerciciosDF, title, level, area_a, cosine_sim, indices
     #print(movie_indices2)
     movie_indices2 = movie_indices2[1:6]
             
-    return EjerciciosDF['id_ejercicios'].iloc[movie_indices2]
+    return EjerciciosDF['id_ejercicios_id'].iloc[movie_indices2]
 
 
 

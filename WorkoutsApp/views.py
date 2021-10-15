@@ -164,7 +164,7 @@ def validaplanes(request):
 
             descripcionEjercicio = alguno.descripcion
             areaEjercicio = alguno.id_area
-            recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango).tolist()
+            recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
             #se debe obtener plan
             plan = Planes.objects.get(id_plan = idplan)
             diasentrenados=plan.dias_entrenados
@@ -651,9 +651,9 @@ def sesion(request):
         nameusuario = request.user
         usuario = Usuarios.objects.get(fk_user=nameusuario)
         codusuario = usuario.id_usuario
-
-
+        
         planentreno = Planes.objects.get(id_plan=codigo_plan)
+        numSesion = planentreno.num_sesiones
 
         idarea = planentreno.id_area_id
         area = Areas.objects.get(id_area=idarea)
@@ -711,7 +711,8 @@ def sesion(request):
             #"sesiones": sesiones,
             "idsesion": codigo_sesion,
             "duracion": duracion_ejercicio,
-            "codigosesion": codigo_sesion
+            "codigosesion": codigo_sesion,
+            "numSesion": numSesion+1
         }
     
         #formulario=DashboardForm()
@@ -770,7 +771,7 @@ def sesion0(request, id):
         ejercicioInicio = EjerciciosUsuarios.objects.get(id_ejercicios_usuarios = ejercicio, id_usuario=usuario.id_usuario)
         descripcionEjercicio = ejercicioInicio.descripcion
         areaEjercicio = ejercicioInicio.id_area
-        recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango).tolist()
+        recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
         #se debe obtener plan
         plan = Planes.objects.get(id_plan = idplan)
         crearSesion(plan,num_sesiones)
@@ -789,9 +790,9 @@ def sesion0(request, id):
     
     return render(request, 'sesion0.html', context)
 
-def recomendadorEjercicios(descripcion, area, id_rango):
+def recomendadorEjercicios(descripcion, area, id_rango, id_usuario):
 
-    EjerciciosDF, cosine_sim, indices = recomendador()
+    EjerciciosDF, cosine_sim, indices = recomendador(id_usuario) 
     # print(EjerciciosDF['id_rango_id'])
     ind=2
     #titulo2 = str(Entrenos.iloc[1]['area']['intensidad'])

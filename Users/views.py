@@ -20,8 +20,10 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 #Registro de usuario
 def index(request): 
 
+    nameusuario = request.user
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
 
-    clase = recomendador()
+    clase = recomendador(usuario.id_usuario)
     print(clase)
     return render(request, 'Users/index.html')
 
