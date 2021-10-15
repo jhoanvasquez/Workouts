@@ -8,13 +8,14 @@
 {% block content %}
 
 
+
 <!-- <h2 id="dashboard">Dashboard - Sesiones </h2>
 
 <a href="/workoutsapp/planes/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Planes </a>
 <a href="/workoutsapp/dashboard/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Dashboard </a>
 <a href="/workoutsapp/sesion/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Iniciar Entreno </a>
 <a href="/workoutsapp/sugerencias/" class="btn btn-primary" style="margin-left: 20%; margin-right: 30%;">Sugerencias </a> -->
-
+<link rel="stylesheet" href="/workoutsapp/static/WorkoutsApp/style.css" crossorigin="anonymous"/>
 
 
 <!--
@@ -36,23 +37,21 @@
     </p>
 
     <p>
-      <font size="4"> Estos son los entrenos de tu plan con codigo: </font>
-
-      <div id="idplan">
-        <font size="6">        {{codigoplan}}      </font>
-      </div>
-
-    </p>
-
-    <p>
-      <font size="4"> Para mejorar la:   </font>
-      <font size="6">        {{area}}      </font>
-    </p>
-    
-    <p>
       <font size="4"> Has hecho :   </font>
-      <font size="6">        {{sesioneshechas}}      </font>
+      <strong> <font size="6">        {{sesioneshechas}}</font></strong>
+      <font size="4">  Sesiones de tu plan para mejorar la: </font>
+      <strong> <font size="6">        {{area}}</font></strong>
     </p>
+
+    <p>
+      <center>
+        <font size="4"> Estos son los entrenos de tu plan con codigo: </font>
+        <div id="idplan">
+          <font size="6">        {{codigoplan}}      </font>
+        </div>
+      </center>
+    </p>
+
     <br><br>
 </div>
 
@@ -110,13 +109,13 @@
       <div class="form-group">
 
         <label class="h6" >Continua con tu sesion: </label>
-        <select name="idsesion" id="idsesion">
+        <select name="idsesion" id="idsesion" class="form-control" style="width: 25%">
           <option id="idsesion1" value="{{codigosesion}}">{{codigosesion}}</option>
         </select>
 
         <br>
         <label class="h6" >Del plan: </label>
-        <select name="idplan" id="idplan">
+        <select name="idplan" id="idplan" class="form-control" style="width: 30%">
           <option id="idplan" value="{{codigoplan}}">{{codigoplan}} - {{area}}</option>
         </select>
         <br>

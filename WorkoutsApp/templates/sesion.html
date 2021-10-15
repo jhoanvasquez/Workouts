@@ -20,30 +20,27 @@
 
 <div>
   <p>
-    <font size="4"> HOLA: </font>
-    <font size="6"> {{nombre}} </font>
+    
+    <strong><font size="6"> {{nombre}} </font></strong>
   </p>
 
   <p>
-    <font size="4"> Esta es tu sesion # </font>
-
-    <div id="idsesion">
-      <font size="6">        {{idsesion}}      </font>
-    </div>
+    <font size="4"> Estas en la sesion con codigo: </font>
+    <strong><font size="6"> {{idsesion}} </font></strong>
+    <font size="4"> de tu plan con codigo  </font>
+    <strong><font size="6"> {{codigoplan}} </font></strong>
+    <font size="4"> para mejorar la   </font>
+    <strong><font size="6"> {{area}} </font></strong>
   </p>
 
-  <p> 
-    <font size="4">  De tu plan con codigo: </font>
-    <p id="pcodigoplan" ><font size="6">        {{codigoplan}}      </font></p>
-  </p>
+  <div style="display:none" id="idsesion">
+    <font size="6">        {{idsesion}}      </font>
+  </div>
+  <p style="display:none" id="pcodigoplan" >{{codigoplan}}</p>
 
-  <p>
-    <font size="4"> Para mejorar la:   </font>
-    <font size="6">       {{area}}      </font>
-  </p>
 </div>
 
-<a display="none" id="aejercicios" value="{{duraciones}}">
+<a visibility="hidden" id="aejercicios" value="{{duraciones}}">
 {{ejercicios}}
 </a>
 <!--
