@@ -80,7 +80,7 @@ def alg_Cal(val_alg, EjerciciosDF):
     val_2= (EjerciciosDF.at[(1),'calificacion'])*porce_cali + (val_alg[1][1])*porce_alg
     val_alg_cal = [val_1,val_2]
 
-    for i in range (2,len(EjerciciosDF.index)) :
+    for i in range (2,len(EjerciciosDF.index)-1) :
           
         val = (EjerciciosDF.at[(i),'calificacion'])*porce_cali + (val_alg[i][1])*porce_alg
         val_alg_cal.append(val)
