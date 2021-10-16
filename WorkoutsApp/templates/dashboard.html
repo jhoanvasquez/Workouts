@@ -32,22 +32,19 @@
 
 <div>
     <p>
-      <font size="4"> HOLA: </font>
-      <font size="6"> {{nombre}} </font>
-    </p>
-
-    <p>
-      <font size="4"> Has hecho :   </font>
-      <strong> <font size="6">        {{sesioneshechas}}</font></strong>
-      <font size="4">  Sesiones de tu plan para mejorar la: </font>
-      <strong> <font size="6">        {{area}}</font></strong>
+      <font size="5"> Hola:  <strong>{{nombre}} </strong>
+      <br>
+      Has hecho: <strong> {{sesioneshechas}}  </strong> sesiones de tu plan para mejorar la:  <strong> {{area}}</strong>
+      <br>
+    </font>
+      <br> 
     </p>
 
     <p>
       <center>
-        <font size="4"> Estos son los entrenos de tu plan con codigo: </font>
+        <font size="5"> Estos son los entrenos de tu plan con codigo: </font>
         <div id="idplan">
-          <font size="6">        {{codigoplan}}      </font>
+          <font size="5">      <strong>  {{codigoplan}}    </strong>  </font>
         </div>
       </center>
     </p>
@@ -79,8 +76,7 @@
             <p id="fecha{{forloop.counter0}}">
               <ion-icon name="calendar"></ion-icon>
             </p>
-            <font size="4"> Codigo de la sesion: </font>
-            <font size="6"> {{sesion.id_sesion}}</font>
+            <font size="5"> Codigo de la sesion: <strong> {{sesion.id_sesion}} </strong>  </font>
 
           </h6>
       </a>

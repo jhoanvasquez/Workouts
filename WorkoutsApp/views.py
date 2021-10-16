@@ -653,7 +653,7 @@ def sesion(request):
         codusuario = usuario.id_usuario
         
         planentreno = Planes.objects.get(id_plan=codigo_plan)
-        numSesion = planentreno.num_sesiones
+        numSesion = planentreno.dias_entrenados
 
         idarea = planentreno.id_area_id
         area = Areas.objects.get(id_area=idarea)
@@ -772,6 +772,8 @@ def sesion0(request, id):
         descripcionEjercicio = ejercicioInicio.descripcion
         areaEjercicio = ejercicioInicio.id_area
         recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
+        print("recomendaciones -----------***")
+        print(recomendaciones)
         #se debe obtener plan
         plan = Planes.objects.get(id_plan = idplan)
         crearSesion(plan,num_sesiones)
@@ -799,6 +801,7 @@ def recomendadorEjercicios(descripcion, area, id_rango, id_usuario):
     print("seleccionaste: "+ descripcion+ " y tu recomendaciones son: ")
     print("nivel: "+ str(id_rango)+ " area: "+ str(area))
     conjuntoEjercicios = get_recommendations(EjerciciosDF, descripcion, id_rango, area, cosine_sim, indices)
+    print(conjuntoEjercicios)
     return conjuntoEjercicios
 
 def crearSesion(id_plan, numsesion):
