@@ -9,14 +9,14 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+ 
 
-
-
-
+import os 
 from pathlib import Path
 from django.urls import reverse_lazy
 
-
+from django.test.utils import ignore_warnings
+ignore_warnings(message="No directory at", module="whitenoise.base").enable()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,9 +30,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '(5ddty8==evtg$6q3(dv@#a8%ns+@odm=u7in2*(ws*10sr4_v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Workouts.urls'
@@ -95,18 +96,16 @@ WSGI_APPLICATION = 'Workouts.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {        
+DATABASES = {  
     'default': { 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'workout',
-	    'USER': 'postgres',
-        'PASSWORD': '123456789',
-        'HOST': 'localhost',
+        'NAME': 'd8s30mu65cefau',
+	    'USER': 'ztlqphuiniixcx',
+        'PASSWORD': 'cdaa1de7696b8528c3ea172ad31107e043378409d2ed883baff141e63014f427',
+        'HOST': 'ec2-18-211-194-36.compute-1.amazonaws.com',
         'DATABASE_PORT': '5432',
     }
 }
-
-
 
 
 # Password validation
@@ -155,5 +154,13 @@ LOGIN_URL = reverse_lazy('login')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

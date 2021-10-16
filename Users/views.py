@@ -18,14 +18,27 @@ from WorkoutsApp.models import Usuarios, Habilidades, Rangos
 # Create your views here.
 
 #Registro de usuario
+@login_required()
 def index(request): 
 
-    nameusuario = request.user
-    usuario = Usuarios.objects.get(fk_user=nameusuario)
-
-    clase = recomendador(usuario.id_usuario)
-    print(clase)
-    return render(request, 'Users/index.html')
+    usuario = Usuarios.objects.get(fk_user = request.user)
+    skills = Habilidades.objects.get(fk_user = request.user)
+    puntaje = int(usuario.puntaje_habilidades)*20
+    skills.flexibilidad = skills.flexibilidad*20
+    skills.fuerza = skills.fuerza*20
+    skills.resistencia = skills.resistencia*20
+    skills.velocidad = skills.velocidad*20
+    skills.agilidad = skills.agilidad*20
+    skills.aceleracion = skills.aceleracion*20
+    skills.coordinacion = skills.coordinacion*20
+    skills.precision = skills.precision*20
+    context = {
+        'rango' : usuario,
+        'skills': skills,
+        'puntaje':puntaje,
+        'list' : ["resistencia", "fuerza", "velocidad", "aceleracion", "agilidad", "flexibilidad", "coordinacion", "precision"]
+    }
+    return render(request, 'Users/index.html', context)
 
 
 #Registro de usuario
@@ -121,7 +134,11 @@ def loginView(request):
             login(request, user)
             return redirect('/index')
         else:
-            print('error')
+            context={
+                'msj': True,
+                'mensaje': 'Usuario o contraseña erroneos, valide por favor'
+            }
+            return render(request, 'Users/login.html', context)
 
     return render(request, 'Users/login.html')  
 
@@ -136,6 +153,10 @@ def logoutView(request):
 def perfil(request):
     return render(request, 'Users/perfil.html')
 
+
+#Ver vista 404
+def error404(request, exception):
+    return render(request, 'Users/404.html')
 
 #modificar usuario
 @login_required()

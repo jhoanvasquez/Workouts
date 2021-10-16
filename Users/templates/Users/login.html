@@ -37,6 +37,11 @@
                             
                             <div class="col-lg">
                                 <div class="p-5">
+                                    {% if msj %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{mensaje}}
+                                    </div>
+                                    {% endif %}
                                     <div class="text-center col align-self-center">
                                         <h1 class="h2 ml-2 font-weight-bold">Workouts</h1>
                                         <img class="" src="{% static 'Users/img/login.png' %}"  width="60" height="60">
