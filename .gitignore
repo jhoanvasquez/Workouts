@@ -10,7 +10,7 @@ __pycache__/
 local_settings.py
 media
 #/Workouts/settings.py
-settings.py
+# settings.py
 __pycache__/
 migrations/
 /Users/__pycache__/*
