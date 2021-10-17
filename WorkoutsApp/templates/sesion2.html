@@ -1,27 +1,21 @@
 {% extends "Users/base.html" %}
 {% load static %}
-{% block title %} Sin sesiones para hoy{% endblock %}
-
-{% block h1 %} Sin sesiones para hoy{% endblock %}
+{% block h1 %} Entrenos de hoy {{valor2}} terminados {% endblock %}
 
 {% block content %}
-<h4 class="font-weight-bold">Hola {{nombre}}</h4>
-<h5>Ya realizaste todas las sesiones del dia de hoy,
-     siquieres puedes crear otro plan, o descansar para tus sesiones de mañana {{next}}.
+<h1>Hola <strong>{{valor1}}</strong> acabaste todos los entrenos de hoy.</h1>
+<br>
+<div>
+    <font size="6"> <span>  Que quieres hacer ?</span> </font>
+    <br><br>
+    <center>
+        <button id="crearplanes" onclick="crearplanes()" class="btn btn-primary w-50">Crear Planes</button>
+        <br><br>
+        <br><br>
+        <button id="descansar" onclick="descansar()" class="btn btn-primary w-50">Descansar, e ir al dashboard.</button>
+    </center>
+</div>
 
-</h5>
-
-<!-- <form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        <label class="h6" for="name">Nombre de usuario</label>
-        <input id="username" type="text" class="form-control" style="width: 35%" name="username" value="{{user}}" disabled>
-    </div>
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-block">
-        <h5>Enviar</h5>
-    </button>
-</form> -->
 
 
 {% endblock %}
@@ -45,8 +39,7 @@
 <!-- Page level custom scripts -->
 <script src="{% static 'Users/js/demo/chart-area-demo.js' %} "></script>
 <script src="{% static 'Users/js/demo/chart-pie-demo.js' %} "></script>
-<!-- <script src="{% static 'WorkoutsApp/js/crearplanes.js' %}"></script> -->
+<script src="{% static 'WorkoutsApp/js/sesion2.js' %}"></script>
 <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 
 {% endblock %}
-

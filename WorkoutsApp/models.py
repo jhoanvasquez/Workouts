@@ -39,7 +39,7 @@ class Usuarios (models.Model):
     peso=models.CharField(max_length=4)
     estatura=models.CharField(max_length=4)
     ciudad=models.CharField(max_length=50)
-    puntaje_habilidades=models.IntegerField()
+    puntaje_habilidades=models.FloatField()
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -88,14 +88,14 @@ class Sesion_Ejercicio(models.Model):
 
 class Habilidades(models.Model):
     id_habilidades=models.AutoField(primary_key=True)
-    flexibilidad=models.IntegerField()
-    fuerza=models.IntegerField()
-    resistencia=models.IntegerField()
-    velocidad=models.IntegerField()
-    aceleracion=models.IntegerField()
-    agilidad=models.IntegerField()
-    coordinacion=models.IntegerField()
-    precision=models.IntegerField()
+    flexibilidad=models.FloatField()
+    fuerza=models.FloatField()
+    resistencia=models.FloatField()
+    velocidad=models.FloatField()
+    aceleracion=models.FloatField()
+    agilidad=models.FloatField()
+    coordinacion=models.FloatField()
+    precision=models.FloatField()
     fk_user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     id_rango=models.ForeignKey(Rangos, on_delete=models.CASCADE )
 

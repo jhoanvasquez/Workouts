@@ -27,15 +27,27 @@ def register(request):
 
 def sesion2(request):
 
-    print("sesion2 para cuando todo esta listo")
-    print(request)
+    nameusuario = request.user
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
 
+    print("sesion2 para cuando todo esta listo")
+    #print(request)
+    name=nameusuario
+    valor2=datetime.today()
+    context = {
+        #'ejercicios': ejercicios,
+        #'idplan':idplan
+        'valor1': name,
+        'valor2':valor2
+
+    }
     # if request.POST:
 
     #     print(request.POST['codigoplan'])
 
     # formulario=DashboardForm()
-    return render(request, 'sesion2.html')
+    return render(request, 'sesion2.html', context)
+    #return render(request, 'sesion2.html', context)
 
 def sugerencias(request):
     userconect = request.POST.get('user')
@@ -98,11 +110,13 @@ def aumentasesion(request, valores):
     id=calificaciones[0]
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
+    usuario.puntaje_habilidades = usuario.puntaje_habilidades+0.1
+    usuario.save()
+
     
     infoplan = Planes.objects.get(id_plan=id)
-
     nuevodiasentrenados= infoplan.dias_entrenados
-    infoplan.dias_entrenados = nuevodiasentrenados+1
+    infoplan.dias_entrenados = nuevodiasentrenados+0.1
     infoplan.ultima_semana = datetime.today()
     infoplan.save()
 
@@ -114,14 +128,14 @@ def aumentasesion(request, valores):
     if(sesion_ejer.exists()):
         for e in sesion_ejer.values():
             ids_ejercicios.append(e['id_ejercicios_id'])
-        print("ids ejerciciosejercicios")
-        print(ids_ejercicios)
+        #print("ids ejerciciosejercicios")
+        #print(ids_ejercicios)
     else:
-        print("vacio")
-        print(ids_ejercicios)
+        print("no existen sesiones de este ejercicio")
+        #print(ids_ejercicios)
     
 
-    print("ids y calificaciones listas")
+    #print("ids y calificaciones listas")
     posicion=0
     for ejercicio in ids_ejercicios:
         
@@ -131,6 +145,47 @@ def aumentasesion(request, valores):
         infoEjercicio.calificacion = puntajeCalificaciones[posicion]
         infoEjercicio.save()
         posicion+=1
+
+    #aumentar habilidades, 
+    print("ver id area, captura y comparacion")
+    print(infoplan.id_area.descripcion)
+    areaplan=infoplan.id_area.descripcion
+    areaplan=areaplan.lower()
+    
+    habilidadesUser=Habilidades.objects.get(fk_user=nameusuario)
+
+    if(areaplan == "flexibilidad"):
+        habilidadesUser.flexibilidad = habilidadesUser.flexibilidad+0.1
+        
+    elif(areaplan == "fuerza"):
+        habilidadesUser.fuerza = habilidadesUser.fuerza+0.1
+        
+    elif(areaplan == "resistencia"):
+        habilidadesUser.resistencia = habilidadesUser.resistencia+0.1
+        
+    elif(areaplan == "velocidad"):
+        habilidadesUser.velocidad = habilidadesUser.velocidad+0.1
+        
+    elif(areaplan == "aceleracion"):
+        habilidadesUser.aceleracion =habilidadesUser.aceleracion+0.1
+      
+    elif(areaplan == "agilidad"):
+        habilidadesUser.agilidad = habilidadesUser.agilidad+0.1
+        
+    elif(areaplan == "coordinacion"):
+        habilidadesUser.coordinacion = habilidadesUser.coordinacion+0.1
+      
+    elif(areaplan == "precision"):
+        habilidadesUser.precision = habilidadesUser.precision+0.1
+       
+    else:
+        print("area no reconocida")
+
+    habilidadesUser.id_rango = usuario.id_rango
+
+    habilidadesUser.save()
+
+    # #y aumentar puntaje total
 
 
     return redirect('/index')
@@ -217,6 +272,8 @@ def validaplanes(request):
 
 def crearplanes(request):
     print("vista crear planes")
+
+    #si 
     formPlanes = PlanesForm(request.POST or None)
     context = {
         'form' : formPlanes
@@ -353,7 +410,7 @@ def planes(request):
             if(totalPlanesHabilitados == 0):
                 print("no hay planes del usuario, sale a crear un plan o a descansar")
                 #HttpResponseRedirect(request, entrenoslistos)
-                return redirect("/workoutsapp/crearplanes/")
+                return redirect ("/workoutsapp/sesion2/")
                 #!crear vista de que ya entreno hoy
 
     else:
