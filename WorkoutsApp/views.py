@@ -260,12 +260,12 @@ def validaplanes(request):
             print(context)
             print("sale")
             
-            return HttpResponseRedirect(reverse('workoutsapp:sesion0', args=(idplan)))
+            return HttpResponseRedirect(reverse('workoutsapp:sesion0', args=[idplan]))
             
-            #sirve pinta bien, pero no cambia url
-            return sesion0(request, idplan)
-            #funciona para pintar
-            return render(request, 'sesion0.html/', context )
+            # #sirve pinta bien, pero no cambia url
+            # return sesion0(request, idplan)
+            # #funciona para pintar
+            # return render(request, 'sesion0.html/', context )
             
     return redirect('/index')
     #return render(request, 'validaplanes.html')
@@ -570,131 +570,6 @@ def dashboard(request,id):
         print("no existe url mandar al index")
         return redirect('/index')
 
-
-
-
-
-    # if request.POST:
-
-    #     nameusuario = request.user
-    #     usuario = Usuarios.objects.get(fk_user=nameusuario)
-    #     codusuario = usuario.id_usuario
-
-    #     codigo_plan=request.POST['idplan']
-
-    #     planentreno = Planes.objects.get(id_plan=codigo_plan)
-    #     idhabi = planentreno.id_rango_id
-
-    #     idarea = planentreno.id_area_id
-    #     area = Areas.objects.get(id_area=idarea)
-    #     nombre_area = getattr(area, "descripcion")
-
-    #     #sirve para validar desde que sesion se muestra
-    #     diasEntrenados=getattr(planentreno, "dias_entrenados")
-        
-    #     #con base en este se muestra la siguiente sesion
-
-    #     # if(diasEntrenados == 0):
-    #     #     print("crear primera sesion, porque no tiene")
-    #     #     return render(request, 'sesion0.html')
-    #     # else:
-    #     #     print("capturar la sesion anterior y escoger un ejercicio para crear la sgt sesion")
-    #     #     #!llamar al metodo de crear sesion con una sesion anterior
-
-
-    #     # validar que se sion va y mostrar desde esa, con numero de entrenos hechos
-    #     # si va5 se muestra desde 6
-
-    #     sesiones = Sesiones.objects.filter(id_plan=codigo_plan).order_by('num_sesiones')
-    #     sesiones2=sesiones[diasEntrenados:]
-    #     #print(sesiones)
-
-
-    #     #captura los ids de las sesiones del plan seleccionado
-    #     ids_sesiones = []
-
-    #     for i in sesiones.values():
-    #         ids_sesiones.append(i['id_sesion'])
-
-    #         # if(sesionmostrar >= diasEntrenados):
-    #         #     {
-    #         #         ids_sesiones.append(i['id_sesion'])
-    #         #     }
-    #         # sesionmostrar += 1
-
-    #         #print(i)
-    #         #print(sesiones['id_sesion'])
-    #         #print(i['id_sesion'])
-
-    #         # for m in i.values():
-    #         #     print(i['id_sesion'])
-    #     # print(ids_sesiones)
-
-    #     ids_sesiones=ids_sesiones[diasEntrenados:]
-    #     print(ids_sesiones)
-
-    #     #sesion actual
-    #     codigo_sesion=ids_sesiones[0]
-
-    #     ejercicios = Ejercicios.objects.all()
-    #     sesiones_ejercicio= Sesion_Ejercicio.objects.all()
-
-    #     duracion_sesiones = []
-    #     #calcular duracion total de las sesiones
-    #     for n in ids_sesiones:
-    #         sesion_ejer = Sesion_Ejercicio.objects.filter(id_sesion=n)
-
-    #         if(sesion_ejer.exists()):
-    #             #print(sesion_ejer)
-    #             dura=0
-    #             for e in sesion_ejer.values():
-    #                 #print("id_ejercicio:  ")
-    #                 #print(e['id_ejercicios_id'])
-    #                 codigo_ejericio=e['id_ejercicios_id']
-    #                 info_ejercicio = Ejercicios.objects.get(id_ejercicios=codigo_ejericio)
-    #                 #print(info_ejercicio.duracion)
-    #                 dura+=info_ejercicio.duracion
-
-    #             duracion_sesiones.append(dura)
-
-    #         else:
-    #             #print("vacio")
-    #             dura=0
-    #             duracion_sesiones.append(dura)
-
-    #     #print(duracion_sesiones)
-
-
-
-    #     # #ejercicios o sesiones
-    #     # #si ya hizo todos los entrenos del plan no muestra nada
-    #     # if planentreno.dias_entrenados >= totalentrenos:
-    #     #     ejercicios=ejercicios[:0]
-    #     # #si aun no ha hecho todos mandar los dias faltantes de sesiones
-    #     # if planentreno.dias_entrenados < totalentrenos:
-    #     #     ejercicios=ejercicios[:diasrestantes]
-
-    #     color=["border-bottom-success", "border-bottom-primary", "border-bottom-secondary"]
-
-    #     context = {
-    #     "nombre": request.user,
-    #         "iduser": codusuario,
-    #         "area": nombre_area,
-    #         "ejercicios": ejercicios,
-    #         "sesioneshechas":diasEntrenados,
-    #         "codigoplan":codigo_plan,
-    #         "sesiones": sesiones2,
-    #         "idssesiones": ids_sesiones,
-    #         "duraciones": duracion_sesiones,
-    #         "codigosesion": codigo_sesion,
-    #         "colors":color
-    #     }
-
-    #     return render(request, 'dashboard.html', context )
-
-    # else:
-    #     return redirect('/index')
-
 def sesion(request):
 
     if request.POST:
@@ -797,13 +672,13 @@ def sesion0(request, id):
     ejercicios = seleccionarEjercicios(EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario))
     #ejercicios = seleccionarEjercicios(Ejercicios.objects.all().filter(id_rango = usuario.id_rango).values())
     
-    if(ejercicios):
-        print("si existe usuario")
-    else:
-        print("no existe usuario")
+    # if(ejercicios.exists()):
+    #     print("si existe ejercicio")
+    # else:
+    #     print("no existe ejercicio")
     
     #obtener el id del plan y num_sesion
-    print("codigo del plan que llega en sesion 0")
+    #print("codigo del plan que llega en sesion 0")
 
     #print(idplan)
     idplan = id
@@ -813,39 +688,48 @@ def sesion0(request, id):
         'idplan':idplan
     }
     #print(context)
-    print("antes del post")
+    #print("antes del post")
     
 
     if request.POST and request.POST.get('radio') != None:
-        print("codigo plan del que llega post")
-        print(request.POST['idplan'])
+        #print("codigo plan del que llega post")
+        #print(request.POST['idplan'])
         idplan = request.POST['idplan']
 
         ejercicio=request.POST.get('radio')
-        print(ejercicio)
+        #print(ejercicio)
 
         
         ejercicioInicio = EjerciciosUsuarios.objects.get(id_ejercicios_usuarios = ejercicio, id_usuario=usuario.id_usuario)
         descripcionEjercicio = ejercicioInicio.descripcion
         areaEjercicio = ejercicioInicio.id_area
         recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
-        print("recomendaciones -----------***")
-        print(recomendaciones)
-        #se debe obtener plan
+        # print("recomendaciones -----------***")
+        # print(recomendaciones)
+        sesiones= Sesiones.objects.filter(id_plan=idplan, num_sesiones=num_sesiones).order_by('num_sesiones')
+        
+         #se debe obtener plan
         plan = Planes.objects.get(id_plan = idplan)
-        crearSesion(plan,num_sesiones)
-
-        sesion = Sesiones.objects.get(id_plan=idplan, num_sesiones=num_sesiones)
         
         
-        crearSesionesEjercicios(recomendaciones, sesion, usuario)
-        print(recomendaciones)
-        print("sale de crear la sesion 1 enviar a dashboard para empezarla")
+        
+        if(sesiones.exists()):
+            # print("sale de varificar la sesion 1, ya existe  se envia a dashboard para empezarla")
+            return redirect('/workoutsapp/dashboard/'+str(idplan))
+        else:
+            #print(str(len(sesiones))+' No existe crearla')
+            crearSesion(plan,num_sesiones)
 
-        #return redirect('/index')
-        return redirect('/workoutsapp/dashboard/'+str(idplan))
+            sesion = Sesiones.objects.get(id_plan=idplan, num_sesiones=num_sesiones)
 
-    print("sale a mostrar vista ejercicios sesion0")
+            crearSesionesEjercicios(recomendaciones, sesion, usuario)
+            # print(recomendaciones)
+            # print("sale de crear la sesion 1 enviar a dashboard para empezarla")
+
+            #return redirect('/index')
+            return redirect('/workoutsapp/dashboard/'+str(idplan))
+
+    #print("sale a mostrar vista ejercicios sesion0")
     
     return render(request, 'sesion0.html', context)
 
