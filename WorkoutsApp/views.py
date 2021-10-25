@@ -36,7 +36,6 @@ def sesion2(request):
     context = {
         'valor1': name,
         'valor2':valor2
-
     }
     # if request.POST:
 
@@ -101,8 +100,8 @@ def aumentasesion(request, valores):
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
     #usuario.puntaje_habilidades = usuario.puntaje_habilidades+0.1
-    valorpuntajehabilidad = usuario.puntaje_habilidades+0.1
-    usuario.puntaje_habilidades = usuario.puntaje_habilidades+0.1
+    valorpuntajehabilidad = usuario.puntaje_habilidades+1
+    usuario.puntaje_habilidades = usuario.puntaje_habilidades+1
     if(valorpuntajehabilidad < val1):
         idrango=1
     elif (valorpuntajehabilidad >= val1 and valorpuntajehabilidad < val2):
@@ -118,7 +117,7 @@ def aumentasesion(request, valores):
 
     infoplan = Planes.objects.get(id_plan=id)
     nuevodiasentrenados= infoplan.dias_entrenados
-    infoplan.dias_entrenados = nuevodiasentrenados+0.1
+    infoplan.dias_entrenados = nuevodiasentrenados+1
     infoplan.ultima_semana = datetime.today()
     infoplan.save()
 
@@ -150,28 +149,28 @@ def aumentasesion(request, valores):
     habilidadesUser=Habilidades.objects.get(fk_user=nameusuario)
 
     if(areaplan == "flexibilidad"):
-        habilidadesUser.flexibilidad = habilidadesUser.flexibilidad+0.1
+        habilidadesUser.flexibilidad = habilidadesUser.flexibilidad+1
         
     elif(areaplan == "fuerza"):
-        habilidadesUser.fuerza = habilidadesUser.fuerza+0.1
+        habilidadesUser.fuerza = habilidadesUser.fuerza+1
         
     elif(areaplan == "resistencia"):
-        habilidadesUser.resistencia = habilidadesUser.resistencia+0.1
+        habilidadesUser.resistencia = habilidadesUser.resistencia+1
         
     elif(areaplan == "velocidad"):
-        habilidadesUser.velocidad = habilidadesUser.velocidad+0.1
+        habilidadesUser.velocidad = habilidadesUser.velocidad+1
         
     elif(areaplan == "aceleracion"):
-        habilidadesUser.aceleracion =habilidadesUser.aceleracion+0.1
+        habilidadesUser.aceleracion =habilidadesUser.aceleracion+1
       
     elif(areaplan == "agilidad"):
-        habilidadesUser.agilidad = habilidadesUser.agilidad+0.1
+        habilidadesUser.agilidad = habilidadesUser.agilidad+1
         
     elif(areaplan == "coordinacion"):
-        habilidadesUser.coordinacion = habilidadesUser.coordinacion+0.1
+        habilidadesUser.coordinacion = habilidadesUser.coordinacion+1
       
     elif(areaplan == "precision"):
-        habilidadesUser.precision = habilidadesUser.precision+0.1
+        habilidadesUser.precision = habilidadesUser.precision+1
        
     else:
         print("area no reconocida")
@@ -248,11 +247,39 @@ def validaplanes(request):
 
 def crearplanes(request):
     print("vista crear planes")
+    nameusuario = request.user
+    usuario = Usuarios.objects.get(fk_user=nameusuario)
+    codusuario = usuario.id_usuario
+    actualizarEjercicios(usuario.id_usuario)
 
-    #si 
+    #capturar areas de cada ejercicio
+    areasActuales = Areas.objects.all()
+
+    #ejercicios
+    info_ejercicios = Ejercicios.objects.all()
+    cantidadEjercicios=[]
+
+    if(areasActuales.exists()):
+
+        #print(sesion_ejer)
+        
+        for e in areasActuales.values():
+            id_de_area = e['id_area']
+            existen=0
+            for p in info_ejercicios.values():
+                id_de_area_ejer = p['id_area_id']
+
+                if(id_de_area == id_de_area_ejer):
+                    existen+=1
+            cantidadEjercicios.append(existen)
+
+    #validar que existen ejercicios de esas areas
+
+    #si
     formPlanes = PlanesForm(request.POST or None)
     context = {
-        'form' : formPlanes
+        'form' : formPlanes,
+        'cantidadEjercicios': cantidadEjercicios
     }
     if request.POST:
         formPlanes = PlanesForm(data=request.POST, instance=request.user)
@@ -542,12 +569,18 @@ def sesion0(request, id):
     print("entro a sesion del plan  "+ str(id))
     nameusuario = request.user
     usuario = Usuarios.objects.get(fk_user=nameusuario)
-
-    ejercicios1=EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario).values()
-
-    ejercicios = seleccionarEjercicios(EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario))
-
+    
     idplan = id
+    info_plan = Planes.objects.get(id_plan=idplan)
+    print("area del plan que se escoge para enviar a seleccionar ejercicios")
+    print(info_plan.id_area)
+
+    ejercicios1=EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario, id_area=info_plan.id_area).values()
+
+
+    ejercicios = seleccionarEjercicios(EjerciciosUsuarios.objects.all().filter(id_rango = usuario.id_rango, id_usuario=usuario.id_usuario, id_area=info_plan.id_area))
+
+    
     num_sesiones = 1
     context = {
         'ejercicios': ejercicios,

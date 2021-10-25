@@ -376,8 +376,8 @@ function fin(id)
           console.log(codplan);
           //window.location.href = "/workoutsapp/aumentasesion/"+codplan;
           document.getElementById("calificaEjercicios").style.display = "block";
-          document.getElementById("valorestiempos").style.display = "none";
-
+          document.getElementById("timeindividual").style.display = "none";
+          document.getElementById("timetotal").style.display = "block";
       }else
       {
         //tiempo();    //pausar tiempo  //deterner y guardar valor

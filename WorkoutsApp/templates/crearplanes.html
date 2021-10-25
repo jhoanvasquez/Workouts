@@ -7,6 +7,11 @@
 {% block content %}
 <h4 class="font-weight-bold">Datos del nuevo plan</h4>
 
+
+<a visibility="hidden" id="acantidadEjercicios" value="{{cantidadEjercicios}}">
+    {{cantidadEjercicios}}
+</a>
+
 <form method="POST">
     {% csrf_token %}
     <div class="form-group">
@@ -14,14 +19,12 @@
         <input id="username" type="text" class="form-control" style="width: 35%" name="username" value="{{user}}" disabled>
     </div>
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary btn-block">
+    <button type="submit" id="btnCrearPlan" onclick="validaEjercicios()" class="btn btn-primary btn-block">
         <h5>Enviar</h5>
     </button>
 </form>
 
-
 {% endblock %}
-
 
 {% block js %}
 
