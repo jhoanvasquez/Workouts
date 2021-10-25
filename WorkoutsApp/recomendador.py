@@ -5,11 +5,15 @@ import pandas as pd
 import numpy  as np
 import time
 import string
-from WorkoutsApp.models import Usuarios, Habilidades, Rangos, Ejercicios, EjerciciosUsuarios
+from WorkoutsApp.models import Usuarios, Habilidades, Rangos, Ejercicios, EjerciciosUsuarios, Planes
 
-def recomendador(id_user):
-    EjerciciosDF = pd.DataFrame(list(EjerciciosUsuarios.objects.all().filter(id_usuario=id_user).values()))
-       
+def recomendador(id_user, codigoplan):
+    
+    usuario = Usuarios.objects.get(id_usuario=id_user)
+    info_plan = Planes.objects.get(id_plan=codigoplan)
+
+    EjerciciosDF = pd.DataFrame(list(EjerciciosUsuarios.objects.all().filter(id_usuario=id_user, id_rango = usuario.id_rango, id_area=info_plan.id_area).values()))
+
     #Resetear index
     EjerciciosDF=EjerciciosDF.reset_index(drop=True)
     

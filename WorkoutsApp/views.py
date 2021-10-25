@@ -211,7 +211,7 @@ def validaplanes(request):
 
             descripcionEjercicio = alguno.descripcion
             areaEjercicio = alguno.id_area
-            recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
+            recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario, idplan).tolist()
             #se debe obtener plan
             plan = Planes.objects.get(id_plan = idplan)
             diasentrenados=plan.dias_entrenados
@@ -597,7 +597,7 @@ def sesion0(request, id):
         descripcionEjercicio = ejercicioInicio.descripcion
         areaEjercicio = ejercicioInicio.id_area
 
-        recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario).tolist()
+        recomendaciones = recomendadorEjercicios(descripcionEjercicio, areaEjercicio.id_area, usuario.id_rango.id_rango, usuario.id_usuario, idplan).tolist()
 
         sesiones= Sesiones.objects.filter(id_plan=idplan, num_sesiones=num_sesiones).order_by('num_sesiones')
 
@@ -619,8 +619,8 @@ def sesion0(request, id):
 
     return render(request, 'sesion0.html', context)
 
-def recomendadorEjercicios(descripcion, area, id_rango, id_usuario):
-    EjerciciosDF, cosine_sim, indices = recomendador(id_usuario)
+def recomendadorEjercicios(descripcion, area, id_rango, id_usuario, idplan):
+    EjerciciosDF, cosine_sim, indices = recomendador(id_usuario, idplan)
     ind=2
     conjuntoEjercicios = get_recommendations(EjerciciosDF, descripcion, id_rango, area, cosine_sim, indices)
     return conjuntoEjercicios
